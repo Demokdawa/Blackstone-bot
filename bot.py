@@ -10,7 +10,8 @@ print('[Init] Bot configuré !')
 async def on_ready():
     print("[Init] Bot en ligne !")
     await bot.change_presence(activity=discord.Game("Ouais ouais ouais"))
-	
+    
+    
 @bot.event
 async def on_message(message):
 	if message.author == bot.user:
@@ -19,4 +20,5 @@ async def on_message(message):
         await message.channel.send("Ouais ouais ouais !")
 	await bot.process_commands(message)
 	
+    
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
