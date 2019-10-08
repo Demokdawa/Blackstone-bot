@@ -15,7 +15,7 @@ print('[Init] Bot configuré !')
 @bot.event
 async def on_ready():
     print("[Init] Bot en ligne !")
-    await bot.change_presence(activity=discord.Game("Ouais ouais ouais"))
+    await bot.change_presence(activity=discord.Game("lel"))
     
     
 @bot.event
@@ -23,7 +23,7 @@ async def on_message(message):
     if message.author == bot.user:
         return
     if message.content == "sendmeme":
-        subreddit = reddit.subreddit(dankmemes)
+        subreddit = reddit.subreddit("dankmemes")
         imageUrls = []
         for submission in subreddit.hot(limit=400):
             if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
