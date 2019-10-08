@@ -1,16 +1,17 @@
 import discord
 import praw
 from discord.ext import commands
-import asyncio
 import random
 import urllib.request as req
 import os
+import time
 
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
 prefix = "!"
 bot = commands.Bot(command_prefix=prefix)
 print('[Init] Bot configuré !')
+
 
 @bot.event
 async def on_ready():
@@ -20,51 +21,54 @@ async def on_ready():
 
 @bot.command()
 async def sendmeme(ctx):
+    start_time = time.time()
     subreddit = reddit.subreddit("dankmemes")
-    imageUrls = []
+    image_urls = []
     for submission in subreddit.top(limit=400):
+        print("--- %s seconds ---" % (time.time() - start_time))
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            imageUrls.append(submission.url)
+            image_urls.append(submission.url)
 
-    randomImage = imageUrls[random.randint(0,len(imageUrls) - 1)]
-    req.urlretrieve(randomImage, 'tempDiscord.jpg')
-    fullPath = os.path.join(os.getcwd(), 'tempDiscord.jpg') 
+    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
+    req.urlretrieve(random_image, 'tempDiscord.jpg')
+    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
-    file = discord.File(fullPath)
+    file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
-    
+
+
 @bot.command()
 async def sendlewdmeme(ctx):
     subreddit = reddit.subreddit("hentaidankmemes")
-    imageUrls = []
+    image_urls = []
     for submission in subreddit.top(limit=400):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            imageUrls.append(submission.url)
+            image_urls.append(submission.url)
 
-    randomImage = imageUrls[random.randint(0,len(imageUrls) - 1)]
-    req.urlretrieve(randomImage, 'tempDiscord.jpg')
-    fullPath = os.path.join(os.getcwd(), 'tempDiscord.jpg') 
+    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+    req.urlretrieve(random_image, 'tempDiscord.jpg')
+    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
-    file = discord.File(fullPath)
+    file = discord.File(full_path)
     await ctx.channel.send(file=file)
 
     os.remove('tempDiscord.jpg')
-    
+
+
 @bot.command()
 async def sendwfmeme(ctx):
     subreddit = reddit.subreddit("memeframe")
-    imageUrls = []
+    image_urls = []
     for submission in subreddit.top(limit=400):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            imageUrls.append(submission.url)
+            image_urls.append(submission.url)
 
-    randomImage = imageUrls[random.randint(0,len(imageUrls) - 1)]
-    req.urlretrieve(randomImage, 'tempDiscord.jpg')
-    fullPath = os.path.join(os.getcwd(), 'tempDiscord.jpg') 
+    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+    req.urlretrieve(random_image, 'tempDiscord.jpg')
+    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
-    file = discord.File(fullPath)
+    file = discord.File(full_path)
     await ctx.channel.send(file=file)
 
     os.remove('tempDiscord.jpg')
