@@ -1,6 +1,12 @@
 import discord
+import praw
 from discord.ext import commands
 import asyncio
+import random
+import urllib.request as req
+import os
+
+reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
 prefix = "!"
 bot = commands.Bot(command_prefix=prefix)
@@ -16,9 +22,22 @@ async def on_ready():
 async def on_message(message):
     if message.author == bot.user:
         return
-    if message.content == "?":
-        await message.channel.send("Ouais ouais ouais !")
+    if message.content == "sendmeme":
+        subreddit = reddit.subreddit(dankmemes)
+        imageUrls = []
+        for submission in subreddit.hot(limit=400):
+            if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
+                imageUrls.append(submission.url)
+
+        randomImage = imageUrls[random.randint(0,len(imageUrls) - 1)]
+        req.urlretrieve(randomImage, 'tempDiscord.jpg')
+        fullPath = os.path.join(os.getcwd(), 'tempDiscord.jpg') 
+    
+        file = discord.File(fullPath)
+        await message.channel.send(file=file)
+
+        os.remove('tempDiscord.jpg')
     await bot.process_commands(message)
 	
-    
+   
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
