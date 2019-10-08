@@ -22,7 +22,7 @@ async def on_ready():
 async def sendmeme(ctx):
     subreddit = reddit.subreddit("dankmemes")
     imageUrls = []
-    for submission in subreddit.hot(limit=400):
+    for submission in subreddit.top(limit=400):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             imageUrls.append(submission.url)
 
@@ -39,7 +39,7 @@ async def sendmeme(ctx):
 async def sendlewdmeme(ctx):
     subreddit = reddit.subreddit("hentaidankmemes")
     imageUrls = []
-    for submission in subreddit.hot(limit=400):
+    for submission in subreddit.top(limit=400):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             imageUrls.append(submission.url)
 
@@ -56,7 +56,7 @@ async def sendlewdmeme(ctx):
 async def sendwfmeme(ctx):
     subreddit = reddit.subreddit("memeframe")
     imageUrls = []
-    for submission in subreddit.hot(limit=400):
+    for submission in subreddit.top(limit=400):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             imageUrls.append(submission.url)
 
