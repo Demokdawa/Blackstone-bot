@@ -19,7 +19,7 @@ async def on_ready():
 
 
 @bot.command()
-async def sendmeme(ctx)
+async def sendmeme(ctx):
     subreddit = reddit.subreddit("dankmemes")
     imageUrls = []
     for submission in subreddit.hot(limit=400):
