@@ -34,7 +34,7 @@ async def sendmeme(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-    await ctx.message.delete(ctx.message)
+    await ctx.message.delete(ctx)
     os.remove('tempDiscord.jpg')
     
 
