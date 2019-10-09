@@ -94,7 +94,7 @@ async def sendcursed(ctx):
 
 @bot.command()
 async def sendyum(ctx):
-    subreddit = reddit.subreddit(" FoodPorn")
+    subreddit = reddit.subreddit("FoodPorn")
     image_urls = []
     for submission in subreddit.top(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
