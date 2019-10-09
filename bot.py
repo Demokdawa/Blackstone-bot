@@ -19,7 +19,7 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("lel"))
 
 
-@bot.command()
+@bot.command(pass_context=True)
 async def sendmeme(ctx):
     start_time = time.time()
     subreddit = reddit.subreddit("dankmemes")
@@ -34,7 +34,9 @@ async def sendmeme(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
+    await bot.delete_message(ctx.message)
     os.remove('tempDiscord.jpg')
+    
 
 
 @bot.command()
@@ -163,11 +165,4 @@ async def sendwtf(ctx):
     os.remove('tempDiscord.jpg')
 
 
-@bot.command(pass_context=True)
-async def deletethis(ctx, user: discord.Member):
-    await bot.say('Command received')
-    await bot.delete_message(ctx.message)
-    await bot.say('Message deleted')
-
-   
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
