@@ -24,7 +24,7 @@ async def sendmeme(ctx):
     start_time = time.time()
     subreddit = reddit.subreddit("dankmemes")
     image_urls = []
-    for submission in subreddit.top(limit=400):
+    for submission in subreddit.top(limit=100):
         print("--- %s seconds ---" % (time.time() - start_time))
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
@@ -42,7 +42,7 @@ async def sendmeme(ctx):
 async def sendlewdmeme(ctx):
     subreddit = reddit.subreddit("hentaidankmemes")
     image_urls = []
-    for submission in subreddit.top(limit=400):
+    for submission in subreddit.top(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -60,7 +60,7 @@ async def sendlewdmeme(ctx):
 async def sendwfmeme(ctx):
     subreddit = reddit.subreddit("memeframe")
     image_urls = []
-    for submission in subreddit.top(limit=400):
+    for submission in subreddit.top(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
