@@ -186,7 +186,7 @@ async def sendaww(ctx):
 @bot.command()
 async def react(ctx):
     msg = await ctx.channel.send("Done")
-    await msg.add_reaction('white_check_mark')
+    await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
 
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
