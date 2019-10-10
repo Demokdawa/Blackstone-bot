@@ -294,7 +294,7 @@ async def react(ctx):
     await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await msg.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
-        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}' or user == ctx.message.author and str(reaction.emoji) == '\N{CROSS MARK}'
+        return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
     except asyncio.TimeoutError:
