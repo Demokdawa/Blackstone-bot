@@ -183,7 +183,7 @@ async def sendaww(ctx):
 
     os.remove('tempDiscord.jpg')
     
-@bot.command(pass_context=True)
+@bot.command()
 async def react(ctx):
     msg = await ctx.channel.send("Done")
     await msg.add_reaction('greenTick:596576670815879169')
