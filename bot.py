@@ -195,7 +195,7 @@ async def react(ctx):
     except asyncio.TimeoutError:
         await ctx.channel.send('not good')
     else:
-        await ctx.channel.send('not good')
+        await ctx.channel.send('good !')
     
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
