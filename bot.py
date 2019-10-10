@@ -34,7 +34,7 @@ async def sendmeme(ctx):
 
     file = discord.File(full_path)
     img = await ctx.channel.send(file=file)
-    await img.add_reaction('GreenTick:375576212568801280')
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await ctx.message.delete()
     os.remove('tempDiscord.jpg')
     
