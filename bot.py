@@ -47,6 +47,7 @@ async def sendmeme(ctx):
         await ctx.message.delete()
     else:
         await reaction.remove(ctx.message.author)
+        await reaction.remove(img.author)
     
 
 
