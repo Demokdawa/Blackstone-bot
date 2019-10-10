@@ -37,7 +37,7 @@ async def sendmeme(ctx):
     img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
     
-    await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
     try:
