@@ -7,9 +7,6 @@ import os
 import time
 import asyncio
 
-# Remove the default !help command
-bot.remove_command('help')
-
 # Create reddit profile for crawling
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
@@ -18,6 +15,8 @@ prefix = "!"
 bot = commands.Bot(command_prefix=prefix)
 print('[Init] Bot configuré !')
 
+# Remove the default !help command
+bot.remove_command('help')
 
 # Check if the bot is ready
 @bot.event
