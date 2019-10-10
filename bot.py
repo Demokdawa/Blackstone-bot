@@ -186,8 +186,8 @@ async def sendaww(ctx):
 @bot.command()
 async def react(ctx):
     msg = await ctx.channel.send("Done")
-    bot.get_emoji(596576670815879169)
-    await msg.add_reaction('greenTick:596576670815879169')
+    emoji = bot.get_emoji(596576670815879169)
+    await msg.add_reaction(emoji)
 
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
