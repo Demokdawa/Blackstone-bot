@@ -191,7 +191,7 @@ async def react(ctx):
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=60.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
     except asyncio.TimeoutError:
         await ctx.channel.send('not good')
     else:
