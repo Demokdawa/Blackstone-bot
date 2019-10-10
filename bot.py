@@ -193,7 +193,7 @@ async def react(ctx):
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
     except asyncio.TimeoutError:
-        await msg.message.delete()
+        await msg.delete()
     else:
         await ctx.channel.send('good !')
     
