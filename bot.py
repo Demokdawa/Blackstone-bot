@@ -187,9 +187,9 @@ async def sendaww(ctx):
 @bot.command()
 async def react(ctx):
     msg = await ctx.channel.send("lolololol")
-    await msg.add_reaction('u"\u2705"')
+    await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     def check(reaction, user):
-        return user == ctx.message.author and str(reaction.emoji) == 'u"\u2705"'
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
     except asyncio.TimeoutError:
