@@ -188,7 +188,7 @@ async def react(ctx):
     msg = await ctx.channel.send("lolololol")
     await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     res = await Bot.wait_for_reaction('\N{WHITE HEAVY CHECK MARK}', message=msg, timeout=6)
-    if res is None
+    if res == None
         await msg.message.delete() 
 
 
