@@ -185,8 +185,8 @@ async def sendaww(ctx):
     
 @bot.command()
 async def react(ctx):
+    emoji = bot.get_emoji(375576212568801280)
     msg = await ctx.channel.send("Done")
-    emoji = bot.get_emoji(596576670815879169)
     await msg.add_reaction(emoji)
 
 
