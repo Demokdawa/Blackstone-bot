@@ -34,9 +34,7 @@ async def sendmeme(ctx):
 
     file = discord.File(full_path)
     img = await ctx.channel.send(file=file)
-    reactions = ['GreenTick']
-    for emoji in reactions: 
-        await ctx.add_reaction(msg, emoji)
+    await img.add_reaction('GreenTick')
     await ctx.message.delete()
     os.remove('tempDiscord.jpg')
     
