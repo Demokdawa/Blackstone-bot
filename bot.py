@@ -301,7 +301,11 @@ async def react(ctx):
         await msg.delete()
         await ctx.message.delete()
     else:
-        await msg.clear_reactions()
+        if reaction.emoji in check() is '\N{WHITE HEAVY CHECK MARK}':
+            await msg.clear_reactions()
+        else:
+            await msg.delete()
+            await ctx.message.delete()
     
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
