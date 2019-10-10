@@ -302,7 +302,7 @@ async def react(ctx):
         await ctx.message.delete()
     else:
         print(reaction)
-        if reaction == "\N{WHITE HEAVY CHECK MARK}":
+        if reaction = '\N{WHITE HEAVY CHECK MARK}':
             await msg.clear_reactions()
         else:
             await msg.delete()
