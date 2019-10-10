@@ -185,9 +185,8 @@ async def sendaww(ctx):
     
 @bot.command()
 async def react(ctx):
-    emoji = bot.get_emoji(int(375576212568801280))
     msg = await ctx.channel.send("Done")
-    await msg.add_reaction(emoji)
+    await msg.add_reaction('white_check_mark')
 
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
