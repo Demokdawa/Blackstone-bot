@@ -187,7 +187,7 @@ async def sendaww(ctx):
 @bot.command()
 async def react(ctx):
     msg = await ctx.channel.send("lolololol")
-    await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await msg.add_reaction(✅)
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
     try:
