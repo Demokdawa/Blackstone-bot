@@ -44,6 +44,7 @@ async def sendmeme(ctx):
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
@@ -78,6 +79,7 @@ async def sendlewdmeme(ctx):
     os.remove('tempDiscord.jpg')
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
@@ -112,6 +114,7 @@ async def sendwfmeme(ctx):
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
@@ -146,6 +149,7 @@ async def sendcursed(ctx):
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
@@ -180,6 +184,7 @@ async def sendyum(ctx):
     os.remove('tempDiscord.jpg')
   
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
@@ -214,6 +219,7 @@ async def sendearth(ctx):
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
@@ -248,6 +254,7 @@ async def sendnocontext(ctx):
     os.remove('tempDiscord.jpg')
    
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
@@ -282,6 +289,7 @@ async def sendwtf(ctx):
     os.remove('tempDiscord.jpg')
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
@@ -316,6 +324,7 @@ async def sendaww(ctx):
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
