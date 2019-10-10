@@ -294,14 +294,14 @@ async def react(ctx):
     await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await msg.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
-        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}' or str(reaction.emoji) == '\N{CROSS MARK}'
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
     except asyncio.TimeoutError:
         await msg.delete()
         await ctx.message.delete()
     else:
-        pass
+        await msg.clear_reactions()
     
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
