@@ -18,6 +18,7 @@ print('[Init] Bot configuré !')
 # Remove the default !help command
 bot.remove_command('help')
 
+
 # Check if the bot is ready
 @bot.event
 async def on_ready():
@@ -28,7 +29,6 @@ async def on_ready():
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command(pass_context=True)
 async def sendmeme(ctx):
-    start_time = time.time()
     subreddit = reddit.subreddit("dankmemes")
     image_urls = []
     for submission in subreddit.top(limit=100):
@@ -45,10 +45,11 @@ async def sendmeme(ctx):
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -80,10 +81,11 @@ async def sendlewdmeme(ctx):
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -115,10 +117,11 @@ async def sendwfmeme(ctx):
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -150,10 +153,11 @@ async def sendcursed(ctx):
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -185,10 +189,11 @@ async def sendyum(ctx):
   
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -220,10 +225,11 @@ async def sendearth(ctx):
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -255,10 +261,11 @@ async def sendnocontext(ctx):
    
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -290,10 +297,11 @@ async def sendwtf(ctx):
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -325,10 +333,11 @@ async def sendaww(ctx):
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await img.delete()
         await ctx.message.delete()
@@ -347,10 +356,11 @@ async def react(ctx):
     msg = await ctx.channel.send("test")
     await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await msg.add_reaction('\N{CROSS MARK}')
+
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=10.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
         await msg.delete()
         await ctx.message.delete()
