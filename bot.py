@@ -35,9 +35,18 @@ async def sendmeme(ctx):
 
     file = discord.File(full_path)
     img = await ctx.channel.send(file=file)
-    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-    await ctx.message.delete()
     os.remove('tempDiscord.jpg')
+    
+    await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        pass
     
 
 
@@ -196,7 +205,7 @@ async def react(ctx):
         await msg.delete()
         await ctx.message.delete()
     else:
-        await ctx.channel.send('good !')
+        pass
     
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
