@@ -7,19 +7,26 @@ import os
 import time
 import asyncio
 
+# Remove the default !help command
+bot.remove_command('help')
+
+# Create reddit profile for crawling
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
+# Set the prefix and init the bot
 prefix = "!"
 bot = commands.Bot(command_prefix=prefix)
 print('[Init] Bot configuré !')
 
 
+# Check if the bot is ready
 @bot.event
 async def on_ready():
     print("[Init] Bot en ligne !")
     await bot.change_presence(activity=discord.Game("lel"))
 
 
+# !sendmeme command for subreddit 'dankmemes'
 @bot.command(pass_context=True)
 async def sendmeme(ctx):
     start_time = time.time()
@@ -49,6 +56,7 @@ async def sendmeme(ctx):
         await img.clear_reactions()
     
 
+# !sendlewdmeme command for subreddit 'hentaidankmemes'
 @bot.command()
 async def sendlewdmeme(ctx):
     subreddit = reddit.subreddit("hentaidankmemes")
@@ -77,6 +85,7 @@ async def sendlewdmeme(ctx):
         await img.clear_reactions()
         
 
+# !sendwfmeme command for subreddit 'memeframe'
 @bot.command()
 async def sendwfmeme(ctx):
     subreddit = reddit.subreddit("memeframe")
@@ -104,7 +113,8 @@ async def sendwfmeme(ctx):
     else:
         await img.clear_reactions()
         
-        
+
+# !sendcursed command for subreddit 'cursedimages'
 @bot.command()
 async def sendcursed(ctx):
     subreddit = reddit.subreddit("cursedimages")
@@ -133,6 +143,7 @@ async def sendcursed(ctx):
         await img.clear_reactions()
 
 
+# !sendyum command for subreddit 'FoodPorn'
 @bot.command()
 async def sendyum(ctx):
     subreddit = reddit.subreddit("FoodPorn")
@@ -161,6 +172,7 @@ async def sendyum(ctx):
         await img.clear_reactions()
   
   
+# !sendearth command for subreddit 'EarthPorn'
 @bot.command()
 async def sendearth(ctx):
     subreddit = reddit.subreddit("EarthPorn")
@@ -188,7 +200,8 @@ async def sendearth(ctx):
     else:
         await img.clear_reactions()
         
-        
+
+# !sendnocontext command for subreddit 'nocontextpics'        
 @bot.command()
 async def sendnocontext(ctx):
     subreddit = reddit.subreddit("nocontextpics")
@@ -216,7 +229,8 @@ async def sendnocontext(ctx):
     else:
         await img.clear_reactions()
         
-        
+    
+# !sendwtf command for subreddit 'WTF'     
 @bot.command()
 async def sendwtf(ctx):
     subreddit = reddit.subreddit("WTF")
@@ -244,7 +258,8 @@ async def sendwtf(ctx):
     else:
         await img.clear_reactions()
         
-        
+    
+# !sendaww command for subreddit 'aww'     
 @bot.command()
 async def sendaww(ctx):
     subreddit = reddit.subreddit("aww")
@@ -272,11 +287,13 @@ async def sendaww(ctx):
     else:
         await img.clear_reactions()
         
-        
+    
+# !react command for testing    
 @bot.command()
 async def react(ctx):
     msg = await ctx.channel.send("test")
     await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await msg.add_reaction('\N{CROSS MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
     try:
