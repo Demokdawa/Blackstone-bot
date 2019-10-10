@@ -5,6 +5,7 @@ import random
 import urllib.request as req
 import os
 import time
+import asyncio
 
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
@@ -190,7 +191,7 @@ async def react(ctx):
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
     try:
-        reaction, user = await client.wait_for('reaction_add', timeout=60.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=60.0, check=check)
     except asyncio.TimeoutError:
         await ctx.channel.send('not good')
     else:
