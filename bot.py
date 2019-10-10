@@ -62,7 +62,7 @@ async def sendlewdmeme(ctx):
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
     file = discord.File(full_path)
-    await ctx.channel.send(file=file)
+    img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
@@ -90,7 +90,7 @@ async def sendwfmeme(ctx):
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
     file = discord.File(full_path)
-    await ctx.channel.send(file=file)
+    img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
@@ -118,7 +118,7 @@ async def sendcursed(ctx):
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
     file = discord.File(full_path)
-    await ctx.channel.send(file=file)
+    img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
@@ -146,7 +146,7 @@ async def sendyum(ctx):
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
     file = discord.File(full_path)
-    await ctx.channel.send(file=file)
+    img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
   
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
@@ -174,7 +174,7 @@ async def sendearth(ctx):
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
     file = discord.File(full_path)
-    await ctx.channel.send(file=file)
+    img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
@@ -202,7 +202,7 @@ async def sendnocontext(ctx):
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
     file = discord.File(full_path)
-    await ctx.channel.send(file=file)
+    img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
    
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
@@ -230,7 +230,7 @@ async def sendwtf(ctx):
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
     file = discord.File(full_path)
-    await ctx.channel.send(file=file)
+    img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
@@ -258,7 +258,7 @@ async def sendaww(ctx):
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
     file = discord.File(full_path)
-    await ctx.channel.send(file=file)
+    img = await ctx.channel.send(file=file)
     os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
