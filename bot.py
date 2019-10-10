@@ -46,11 +46,8 @@ async def sendmeme(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        # await reaction.remove(ctx.message.author)
-        # await reaction.remove(img.author)
         await img.clear_reactions()
     
-
 
 @bot.command()
 async def sendlewdmeme(ctx):
@@ -66,9 +63,19 @@ async def sendlewdmeme(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
 
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        await img.clear_reactions()
+        
 
 @bot.command()
 async def sendwfmeme(ctx):
@@ -84,10 +91,20 @@ async def sendwfmeme(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
     
-   
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        await img.clear_reactions()
+        
+        
 @bot.command()
 async def sendcursed(ctx):
     subreddit = reddit.subreddit("cursedimages")
@@ -102,8 +119,18 @@ async def sendcursed(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
+    
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        await img.clear_reactions()
 
 
 @bot.command()
@@ -120,8 +147,18 @@ async def sendyum(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
+  
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        await img.clear_reactions()
   
   
 @bot.command()
@@ -138,10 +175,20 @@ async def sendearth(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
     
- 
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        await img.clear_reactions()
+        
+        
 @bot.command()
 async def sendnocontext(ctx):
     subreddit = reddit.subreddit("nocontextpics")
@@ -156,10 +203,20 @@ async def sendnocontext(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
    
-   
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        await img.clear_reactions()
+        
+        
 @bot.command()
 async def sendwtf(ctx):
     subreddit = reddit.subreddit("WTF")
@@ -174,10 +231,20 @@ async def sendwtf(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
 
-
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        await img.clear_reactions()
+        
+        
 @bot.command()
 async def sendaww(ctx):
     subreddit = reddit.subreddit("aww")
@@ -192,9 +259,20 @@ async def sendaww(ctx):
 
     file = discord.File(full_path)
     await ctx.channel.send(file=file)
-
     os.remove('tempDiscord.jpg')
     
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    def check(reaction, user):
+        return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
+    try:
+        reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        await img.clear_reactions()
+        
+        
 @bot.command()
 async def react(ctx):
     msg = await ctx.channel.send("test")
