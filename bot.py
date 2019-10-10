@@ -186,14 +186,14 @@ async def sendaww(ctx):
     
 @bot.command()
 async def react(ctx):
-    msg = await ctx.channel.send("lolololol")
+    msg = await ctx.channel.send("test")
     await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     def check(reaction, user):
         return user == ctx.message.author and str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}'
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=6.0, check=check)
     except asyncio.TimeoutError:
-        await ctx.msg.delete()
+        await ctx.message.delete(msg)
     else:
         await ctx.channel.send('good !')
     
