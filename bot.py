@@ -185,7 +185,7 @@ async def sendaww(ctx):
     
 @bot.command(pass_context=True)
 async def react(ctx):
-    msg = await bot.say("Done")
+    msg = await ctx.channel.send("Done")
     await msg.add_reaction('GreenTick:375576212568801280')
 
 
