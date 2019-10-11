@@ -385,7 +385,7 @@ async def halp(ctx):
     embed.add_field(name="!sendnocontext", value="Envoie une image sans contexte", inline=False)
     embed.add_field(name="!sendwtf", value="Envoie une image WTF", inline=False)
     embed.add_field(name="!sendaww", value="Envoie des photos d'animaux mignons", inline=False)
-    embed.set_footer(text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. Cliquer sur la réaction ✅ la laissera en permanent. Cliquer sur la réaction ❌ supprimera l'image directement. ")
+    embed.set_footer(text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. Cliquer sur la réaction \N{WHITE HEAVY CHECK MARK} la laissera en permanent. Cliquer sur la réaction ❌ supprimera l'image directement. ")
     await ctx.channel.send(embed=embed)
 
 
