@@ -47,7 +47,7 @@ async def sendmeme(ctx):
     await img.add_reaction('\N{CROSS MARK}')
 
     def check(reaction, user):
-        return ctx.message.author.bot is false and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
+        return user.bot is false and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}']
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
