@@ -54,7 +54,7 @@ async def sendmeme(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -90,7 +90,7 @@ async def sendlewdmeme(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -126,7 +126,7 @@ async def sendwfmeme(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -162,7 +162,7 @@ async def sendcursed(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -198,7 +198,7 @@ async def sendyum(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -234,7 +234,7 @@ async def sendearth(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -270,7 +270,7 @@ async def sendnocontext(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -306,7 +306,7 @@ async def sendwtf(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -342,7 +342,7 @@ async def sendaww(ctx):
         await img.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
@@ -365,7 +365,7 @@ async def react(ctx):
         await msg.delete()
         await ctx.message.delete()
     else:
-        print(reaction)
+        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await msg.clear_reactions()
         else:
@@ -376,9 +376,16 @@ async def react(ctx):
 # !halp command for help
 @bot.command()
 async def halp(ctx):
-    embed = discord.Embed(title="Tile", description="Desc", color=0x00ff00)
-    embed.add_field(name="Field1", value="hi", inline=False)
-    embed.add_field(name="Field2", value="hi2", inline=False)
+    embed=discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !", description="Je suis la pour vous aider 😄", color=0xd5d500)
+    embed.add_field(name=!sendmeme, value=Envoie un dankmeme, inline=False)
+    embed.add_field(name=!sendwfmeme, value=Envoie un meme Warframe, inline=False)
+    embed.add_field(name=!sencursed, value=Envoie une image "maudite", inline=False)
+    embed.add_field(name=!sendyum, value=Envoie une image pour te donner faim, inline=False)
+    embed.add_field(name=!sendearth, value=Envoie une magnifique image de mère nature, inline=False)
+    embed.add_field(name=!sendnocontext, value=Envoie une image sans contexte, inline=False)
+    embed.add_field(name=!sendwtf, value=Envoie une image WTF, inline=False)
+    embed.add_field(name=!sendaww, value=Envoie des photos d'animaux mignons, inline=False)
+    embed.set_footer(text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. Cliquer sur la réaction ✅ la laissera en permanent. Cliquer sur la réaction ❌ supprimera l'image directement. ")
     await ctx.channel.send(embed=embed)
 
 
