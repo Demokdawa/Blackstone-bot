@@ -49,7 +49,7 @@ async def sendmeme(ctx):
     def check(reaction, user):
         print(reaction.message)
         print(img)               
-        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and img.content == reaction.message.content
+        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and img.id == reaction.message.id
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)                                                                                                                                
         await img.delete()
