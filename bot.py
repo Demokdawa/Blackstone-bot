@@ -54,8 +54,10 @@ async def sendmeme(ctx):
         reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)                                                                                                                                
         await img.delete()
         await ctx.message.delete()
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
     else:
-        
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
