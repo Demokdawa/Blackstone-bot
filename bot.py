@@ -375,11 +375,11 @@ async def react(ctx):
     
 # !halp command for help
 @bot.command()
-async def help_command(ctx):
+async def halp(ctx):
     embed = discord.Embed(title="Tile", description="Desc", color=0x00ff00)
     embed.add_field(name="Field1", value="hi", inline=False)
     embed.add_field(name="Field2", value="hi2", inline=False)
-    await bot.send_message(message.channel, embed=embed)
+    await ctx.channel.send(message.channel, embed=embed)
 
 
 
