@@ -373,4 +373,14 @@ async def react(ctx):
             await ctx.message.delete()
     
     
+# !halp command for help
+@bot.command()
+async def help_command(ctx):
+    embed = discord.Embed(title="Tile", description="Desc", color=0x00ff00)
+    embed.add_field(name="Field1", value="hi", inline=False)
+    embed.add_field(name="Field2", value="hi2", inline=False)
+    await bot.send_message(message.channel, embed=embed)
+
+
+
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
