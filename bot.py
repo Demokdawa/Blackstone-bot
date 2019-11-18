@@ -139,7 +139,7 @@ async def sendwfmeme(ctx):
 async def sendcursed(ctx):
     subreddit = reddit.subreddit("cursedimages")
     image_urls = []
-    for submission in subreddit.top(limit=100):
+    for submission in subreddit.hot(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
