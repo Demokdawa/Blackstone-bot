@@ -513,7 +513,7 @@ async def sendyurigif(ctx):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
             image_urls.append(submission.url)
 
-    print(len(someList))
+    print(len(image_urls))
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
     if random_image.endswith('.gif'):
