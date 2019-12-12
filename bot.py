@@ -517,7 +517,8 @@ async def sendyurigif(ctx):
     if random_image.endswith('.gif'):
         req.urlretrieve(random_image, 'tempDiscord.gif')
         full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
-        optimize(full_path)
+        # optimize(full_path)
+        picopt full_path
 
         file = discord.File(full_path)
         img = await ctx.channel.send(file=file)
