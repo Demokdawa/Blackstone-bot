@@ -6,7 +6,7 @@ import urllib.request as req
 import os
 import time
 import asyncio
-from pygifsicle import optimize
+from pygifsicle import gifsicle
 
 # Create reddit profile for crawling
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
@@ -517,7 +517,8 @@ async def sendyurigif(ctx):
     if random_image.endswith('.gif'):
         req.urlretrieve(random_image, 'tempDiscord.gif')
         full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
-        optimize(full_path)
+        
+        gifsicle(sources="tempDiscord.gif", colors=256, options=["--optimize=O3"])
 
         file = discord.File(full_path)
         img = await ctx.channel.send(file=file)
