@@ -349,10 +349,10 @@ async def sendaww(ctx):
             await img.delete()
             await ctx.message.delete()
             
-# !sendaww command for subreddit 'gonecivil'     
+# !sendaww command for subreddit 'SFWporn'     
 @bot.command()
-async def sendcivilporn(ctx):
-    subreddit = reddit.subreddit("gonecivil")
+async def sendsfwporn(ctx):
+    subreddit = reddit.subreddit("SFWporn")
     image_urls = []
     for submission in subreddit.hot(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
