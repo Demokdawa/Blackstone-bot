@@ -430,6 +430,8 @@ async def sendyuri(ctx):
     for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
+			
+    print(len(image_urls))
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     req.urlretrieve(random_image, 'tempDiscord.jpg')
