@@ -33,7 +33,7 @@ async def on_ready():
 async def sendmeme(ctx):
     subreddit = reddit.subreddit("dankmemes")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -69,7 +69,7 @@ async def sendmeme(ctx):
 async def sendlewdmeme(ctx):
     subreddit = reddit.subreddit("hentaidankmemes")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -105,7 +105,7 @@ async def sendlewdmeme(ctx):
 async def sendwfmeme(ctx):
     subreddit = reddit.subreddit("memeframe")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -141,7 +141,7 @@ async def sendwfmeme(ctx):
 async def sendcursed(ctx):
     subreddit = reddit.subreddit("cursedimages")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -177,7 +177,7 @@ async def sendcursed(ctx):
 async def sendyum(ctx):
     subreddit = reddit.subreddit("FoodPorn")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -213,7 +213,7 @@ async def sendyum(ctx):
 async def sendearth(ctx):
     subreddit = reddit.subreddit("EarthPorn")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -249,7 +249,7 @@ async def sendearth(ctx):
 async def sendnocontext(ctx):
     subreddit = reddit.subreddit("nocontextpics")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -285,7 +285,7 @@ async def sendnocontext(ctx):
 async def sendwtf(ctx):
     subreddit = reddit.subreddit("WTF")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -321,7 +321,7 @@ async def sendwtf(ctx):
 async def sendaww(ctx):
     subreddit = reddit.subreddit("aww")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -356,7 +356,7 @@ async def sendaww(ctx):
 async def sendsfwporn(ctx):
     subreddit = reddit.subreddit("SFWporn")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -391,7 +391,7 @@ async def sendsfwporn(ctx):
 async def sendyurimeme(ctx):
     subreddit = reddit.subreddit("yurimemes")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -427,7 +427,7 @@ async def sendyurimeme(ctx):
 async def sendyuri(ctx):
     subreddit = reddit.subreddit("yuri")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 
@@ -463,7 +463,7 @@ async def sendyuri(ctx):
 async def sendnsfwarframe(ctx):
     subreddit = reddit.subreddit("NSFWarframe")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
             image_urls.append(submission.url)
 
