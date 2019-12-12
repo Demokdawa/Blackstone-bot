@@ -509,7 +509,7 @@ async def sendnsfwarframe(ctx):
 async def sendyurigif(ctx):
     subreddit = reddit.subreddit("yurigif")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
+    for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
             image_urls.append(submission.url)
 
@@ -521,7 +521,7 @@ async def sendyurigif(ctx):
         
         print(os.stat(full_path).st_size)
         
-        gifsicle(sources="tempDiscord.gif", colors=256, options=["-O2", "--lossy=40", "-j4"])
+        gifsicle(sources="tempDiscord.gif", colors=256, options=["-O2", "--lossy=30", "-j4"])
         
         print(os.stat(full_path).st_size)
 
