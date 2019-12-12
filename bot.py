@@ -461,7 +461,7 @@ async def sendyuri(ctx):
 async def sendnsfwarframe(ctx):
     subreddit = reddit.subreddit("NSFWarframe")
     image_urls = []
-    for submission in subreddit.best(limit=100):
+    for submission in subreddit.hot(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
             image_urls.append(submission.url)
 
