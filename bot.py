@@ -461,17 +461,27 @@ async def sendyuri(ctx):
 async def sendnsfwarframe(ctx):
     subreddit = reddit.subreddit("NSFWarframe")
     image_urls = []
-    for submission in subreddit.hot(limit=100):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
+    for submission in subreddit.best(limit=100):
+        if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
+    
+    if random_image.endswith('.gif'):
+        req.urlretrieve(random_image, 'tempDiscord.gif')
+        full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
 
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+        file = discord.File(full_path)
+        img = await ctx.channel.send(file=file)
+        os.remove('tempDiscord.gif')
+        
+    if random_image.endswith('.jpg') or random_image.endswith('.png'):
+        req.urlretrieve(random_image, 'tempDiscord.jpg')
+        full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
+
+        file = discord.File(full_path)
+        img = await ctx.channel.send(file=file)
+        os.remove('tempDiscord.jpg')
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
