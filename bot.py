@@ -349,7 +349,7 @@ async def sendaww(ctx):
             await img.delete()
             await ctx.message.delete()
             
-# !sendaww command for subreddit 'SFWporn'     
+# !sendsfwporn command for subreddit 'SFWporn'     
 @bot.command()
 async def sendsfwporn(ctx):
     subreddit = reddit.subreddit("SFWporn")
@@ -384,7 +384,7 @@ async def sendsfwporn(ctx):
             await img.delete()
             await ctx.message.delete()
             
-# !sendaww command for subreddit 'yurimemes'     
+# !sendyurimeme command for subreddit 'yurimemes'     
 @bot.command()
 async def sendyurimeme(ctx):
     subreddit = reddit.subreddit("yurimemes")
@@ -420,7 +420,7 @@ async def sendyurimeme(ctx):
             await ctx.message.delete()
             
             
-# !sendaww command for subreddit 'yuri'     
+# !sendyuri command for subreddit 'yuri'     
 @bot.command()
 async def sendyuri(ctx):
     subreddit = reddit.subreddit("yuri")
@@ -456,10 +456,56 @@ async def sendyuri(ctx):
             await ctx.message.delete()
             
             
-# !sendaww command for subreddit 'NSFWarframe'     
+# !sendnsfwarframe command for subreddit 'NSFWarframe'     
 @bot.command()
 async def sendnsfwarframe(ctx):
     subreddit = reddit.subreddit("NSFWarframe")
+    image_urls = []
+    for submission in subreddit.hot(limit=100):
+        if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
+            image_urls.append(submission.url)
+
+    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+    
+    if random_image.endswith('.gif'):
+        req.urlretrieve(random_image, 'tempDiscord.gif')
+        full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
+
+        file = discord.File(full_path)
+        img = await ctx.channel.send(file=file)
+        os.remove('tempDiscord.gif')
+        
+    if random_image.endswith('.jpg') or random_image.endswith('.png'):
+        req.urlretrieve(random_image, 'tempDiscord.jpg')
+        full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
+
+        file = discord.File(full_path)
+        img = await ctx.channel.send(file=file)
+        os.remove('tempDiscord.jpg')
+    
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
+
+    def check(reaction, user):
+        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+    try: 
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        
+        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+            await img.clear_reactions()
+        else:
+            await img.delete()
+            await ctx.message.delete()
+        
+        
+# !sendyurigif command for subreddit 'yurigif'     
+@bot.command()
+async def sendyurigif(ctx):
+    subreddit = reddit.subreddit("yurigif")
     image_urls = []
     for submission in subreddit.hot(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
