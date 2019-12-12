@@ -518,7 +518,7 @@ async def sendyurigif(ctx):
         req.urlretrieve(random_image, 'tempDiscord.gif')
         full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
         
-        gifsicle(sources="tempDiscord.gif", colors=256, options=["--optimize=O3"])
+        gifsicle(sources="tempDiscord.gif", colors=256, options=["--optimize[=O3]"])
 
         file = discord.File(full_path)
         img = await ctx.channel.send(file=file)
