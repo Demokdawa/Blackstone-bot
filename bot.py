@@ -521,7 +521,7 @@ async def sendyurigif(ctx):
         
         print(os.stat(full_path).st_size)
         
-        gifsicle(sources="tempDiscord.gif", colors=256, options=["-O3", "--lossy=80"])
+        gifsicle(sources="tempDiscord.gif", colors=256, options=["-O3", "--lossy=40", "-j4"])
         
         print(os.stat(full_path).st_size)
 
