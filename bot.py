@@ -454,6 +454,42 @@ async def sendyuri(ctx):
         else:
             await img.delete()
             await ctx.message.delete()
+            
+            
+# !sendaww command for subreddit 'NSFWarframe'     
+@bot.command()
+async def sendnsfwarframe(ctx):
+    subreddit = reddit.subreddit("NSFWarframe")
+    image_urls = []
+    for submission in subreddit.hot(limit=100):
+        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
+            image_urls.append(submission.url)
+
+    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+    req.urlretrieve(random_image, 'tempDiscord.jpg')
+    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
+
+    file = discord.File(full_path)
+    img = await ctx.channel.send(file=file)
+    os.remove('tempDiscord.jpg')
+    
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
+
+    def check(reaction, user):
+        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+    try: 
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        
+        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+            await img.clear_reactions()
+        else:
+            await img.delete()
+            await ctx.message.delete()
         
     
 # !react command for testing    
