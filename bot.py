@@ -629,6 +629,15 @@ async def halp(ctx):
     embed.set_footer(text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image directement. ")
     await ctx.channel.send(embed=embed)
 
-
+#Rule34
+#ConfusedBoners
+#Hentai
+#Hentai_Gif
+#Yiff
+#SoftHentai
+#ecchi
+#CumHentai
+#nekogirls
+#HentaiVisualArts(achecker)
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
