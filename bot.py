@@ -586,7 +586,7 @@ async def sendembed(ctx):
         embed.set_image(url=random_image)
         
     else: 
-        gyfcat_name = random_name.split(".com/")[1]
+        gyfcat_name = random_image.split(".com/")[1]
         client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
         resp = client.query_gfy(gyfcat_name)
         gifed = resp['gfyItem']['gifUrl']
