@@ -360,138 +360,150 @@ async def sendaww(ctx):
 # !sendsfwporn command for subreddit 'SFWporn'     
 @bot.command()
 async def sendsfwporn(ctx):
-    subreddit = reddit.subreddit("SFWporn")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
+    if ctx.guild.id == 649901370526400522:    
+        subreddit = reddit.subreddit("SFWporn")
+        image_urls = []
+        for submission in subreddit.hot(limit=1000):
+            if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
+                image_urls.append(submission.url)
 
-    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    
-    embed = prepare_embed(random_image)
-    
-    img = await ctx.channel.send(embed=embed)
-    
-    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-    await img.add_reaction('\N{CROSS MARK}')
-
-    def check(reaction, user):
-        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
-    try: 
-        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
-    except asyncio.TimeoutError:
-        await img.delete()
-        await ctx.message.delete()
-    else:
+        random_image = image_urls[random.randint(0,len(image_urls) - 1)]
         
-        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
-            await img.clear_reactions()
-        else:
+        embed = prepare_embed(random_image)
+        
+        img = await ctx.channel.send(embed=embed)
+        
+        await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+        await img.add_reaction('\N{CROSS MARK}')
+
+        def check(reaction, user):
+            return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+        try: 
+            reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+        except asyncio.TimeoutError:
             await img.delete()
             await ctx.message.delete()
+        else:
+            
+            if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+                await img.clear_reactions()
+            else:
+                await img.delete()
+                await ctx.message.delete()
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
             
 # !sendyurimeme command for subreddit 'yurimemes'     
 @bot.command()
 async def sendyurimeme(ctx):
-    subreddit = reddit.subreddit("yurimemes")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
+    if ctx.guild.id == 649901370526400522:
+        subreddit = reddit.subreddit("yurimemes")
+        image_urls = []
+        for submission in subreddit.hot(limit=1000):
+            if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
+                image_urls.append(submission.url)
 
-    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    
-    embed = prepare_embed(random_image)
-    
-    img = await ctx.channel.send(embed=embed)
-    
-    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-    await img.add_reaction('\N{CROSS MARK}')
-
-    def check(reaction, user):
-        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
-    try: 
-        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
-    except asyncio.TimeoutError:
-        await img.delete()
-        await ctx.message.delete()
-    else:
+        random_image = image_urls[random.randint(0,len(image_urls) - 1)]
         
-        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
-            await img.clear_reactions()
-        else:
+        embed = prepare_embed(random_image)
+        
+        img = await ctx.channel.send(embed=embed)
+        
+        await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+        await img.add_reaction('\N{CROSS MARK}')
+
+        def check(reaction, user):
+            return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+        try: 
+            reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+        except asyncio.TimeoutError:
             await img.delete()
             await ctx.message.delete()
+        else:
+            
+            if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+                await img.clear_reactions()
+            else:
+                await img.delete()
+                await ctx.message.delete()
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
             
             
 # !sendyuri command for subreddit 'yuri'     
 @bot.command()
 async def sendyuri(ctx):
-    subreddit = reddit.subreddit("yuri")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-			
-    print(str(len(image_urls)) + ' submissions found !')
+    if ctx.guild.id == 649901370526400522:
+        subreddit = reddit.subreddit("yuri")
+        image_urls = []
+        for submission in subreddit.hot(limit=1000):
+            if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
+                image_urls.append(submission.url)
+                
+        print(str(len(image_urls)) + ' submissions found !')
 
-    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    
-    embed = prepare_embed(random_image)
-    
-    img = await ctx.channel.send(embed=embed)
-    
-    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-    await img.add_reaction('\N{CROSS MARK}')
-
-    def check(reaction, user):
-        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
-    try: 
-        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
-    except asyncio.TimeoutError:
-        await img.delete()
-        await ctx.message.delete()
-    else:
+        random_image = image_urls[random.randint(0,len(image_urls) - 1)]
         
-        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
-            await img.clear_reactions()
-        else:
+        embed = prepare_embed(random_image)
+        
+        img = await ctx.channel.send(embed=embed)
+        
+        await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+        await img.add_reaction('\N{CROSS MARK}')
+
+        def check(reaction, user):
+            return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+        try: 
+            reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+        except asyncio.TimeoutError:
             await img.delete()
             await ctx.message.delete()
+        else:
+            
+            if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+                await img.clear_reactions()
+            else:
+                await img.delete()
+                await ctx.message.delete()
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
             
             
 # !sendnsfwarframe command for subreddit 'NSFWarframe'     
 @bot.command()
 async def sendnsfwarframe(ctx):
-    subreddit = reddit.subreddit("NSFWarframe")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
-            image_urls.append(submission.url)
+    if ctx.guild.id == 649901370526400522:
+        subreddit = reddit.subreddit("NSFWarframe")
+        image_urls = []
+        for submission in subreddit.hot(limit=1000):
+            if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
+                image_urls.append(submission.url)
 
-    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    
-    embed = prepare_embed(random_image)
-    
-    img = await ctx.channel.send(embed=embed)
-    
-    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-    await img.add_reaction('\N{CROSS MARK}')
-
-    def check(reaction, user):
-        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
-    try: 
-        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
-    except asyncio.TimeoutError:
-        await img.delete()
-        await ctx.message.delete()
-    else:
+        random_image = image_urls[random.randint(0,len(image_urls) - 1)]
         
-        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
-            await img.clear_reactions()
-        else:
+        embed = prepare_embed(random_image)
+        
+        img = await ctx.channel.send(embed=embed)
+        
+        await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+        await img.add_reaction('\N{CROSS MARK}')
+
+        def check(reaction, user):
+            return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+        try: 
+            reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+        except asyncio.TimeoutError:
             await img.delete()
             await ctx.message.delete()
+        else:
+            
+            if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+                await img.clear_reactions()
+            else:
+                await img.delete()
+                await ctx.message.delete()
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
         
         
 # !sendyurigif command for subreddit 'yurigif'     
@@ -536,39 +548,42 @@ async def sendyurigif(ctx):
 # !sendembed command for subreddit 'yurigif'     
 @bot.command()
 async def sendembed(ctx):
-    subreddit = reddit.subreddit("yurigif")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
-            image_urls.append(submission.url)
+    if ctx.guild.id == 649901370526400522:
+        subreddit = reddit.subreddit("yurigif")
+        image_urls = []
+        for submission in subreddit.hot(limit=1000):
+            if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
+                image_urls.append(submission.url)
 
-    print(str(len(image_urls)) + ' submissions found !')
-    
-    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    
-    print(random_image)
-    
-    embed = prepare_embed(random_image)
-    
-    img = await ctx.channel.send(embed=embed)
+        print(str(len(image_urls)) + ' submissions found !')
         
-    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-    await img.add_reaction('\N{CROSS MARK}')
+        random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+        
+        print(random_image)
+        
+        embed = prepare_embed(random_image)
+        
+        img = await ctx.channel.send(embed=embed)
+            
+        await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+        await img.add_reaction('\N{CROSS MARK}')
 
-    def check(reaction, user):
-        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
-    try: 
-        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
-    except asyncio.TimeoutError:
-        await img.delete()
-        await ctx.message.delete()
-    else:
-        
-        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
-            await img.clear_reactions()
-        else:
+        def check(reaction, user):
+            return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+        try: 
+            reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+        except asyncio.TimeoutError:
             await img.delete()
             await ctx.message.delete()
+        else:
+            
+            if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+                await img.clear_reactions()
+            else:
+                await img.delete()
+                await ctx.message.delete()
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
         
     
 # !react command for testing    
