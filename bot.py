@@ -497,7 +497,7 @@ async def sendnsfwarframe(ctx):
 # !sendyurigif command for subreddit 'yurigif'     
 @bot.command()
 async def sendyurigif(ctx):
-    if ctx.guild == 649901370526400522:
+    if ctx.guild.id == 649901370526400522:
         subreddit = reddit.subreddit("yurigif")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
