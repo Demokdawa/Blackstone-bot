@@ -568,9 +568,10 @@ async def sendembed(ctx):
     subreddit = reddit.subreddit("yurigif")
     image_urls = []
     for submission in subreddit.hot(limit=1000):
+        if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
         image_urls.append(submission.url)
 
-    print(str(len(image_urls)) + 'submissions found !')
+    print(str(len(image_urls)) + ' submissions found !')
     
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
