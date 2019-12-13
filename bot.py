@@ -569,7 +569,7 @@ async def sendembed(ctx):
     for submission in subreddit.hot(limit=1000):
         image_urls.append(submission.url)
 
-    print(len(image_urls) + 'submissions found !')
+    print(str(len(image_urls)) + 'submissions found !')
     
     print(image_urls)
     
