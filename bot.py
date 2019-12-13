@@ -21,6 +21,29 @@ print('[Init] Bot configuré !')
 # Remove the default !help command
 bot.remove_command('help')
 
+def prepare_embed(random_image):
+
+    embed = discord.Embed()
+    
+    if random_image.endswith('.jpg') or random_image.endswith('.png'):
+        embed.set_image(url=random_image)
+    
+    if random_image.endswith('.gifv'):
+        gifed = os.path.splitext(random_image)[0]+'.gif'
+        embed.set_image(url=gifed)
+        
+    if random_image.endswith('.gif'):
+        embed.set_image(url=random_image)
+        
+    if 'gyfcat' in submission.url:
+        gyfcat_name = random_image.split(".com/")[1]
+        client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
+        resp = client.query_gfy(gyfcat_name)
+        gifed = resp['gfyItem']['gifUrl']
+        embed.set_image(url=gifed)
+        
+    return embed
+
 
 # Check if the bot is ready
 @bot.event
@@ -577,21 +600,7 @@ async def sendembed(ctx):
     
     print(random_image)
     
-    embed = discord.Embed()
-    
-    if random_image.endswith('.gifv'):
-        gifed = os.path.splitext(random_image)[0]+'.gif'
-        embed.set_image(url=gifed)
-        
-    if random_image.endswith('.gif'):
-        embed.set_image(url=random_image)
-        
-    if 'gyfcat' in submission.url:
-        gyfcat_name = random_image.split(".com/")[1]
-        client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
-        resp = client.query_gfy(gyfcat_name)
-        gifed = resp['gfyItem']['gifUrl']
-        embed.set_image(url=gifed)
+    embed = prepare_embed(random_image)
     
     img = await ctx.channel.send(embed=embed)
         
