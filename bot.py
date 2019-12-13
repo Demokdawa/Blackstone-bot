@@ -576,8 +576,10 @@ async def sendembed(ctx):
     
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
+    var = os.path.splitext(random_image)[0]+'.gif'
+    
     e = discord.Embed()
-    e.set_image(url=random_image)
+    e.set_image(url=var)
     
     img = await ctx.channel.send(embed=e)
         
