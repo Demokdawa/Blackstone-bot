@@ -62,12 +62,10 @@ async def sendmeme(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -98,12 +96,10 @@ async def sendlewdmeme(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -134,12 +130,10 @@ async def sendwfmeme(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -170,12 +164,10 @@ async def sendcursed(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -206,12 +198,10 @@ async def sendyum(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
   
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -242,12 +232,10 @@ async def sendearth(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -278,12 +266,10 @@ async def sendnocontext(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
    
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -314,12 +300,10 @@ async def sendwtf(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -350,12 +334,10 @@ async def sendaww(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -385,12 +367,10 @@ async def sendsfwporn(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -420,12 +400,10 @@ async def sendyurimeme(ctx):
             image_urls.append(submission.url)
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -459,12 +437,9 @@ async def sendyuri(ctx):
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
-    req.urlretrieve(random_image, 'tempDiscord.jpg')
-    full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-    file = discord.File(full_path)
-    img = await ctx.channel.send(file=file)
-    os.remove('tempDiscord.jpg')
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -496,21 +471,9 @@ async def sendnsfwarframe(ctx):
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
-    if random_image.endswith('.gif'):
-        req.urlretrieve(random_image, 'tempDiscord.gif')
-        full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
-
-        file = discord.File(full_path)
-        img = await ctx.channel.send(file=file)
-        os.remove('tempDiscord.gif')
-        
-    if random_image.endswith('.jpg') or random_image.endswith('.png'):
-        req.urlretrieve(random_image, 'tempDiscord.jpg')
-        full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-        file = discord.File(full_path)
-        img = await ctx.channel.send(file=file)
-        os.remove('tempDiscord.jpg')
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -544,27 +507,9 @@ async def sendyurigif(ctx):
     
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
-    if random_image.endswith('.gif'):
-        req.urlretrieve(random_image, 'tempDiscord.gif')
-        full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
-        
-        print(os.stat(full_path).st_size)
-        
-        gifsicle(sources="tempDiscord.gif", colors=256, options=["-O2", "--lossy=30", "-j4"])
-        
-        print(os.stat(full_path).st_size)
-
-        file = discord.File(full_path)
-        img = await ctx.channel.send(file=file)
-        os.remove('tempDiscord.gif')
-        
-    if random_image.endswith('.jpg') or random_image.endswith('.png'):
-        req.urlretrieve(random_image, 'tempDiscord.jpg')
-        full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-        file = discord.File(full_path)
-        img = await ctx.channel.send(file=file)
-        os.remove('tempDiscord.jpg')
+    embed = prepare_embed(random_image)
+    
+    img = await ctx.channel.send(embed=embed)
     
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
