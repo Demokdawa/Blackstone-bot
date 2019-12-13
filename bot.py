@@ -360,7 +360,7 @@ async def sendaww(ctx):
 # !sendsfwporn command for subreddit 'SFWporn'     
 @bot.command()
 async def sendsfwporn(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("SFWporn")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
@@ -396,7 +396,7 @@ async def sendsfwporn(ctx):
 # !sendyurimeme command for subreddit 'yurimemes'     
 @bot.command()
 async def sendyurimeme(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("yurimemes")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
@@ -433,7 +433,7 @@ async def sendyurimeme(ctx):
 # !sendyuri command for subreddit 'yuri'     
 @bot.command()
 async def sendyuri(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("yuri")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
@@ -472,7 +472,7 @@ async def sendyuri(ctx):
 # !sendnsfwarframe command for subreddit 'NSFWarframe'     
 @bot.command()
 async def sendnsfwarframe(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("NSFWarframe")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
@@ -509,7 +509,7 @@ async def sendnsfwarframe(ctx):
 # !sendyurigif command for subreddit 'yurigif'     
 @bot.command()
 async def sendyurigif(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("yurigif")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
@@ -548,7 +548,7 @@ async def sendyurigif(ctx):
 # !sendhh command for subreddit 'hentai'
 @bot.command()
 async def sendhh(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("hentai")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
@@ -589,7 +589,7 @@ async def sendhh(ctx):
 # !sendfurry command for subreddit 'yiff'
 @bot.command()
 async def sendfurry(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("yiff")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
@@ -630,7 +630,7 @@ async def sendfurry(ctx):
 # !sendembed command for subreddit 'yurigif'     
 @bot.command()
 async def sendembed(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("yurigif")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
@@ -668,10 +668,10 @@ async def sendembed(ctx):
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
 
-# !sendembed command for subreddit 'nekogirls'
+# !sendneko command for subreddit 'nekogirls'
 @bot.command()
 async def sendneko(ctx):
-    if ctx.guild.id == 649901370526400522 or 595287360976060577:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("nekogirls")
         image_urls = []
         for submission in subreddit.hot(limit=1000):
