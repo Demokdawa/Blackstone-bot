@@ -10,6 +10,24 @@ from pygifsicle import gifsicle
 import os
 from gfycat.client import GfycatClient
 
+# Create reddit profile for crawling
+reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
+
+# Set the prefix and init the bot
+prefix = "!"
+bot = commands.Bot(command_prefix=prefix)
+print('[Init] Bot configuré !')
+
+# Remove the default !help command
+bot.remove_command('help')
+
+
+# Check if the bot is ready
+@bot.event
+async def on_ready():
+    print("[Init] Bot en ligne !")
+    await bot.change_presence(activity=discord.Game("lel"))
+
 
 def prepare_embed(random_image):
     embed = discord.Embed()
@@ -32,24 +50,6 @@ def prepare_embed(random_image):
         embed.set_image(url=gifed)
 
     return embed
-
-# Create reddit profile for crawling
-reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
-
-# Set the prefix and init the bot
-prefix = "!"
-bot = commands.Bot(command_prefix=prefix)
-print('[Init] Bot configuré !')
-
-# Remove the default !help command
-bot.remove_command('help')
-
-
-# Check if the bot is ready
-@bot.event
-async def on_ready():
-    print("[Init] Bot en ligne !")
-    await bot.change_presence(activity=discord.Game("lel"))
 
 
 # !sendmeme command for subreddit 'dankmemes'
@@ -625,7 +625,8 @@ async def sendfurry(ctx):
                 await ctx.message.delete()
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-            
+
+
 # !sendembed command for subreddit 'yurigif'     
 @bot.command()
 async def sendembed(ctx):
@@ -753,15 +754,15 @@ async def halp(ctx):
     embed.set_footer(text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image directement. ")
     await ctx.channel.send(embed=embed)
 
-#Rule34
-#ConfusedBoners
-#Hentai
-#Hentai_Gif
-#Yiff
-#SoftHentai
-#ecchi
-#CumHentai
-#nekogirls
-#HentaiVisualArts(achecker)
+# Rule34
+# ConfusedBoners
+# Hentai
+# Hentai_Gif
+# Yiff
+# SoftHentai
+# ecchi
+# CumHentai
+# nekogirls
+# HentaiVisualArts(achecker)
 
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
