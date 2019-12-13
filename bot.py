@@ -569,7 +569,7 @@ async def sendembed(ctx):
     image_urls = []
     for submission in subreddit.hot(limit=1000):
         if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
-        image_urls.append(submission.url)
+            image_urls.append(submission.url)
 
     print(str(len(image_urls)) + ' submissions found !')
     
