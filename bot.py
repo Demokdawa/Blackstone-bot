@@ -711,6 +711,49 @@ async def sendneko(ctx):
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
 
+# !sendneko command for subreddit 'NekoHentai'
+@bot.command()
+async def sendnekoh(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        subreddit = reddit.subreddit("NekoHentai")
+        image_urls = []
+        for submission in subreddit.hot(limit=1000):
+            if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
+                image_urls.append(submission.url)
+
+        print(str(len(image_urls)) + ' submissions found !')
+
+        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
+
+        print(random_image)
+
+        embed = prepare_embed(random_image)
+
+        img = await ctx.channel.send(embed=embed)
+
+        await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+        await img.add_reaction('\N{CROSS MARK}')
+
+        def check(reaction, user):
+            return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}',
+                                                                 '\N{CROSS MARK}'] and reaction.message.id == img.id
+
+        try:
+            reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+        except asyncio.TimeoutError:
+            await img.delete()
+            await ctx.message.delete()
+        else:
+
+            if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+                await img.clear_reactions()
+            else:
+                await img.delete()
+                await ctx.message.delete()
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
 # !react command for testing    
 @bot.command()
 async def react(ctx):
@@ -752,6 +795,7 @@ async def halp(ctx):
     embed.add_field(name="!sendyurigif", value="Je crois pas que.....", inline=False)
     embed.add_field(name="!sendnsfwarframe", value="Non, la c'est n'importe quoi !", inline=False)
     embed.add_field(name="!sendneko", value="😵", inline=False)
+    embed.add_field(name="!sendnekoh", value="😵", inline=False)
     embed.add_field(name="!sendhh", value="😵", inline=False)
     embed.set_footer(text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image directement. ")
     await ctx.channel.send(embed=embed)
