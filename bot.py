@@ -567,8 +567,7 @@ async def sendembed(ctx):
     subreddit = reddit.subreddit("yurigif")
     image_urls = []
     for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.gifv'):
-            image_urls.append(submission.url)
+        image_urls.append(submission.url)
 
     print(str(len(image_urls)) + 'submissions found !')
     
