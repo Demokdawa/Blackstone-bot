@@ -35,7 +35,7 @@ def prepare_embed(random_image):
     if random_image.endswith('.gif'):
         embed.set_image(url=random_image)
         
-    if 'gyfcat' in submission.url:
+    if 'gyfcat' in random_image:
         gyfcat_name = random_image.split(".com/")[1]
         client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
         resp = client.query_gfy(gyfcat_name)
