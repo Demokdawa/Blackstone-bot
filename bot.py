@@ -431,9 +431,10 @@ async def sendyuri(ctx):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 			
-    print(len(image_urls))
+    print(len(image_urls) + 'submissions found !')
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+    
     req.urlretrieve(random_image, 'tempDiscord.jpg')
     full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
 
@@ -515,7 +516,8 @@ async def sendyurigif(ctx):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
             image_urls.append(submission.url)
 
-    print(len(image_urls))
+    print(len(image_urls) + 'submissions found !')
+    
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
     if random_image.endswith('.gif'):
@@ -531,6 +533,64 @@ async def sendyurigif(ctx):
         file = discord.File(full_path)
         img = await ctx.channel.send(file=file)
         os.remove('tempDiscord.gif')
+        
+    if random_image.endswith('.jpg') or random_image.endswith('.png'):
+        req.urlretrieve(random_image, 'tempDiscord.jpg')
+        full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
+
+        file = discord.File(full_path)
+        img = await ctx.channel.send(file=file)
+        os.remove('tempDiscord.jpg')
+    
+    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+    await img.add_reaction('\N{CROSS MARK}')
+
+    def check(reaction, user):
+        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+    try: 
+        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+    except asyncio.TimeoutError:
+        await img.delete()
+        await ctx.message.delete()
+    else:
+        
+        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+            await img.clear_reactions()
+        else:
+            await img.delete()
+            await ctx.message.delete()
+            
+            
+# !sendembed command for subreddit 'yurigif'     
+@bot.command()
+async def sendembed(ctx):
+    subreddit = reddit.subreddit("yurigif")
+    image_urls = []
+    for submission in subreddit.hot(limit=1000):
+        image_urls.append(submission.url)
+
+    print(len(image_urls) + 'submissions found !')
+    
+    print(image_urls)
+    
+    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+    
+    if random_image.endswith('.gif'):
+        req.urlretrieve(random_image, 'tempDiscord.gif')
+        full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
+        
+        print(os.stat(full_path).st_size)
+        
+        gifsicle(sources="tempDiscord.gif", colors=256, options=["-O2", "--lossy=30", "-j4"])
+        
+        print(os.stat(full_path).st_size)
+
+        file = discord.File(full_path)
+        img = await ctx.channel.send(file=file)
+        os.remove('tempDiscord.gif')
+        
+    e = discord.Embed()
+    e.set_image(url="https://discordapp.com/assets/e4923594e694a21542a489471ecffa50.svg")
         
     if random_image.endswith('.jpg') or random_image.endswith('.png'):
         req.urlretrieve(random_image, 'tempDiscord.jpg')
