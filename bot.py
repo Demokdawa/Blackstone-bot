@@ -8,6 +8,7 @@ import time
 import asyncio
 from pygifsicle import gifsicle
 import os
+from gfycat.client import GfycatClient
 
 # Create reddit profile for crawling
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
@@ -584,8 +585,11 @@ async def sendembed(ctx):
     if random_image.endswith('.gif'):
         embed.set_image(url=random_image)
         
-    else:
-        gifed = random_image + '.gif'
+    else: 
+        gyfcat_name = random_name.split(".com/")[1]
+        client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
+        resp = client.query_gfy(gyfcat_name)
+        gifed = resp['gfyItem']['gifUrl']
         embed.set_image(url=gifed)
     
     img = await ctx.channel.send(embed=embed)
