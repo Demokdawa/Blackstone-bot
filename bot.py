@@ -575,12 +575,20 @@ async def sendembed(ctx):
     
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
-    var = os.path.splitext(random_image)[0]+'.gif'
+    embed = discord.Embed()
     
-    e = discord.Embed()
-    e.set_image(url=var)
+    if random_image.endswith('.gifv'):
+        gifed = os.path.splitext(random_image)[0]+'.gif'
+        embed.set_image(url=gifed)
+        
+    if random_image.endswith('.gif'):
+        embed.set_image(url=random_image)
+        
+    else:
+        gifed = random_image + '.gif'
+        embed.set_image(url=gifed)
     
-    img = await ctx.channel.send(embed=e)
+    img = await ctx.channel.send(embed=embed)
         
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
