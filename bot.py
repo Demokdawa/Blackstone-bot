@@ -433,7 +433,7 @@ async def sendyuri(ctx):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             image_urls.append(submission.url)
 			
-    print(len(image_urls) + 'submissions found !')
+    print(str(len(image_urls)) + ' submissions found !')
 
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
