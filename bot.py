@@ -497,37 +497,40 @@ async def sendnsfwarframe(ctx):
 # !sendyurigif command for subreddit 'yurigif'     
 @bot.command()
 async def sendyurigif(ctx):
-    subreddit = reddit.subreddit("yurigif")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
-            image_urls.append(submission.url)
+    if ctx.guild == 649901370526400522:
+        subreddit = reddit.subreddit("yurigif")
+        image_urls = []
+        for submission in subreddit.hot(limit=1000):
+            if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
+                image_urls.append(submission.url)
 
-    print(str(len(image_urls)) + ' submissions found !')
-    
-    random_image = image_urls[random.randint(0,len(image_urls) - 1)]
-    
-    embed = prepare_embed(random_image)
-    
-    img = await ctx.channel.send(embed=embed)
-    
-    await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-    await img.add_reaction('\N{CROSS MARK}')
-
-    def check(reaction, user):
-        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
-    try: 
-        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
-    except asyncio.TimeoutError:
-        await img.delete()
-        await ctx.message.delete()
-    else:
+        print(str(len(image_urls)) + ' submissions found !')
         
-        if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
-            await img.clear_reactions()
-        else:
+        random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+        
+        embed = prepare_embed(random_image)
+        
+        img = await ctx.channel.send(embed=embed)
+        
+        await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+        await img.add_reaction('\N{CROSS MARK}')
+
+        def check(reaction, user):
+            return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
+        try: 
+            reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+        except asyncio.TimeoutError:
             await img.delete()
             await ctx.message.delete()
+        else:
+            
+            if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
+                await img.clear_reactions()
+            else:
+                await img.delete()
+                await ctx.message.delete()
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
             
             
 # !sendembed command for subreddit 'yurigif'     
