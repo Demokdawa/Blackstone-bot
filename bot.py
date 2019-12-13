@@ -567,7 +567,8 @@ async def sendembed(ctx):
     subreddit = reddit.subreddit("yurigif")
     image_urls = []
     for submission in subreddit.hot(limit=1000):
-        image_urls.append(submission.url)
+        if submission.url.endswith('.gifv'):
+            image_urls.append(submission.url)
 
     print(str(len(image_urls)) + 'submissions found !')
     
@@ -575,31 +576,11 @@ async def sendembed(ctx):
     
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
     
-    if random_image.endswith('.gif'):
-        req.urlretrieve(random_image, 'tempDiscord.gif')
-        full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
-        
-        print(os.stat(full_path).st_size)
-        
-        gifsicle(sources="tempDiscord.gif", colors=256, options=["-O2", "--lossy=30", "-j4"])
-        
-        print(os.stat(full_path).st_size)
-
-        file = discord.File(full_path)
-        img = await ctx.channel.send(file=file)
-        os.remove('tempDiscord.gif')
-        
     e = discord.Embed()
-    e.set_image(url="https://discordapp.com/assets/e4923594e694a21542a489471ecffa50.svg")
-        
-    if random_image.endswith('.jpg') or random_image.endswith('.png'):
-        req.urlretrieve(random_image, 'tempDiscord.jpg')
-        full_path = os.path.join(os.getcwd(), 'tempDiscord.jpg')
-
-        file = discord.File(full_path)
-        img = await ctx.channel.send(file=file)
-        os.remove('tempDiscord.jpg')
+    e.set_image(url=random_image)
     
+    img = await ctx.channel.send(embed=e)
+        
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
 
