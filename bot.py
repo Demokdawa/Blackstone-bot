@@ -10,6 +10,29 @@ from pygifsicle import gifsicle
 import os
 from gfycat.client import GfycatClient
 
+
+def prepare_embed(random_image):
+    embed = discord.Embed()
+
+    if random_image.endswith('.jpg') or random_image.endswith('.png'):
+        embed.set_image(url=random_image)
+
+    if random_image.endswith('.gifv'):
+        gifed = os.path.splitext(random_image)[0] + '.gif'
+        embed.set_image(url=gifed)
+
+    if random_image.endswith('.gif'):
+        embed.set_image(url=random_image)
+
+    if 'gyfcat' in random_image:
+        gyfcat_name = random_image.split(".com/")[1]
+        client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
+        resp = client.query_gfy(gyfcat_name)
+        gifed = resp['gfyItem']['gifUrl']
+        embed.set_image(url=gifed)
+
+    return embed
+
 # Create reddit profile for crawling
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
@@ -20,30 +43,6 @@ print('[Init] Bot configuré !')
 
 # Remove the default !help command
 bot.remove_command('help')
-
-
-def prepare_embed(random_image):
-
-    embed = discord.Embed()
-    
-    if random_image.endswith('.jpg') or random_image.endswith('.png'):
-        embed.set_image(url=random_image)
-    
-    if random_image.endswith('.gifv'):
-        gifed = os.path.splitext(random_image)[0]+'.gif'
-        embed.set_image(url=gifed)
-        
-    if random_image.endswith('.gif'):
-        embed.set_image(url=random_image)
-        
-    if 'gyfcat' in random_image:
-        gyfcat_name = random_image.split(".com/")[1]
-        client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
-        resp = client.query_gfy(gyfcat_name)
-        gifed = resp['gfyItem']['gifUrl']
-        embed.set_image(url=gifed)
-        
-    return embed
 
 
 # Check if the bot is ready
