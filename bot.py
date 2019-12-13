@@ -572,9 +572,9 @@ async def sendembed(ctx):
 
     print(str(len(image_urls)) + 'submissions found !')
     
-    print(image_urls)
-    
     random_image = image_urls[random.randint(0,len(image_urls) - 1)]
+    
+    print(random_image)
     
     embed = discord.Embed()
     
