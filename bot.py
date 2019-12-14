@@ -3,7 +3,6 @@ import praw
 from discord.ext import commands
 import random
 import urllib.request as req
-import os
 import time
 import asyncio
 from pygifsicle import gifsicle
@@ -714,12 +713,21 @@ async def sendneko(ctx):
 # !sendneko command for subreddit 'NekoHentai'
 @bot.command()
 async def sendnekoh(ctx):
+
+    start_time_all = time.time()
+
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("NekoHentai")
         image_urls = []
+
+        start_time_subget = time.time()
+
         for submission in subreddit.hot(limit=1000):
             if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
                 image_urls.append(submission.url)
+
+        end_time_subget = time.time()
+        print("Get all subs execution time : {}".format(end_time_subget - start_time_subget))
 
         print(str(len(image_urls)) + ' submissions found !')
 
@@ -753,8 +761,11 @@ async def sendnekoh(ctx):
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
+    end_time_all = time.time()
+    print("Full command execution time : {}".format(end_time_all - start_time_all))
 
-# !react command for testing    
+
+# !react command for testing
 @bot.command()
 async def react(ctx):
     msg = await ctx.channel.send("test")
