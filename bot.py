@@ -550,9 +550,15 @@ async def sendhh(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("hentai")
         image_urls = []
+
+        start_time_subget = time.time()
+        
         for submission in subreddit.hot(limit=1000):
             if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
                 image_urls.append(submission.url)
+
+        end_time_subget = time.time()
+        print("Get all subs execution time : {}".format(end_time_subget - start_time_subget))
 
         print(str(len(image_urls)) + ' submissions found !')
 
@@ -713,9 +719,6 @@ async def sendneko(ctx):
 # !sendneko command for subreddit 'NekoHentai'
 @bot.command()
 async def sendnekoh(ctx):
-
-    start_time_all = time.time()
-
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         subreddit = reddit.subreddit("NekoHentai")
         image_urls = []
@@ -760,9 +763,6 @@ async def sendnekoh(ctx):
                 await ctx.message.delete()
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-
-    end_time_all = time.time()
-    print("Full command execution time : {}".format(end_time_all - start_time_all))
 
 
 # !react command for testing
