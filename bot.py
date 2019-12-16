@@ -28,7 +28,7 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("lel"))
 
 
-def prepare_embed(random_image):
+async def prepare_embed(random_image):
     embed = discord.Embed()
 
     if random_image.endswith('.jpg') or random_image.endswith('.png'):
@@ -51,11 +51,11 @@ def prepare_embed(random_image):
     return embed
 
 
-def check(reaction, user):
+async def check(reaction, user):
     return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
 
 
-def check_react(ctx, embed):
+async def check_react(ctx, embed):
     img = await ctx.channel.send(embed=embed)
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
