@@ -305,7 +305,7 @@ async def sendhh(ctx):
 
         start_time_subget = time.time()
 
-        for submission in subreddit.hot(limit=1000):
+        for submission in subreddit.hot(limit=100):
             if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url) or submission.url.endswith('.png') or submission.url.endswith('.jpg'):
                 image_urls.append(submission.url)
 
