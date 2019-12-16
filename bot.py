@@ -57,9 +57,9 @@ async def check_react(ctx, embed):
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
 
-    def check(reaction, user):
-        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}',
-                                                             '\N{CROSS MARK}'] and reaction.message.id == img.id
+    def check(react, discord_user):
+        return discord_user.bot is False and str(react.emoji) in ['\N{WHITE HEAVY CHECK MARK}',
+                                                             '\N{CROSS MARK}'] and react.message.id == img.id
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
