@@ -51,7 +51,7 @@ async def prepare_embed(random_image):
     return embed
 
 
-async def check(reaction, user):
+def check(reaction, user):
     return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
 
 
