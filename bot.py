@@ -51,15 +51,15 @@ def prepare_embed(random_image):
     return embed
 
 
-def check(reaction, user):
-    return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}', '\N{CROSS MARK}'] and reaction.message.id == img.id
-
-
 async def check_react(ctx, embed):
     img = await ctx.channel.send(embed=embed)
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
+
+    def check(reaction, user):
+        return user.bot is False and str(reaction.emoji) in ['\N{WHITE HEAVY CHECK MARK}',
+                                                             '\N{CROSS MARK}'] and reaction.message.id == img.id
 
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
