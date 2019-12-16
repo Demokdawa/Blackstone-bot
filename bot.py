@@ -88,7 +88,7 @@ async def sendmeme(ctx):
     
     embed = prepare_embed(random_image)
 
-    check_react(ctx, embed)
+    await check_react(ctx, embed)
     
 
 # !sendlewdmeme command for subreddit 'hentaidankmemes'
