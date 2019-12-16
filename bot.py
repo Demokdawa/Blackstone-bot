@@ -2,32 +2,29 @@ import discord
 import praw
 from discord.ext import commands
 import random
-import urllib.request as req
+# import urllib.request as req
 import time
 import asyncio
-from pygifsicle import gifsicle
+# from pygifsicle import gifsicle
 import os
 from gfycat.client import GfycatClient
 
-# Create reddit profile for crawling
+
+# Initialize ##################################################################################
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0',
                      user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
 # Set the prefix and init the bot
 prefix = "!"
 bot = commands.Bot(command_prefix=prefix)
-print('[Init] Bot configuré !')
 
 # Remove the default !help command
 bot.remove_command('help')
+print('[Init] Bot configuré !')
 
 
-# Check if the bot is ready
-@bot.event
-async def on_ready():
-    print("[Init] Bot en ligne !")
-    await bot.change_presence(activity=discord.Game("lel"))
-
+###############################################################################################
+# Functions ###################################################################################
 
 def prepare_embed(random_image):
     embed = discord.Embed()
@@ -76,8 +73,39 @@ async def check_react(ctx, embed):
             await ctx.message.delete()
 
 
+def update_cache():
+    pass
+
+###############################################################################################
+# Background Tasks ############################################################################
+
+
+async def task_update_cache(timeout):
+    await bot.wait_until_ready()
+    while not bot.is_closed():
+        try:
+            update_cache()
+            await asyncio.sleep(timeout)
+        except Exception as e:
+            print(str(e))
+            await asyncio.sleep(timeout)
+
+
+###############################################################################################
+# Custom Convertors ###########################################################################
+
+
+###############################################################################################
+# Actuals commands ############################################################################
+
+# Check if the bot is ready
+@bot.event
+async def on_ready():
+    print("[Init] Bot en ligne !")
+    await bot.change_presence(activity=discord.Game("lel"))
+
 # !sendmeme command for subreddit 'dankmemes'
-@bot.command(pass_context=True)
+@bot.command()
 async def sendmeme(ctx):
     subreddit = reddit.subreddit("dankmemes")
     image_urls = []
@@ -442,4 +470,5 @@ async def halp(ctx):
 # nekogirls
 # HentaiVisualArts(achecker)
 
+bot.loop.create_task(task_update_cache(7200))
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
