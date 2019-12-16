@@ -28,7 +28,7 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("lel"))
 
 
-async def prepare_embed(random_image):
+def prepare_embed(random_image):
     embed = discord.Embed()
 
     if random_image.endswith('.jpg') or random_image.endswith('.png'):
