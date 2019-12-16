@@ -10,7 +10,8 @@ import os
 from gfycat.client import GfycatClient
 
 # Create reddit profile for crawling
-reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0', user_agent='discord:blackstones (by /u/demo-meme-bot)')
+reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0',
+                     user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
 # Set the prefix and init the bot
 prefix = "!"
@@ -59,7 +60,8 @@ async def check_react(ctx, embed):
 
     def check(react, discord_user):
         return discord_user.bot is False and str(react.emoji) in ['\N{WHITE HEAVY CHECK MARK}',
-                                                             '\N{CROSS MARK}'] and react.message.id == img.id
+                                                                  '\N{CROSS MARK}'] and react.message.id == img.id
+
     try:
         reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
     except asyncio.TimeoutError:
@@ -86,7 +88,7 @@ async def sendmeme(ctx):
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
-    
+
 
 # !sendlewdmeme command for subreddit 'hentaidankmemes'
 @bot.command()
@@ -100,7 +102,7 @@ async def sendlewdmeme(ctx):
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
-        
+
 
 # !sendwfmeme command for subreddit 'memeframe'
 @bot.command()
@@ -114,7 +116,7 @@ async def sendwfmeme(ctx):
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
-        
+
 
 # !sendcursed command for subreddit 'cursedimages'
 @bot.command()
@@ -142,8 +144,8 @@ async def sendyum(ctx):
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
-  
-  
+
+
 # !sendearth command for subreddit 'EarthPorn'
 @bot.command()
 async def sendearth(ctx):
@@ -156,7 +158,7 @@ async def sendearth(ctx):
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
-        
+
 
 # !sendnocontext command for subreddit 'nocontextpics'        
 @bot.command()
@@ -170,8 +172,8 @@ async def sendnocontext(ctx):
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
-        
-    
+
+
 # !sendwtf command for subreddit 'WTF'     
 @bot.command()
 async def sendwtf(ctx):
@@ -184,8 +186,8 @@ async def sendwtf(ctx):
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
-        
-    
+
+
 # !sendaww command for subreddit 'aww'     
 @bot.command()
 async def sendaww(ctx):
@@ -198,7 +200,8 @@ async def sendaww(ctx):
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
-            
+
+
 # !sendsfwporn command for subreddit 'SFWporn'     
 @bot.command()
 async def sendsfwporn(ctx):
@@ -215,7 +218,8 @@ async def sendsfwporn(ctx):
 
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-            
+
+
 # !sendyurimeme command for subreddit 'yurimemes'     
 @bot.command()
 async def sendyurimeme(ctx):
@@ -232,8 +236,8 @@ async def sendyurimeme(ctx):
 
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-            
-            
+
+
 # !sendyuri command for subreddit 'yuri'     
 @bot.command()
 async def sendyuri(ctx):
@@ -243,7 +247,7 @@ async def sendyuri(ctx):
         for submission in subreddit.hot(limit=1000):
             if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
                 image_urls.append(submission.url)
-                
+
         print(str(len(image_urls)) + ' submissions found !')
 
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
@@ -252,8 +256,8 @@ async def sendyuri(ctx):
 
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-            
-            
+
+
 # !sendnsfwarframe command for subreddit 'NSFWarframe'     
 @bot.command()
 async def sendnsfwarframe(ctx):
@@ -270,8 +274,8 @@ async def sendnsfwarframe(ctx):
 
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-        
-        
+
+
 # !sendyurigif command for subreddit 'yurigif'     
 @bot.command()
 async def sendyurigif(ctx):
@@ -300,7 +304,7 @@ async def sendhh(ctx):
         image_urls = []
 
         start_time_subget = time.time()
-        
+
         for submission in subreddit.hot(limit=1000):
             if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
                 image_urls.append(submission.url)
@@ -399,10 +403,12 @@ async def sendnekoh(ctx):
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
+
 # !halp command for help
 @bot.command()
 async def halp(ctx):
-    embed=discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !", description="Je suis la pour vous aider 😄", color=0xd5d500)
+    embed = discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !",
+                          description="Je suis la pour vous aider 😄", color=0xd5d500)
     embed.add_field(name="!sendmeme", value="Envoie un dankmeme", inline=False)
     embed.add_field(name="!sendwfmeme", value="Envoie un meme Warframe", inline=False)
     embed.add_field(name="!sencursed", value="Envoie une image maudite", inline=False)
@@ -419,8 +425,12 @@ async def halp(ctx):
     embed.add_field(name="!sendneko", value="😵", inline=False)
     embed.add_field(name="!sendnekoh", value="😵", inline=False)
     embed.add_field(name="!sendhh", value="😵", inline=False)
-    embed.set_footer(text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image directement. ")
+    embed.set_footer(
+        text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
+             "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
+             "directement. ")
     await ctx.channel.send(embed=embed)
+
 
 # Rule34
 # ConfusedBoners
