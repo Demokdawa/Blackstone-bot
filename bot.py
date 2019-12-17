@@ -24,9 +24,20 @@ print('[Init] Bot configuré !')
 
 
 ###############################################################################################
+# Config ######################################################################################
+
+subreddit_list = ['dankmemes', 'hentaidankmemes', 'memeframe', 'cursedimages', 'FoodPorn', 'EarthPorn', 'nocontextpics',
+                  'WTF', 'aww', 'SFWporn', 'yurimemes', 'yuri', 'NSFWarframe', 'yurigif', 'hentai', 'yiff', 'nekogirls',
+                  'nekohentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners']
+
+big_dict = {}
+
+
+###############################################################################################
 # Functions ###################################################################################
 
 def prepare_embed(random_image):
+    print(random_image)
     embed = discord.Embed()
 
     if random_image.endswith('.jpg') or random_image.endswith('.png'):
@@ -39,7 +50,7 @@ def prepare_embed(random_image):
     if random_image.endswith('.gif'):
         embed.set_image(url=random_image)
 
-    if 'gyfcat' in random_image:
+    if 'gfycat' in random_image:
         gyfcat_name = random_image.split(".com/")[1]
         client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
         resp = client.query_gfy(gyfcat_name)
@@ -74,7 +85,14 @@ async def check_react(ctx, embed):
 
 
 def update_cache():
-    pass
+    global big_dict
+    for sub in subreddit_list:
+        temp_list = []
+        for submission in reddit.subreddit(sub).top(limit=1000):
+            temp_list.append(submission.url)
+        big_dict[sub] = temp_list
+    print('Cache update done !')
+
 
 ###############################################################################################
 # Background Tasks ############################################################################
@@ -107,12 +125,7 @@ async def on_ready():
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
 async def sendmeme(ctx):
-    subreddit = reddit.subreddit("dankmemes")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("dankmemes")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -121,12 +134,7 @@ async def sendmeme(ctx):
 # !sendlewdmeme command for subreddit 'hentaidankmemes'
 @bot.command()
 async def sendlewdmeme(ctx):
-    subreddit = reddit.subreddit("hentaidankmemes")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("hentaidankmemes")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -135,12 +143,7 @@ async def sendlewdmeme(ctx):
 # !sendwfmeme command for subreddit 'memeframe'
 @bot.command()
 async def sendwfmeme(ctx):
-    subreddit = reddit.subreddit("memeframe")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("memeframe")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -149,12 +152,7 @@ async def sendwfmeme(ctx):
 # !sendcursed command for subreddit 'cursedimages'
 @bot.command()
 async def sendcursed(ctx):
-    subreddit = reddit.subreddit("cursedimages")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("cursedimages")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -163,12 +161,7 @@ async def sendcursed(ctx):
 # !sendyum command for subreddit 'FoodPorn'
 @bot.command()
 async def sendyum(ctx):
-    subreddit = reddit.subreddit("FoodPorn")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("FoodPorn")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -177,12 +170,7 @@ async def sendyum(ctx):
 # !sendearth command for subreddit 'EarthPorn'
 @bot.command()
 async def sendearth(ctx):
-    subreddit = reddit.subreddit("EarthPorn")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("EarthPorn")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -191,12 +179,7 @@ async def sendearth(ctx):
 # !sendnocontext command for subreddit 'nocontextpics'        
 @bot.command()
 async def sendnocontext(ctx):
-    subreddit = reddit.subreddit("nocontextpics")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("nocontextpics")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -205,12 +188,7 @@ async def sendnocontext(ctx):
 # !sendwtf command for subreddit 'WTF'     
 @bot.command()
 async def sendwtf(ctx):
-    subreddit = reddit.subreddit("WTF")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("WTF")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -219,12 +197,7 @@ async def sendwtf(ctx):
 # !sendaww command for subreddit 'aww'     
 @bot.command()
 async def sendaww(ctx):
-    subreddit = reddit.subreddit("aww")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("aww")
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -234,12 +207,7 @@ async def sendaww(ctx):
 @bot.command()
 async def sendsfwporn(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("SFWporn")
-        image_urls = []
-        for submission in subreddit.hot(limit=1000):
-            if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-                image_urls.append(submission.url)
-
+        image_urls = big_dict.get("SFWporn")
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
         embed = prepare_embed(random_image)
         await check_react(ctx, embed)
@@ -252,12 +220,7 @@ async def sendsfwporn(ctx):
 @bot.command()
 async def sendyurimeme(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("yurimemes")
-        image_urls = []
-        for submission in subreddit.hot(limit=1000):
-            if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-                image_urls.append(submission.url)
-
+        image_urls = big_dict.get("yurimemes")
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
         embed = prepare_embed(random_image)
         await check_react(ctx, embed)
@@ -270,14 +233,8 @@ async def sendyurimeme(ctx):
 @bot.command()
 async def sendyuri(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("yuri")
-        image_urls = []
-        for submission in subreddit.hot(limit=1000):
-            if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
-                image_urls.append(submission.url)
-
+        image_urls = big_dict.get("yuri")
         print(str(len(image_urls)) + ' submissions found !')
-
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
         embed = prepare_embed(random_image)
         await check_react(ctx, embed)
@@ -290,12 +247,7 @@ async def sendyuri(ctx):
 @bot.command()
 async def sendnsfwarframe(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("NSFWarframe")
-        image_urls = []
-        for submission in subreddit.hot(limit=1000):
-            if submission.url.endswith('.jpg') or submission.url.endswith('.png') or submission.url.endswith('.gif'):
-                image_urls.append(submission.url)
-
+        image_urls = big_dict.get("NSFWarframe")
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
         embed = prepare_embed(random_image)
         await check_react(ctx, embed)
@@ -308,18 +260,11 @@ async def sendnsfwarframe(ctx):
 @bot.command()
 async def sendyurigif(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("yurigif")
-        image_urls = []
-        for submission in subreddit.hot(limit=1000):
-            if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
-                image_urls.append(submission.url)
-
+        image_urls = big_dict.get("yurigif")
         print(str(len(image_urls)) + ' submissions found !')
-
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
         embed = prepare_embed(random_image)
         await check_react(ctx, embed)
-
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
@@ -328,24 +273,11 @@ async def sendyurigif(ctx):
 @bot.command()
 async def sendhh(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("hentai")
-        image_urls = []
-
-        start_time_subget = time.time()
-
-        for submission in subreddit.hot(limit=100):
-            if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url) or submission.url.endswith('.png') or submission.url.endswith('.jpg'):
-                image_urls.append(submission.url)
-
-        end_time_subget = time.time()
-        print("Get all subs execution time : {}".format(end_time_subget - start_time_subget))
-
+        image_urls = big_dict.get("hentai")
         print(str(len(image_urls)) + ' submissions found !')
-
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
         embed = prepare_embed(random_image)
         await check_react(ctx, embed)
-
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
@@ -354,38 +286,11 @@ async def sendhh(ctx):
 @bot.command()
 async def sendfurry(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("yiff")
-        image_urls = []
-        for submission in subreddit.hot(limit=1000):
-            if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
-                image_urls.append(submission.url)
-
+        image_urls = big_dict.get("yiff")
         print(str(len(image_urls)) + ' submissions found !')
-
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
         embed = prepare_embed(random_image)
         await check_react(ctx, embed)
-
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-
-
-# !sendembed command for subreddit 'yurigif'     
-@bot.command()
-async def sendembed(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("yurigif")
-        image_urls = []
-        for submission in subreddit.hot(limit=1000):
-            if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
-                image_urls.append(submission.url)
-
-        print(str(len(image_urls)) + ' submissions found !')
-
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
-        await check_react(ctx, embed)
-
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
@@ -393,14 +298,8 @@ async def sendembed(ctx):
 # !sendneko command for subreddit 'nekogirls'
 @bot.command()
 async def sendneko(ctx):
-    subreddit = reddit.subreddit("nekogirls")
-    image_urls = []
-    for submission in subreddit.hot(limit=1000):
-        if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
-            image_urls.append(submission.url)
-
+    image_urls = big_dict.get("nekogirls")
     print(str(len(image_urls)) + ' submissions found !')
-
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     embed = prepare_embed(random_image)
     await check_react(ctx, embed)
@@ -410,24 +309,50 @@ async def sendneko(ctx):
 @bot.command()
 async def sendnekoh(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        subreddit = reddit.subreddit("NekoHentai")
-        image_urls = []
-
-        start_time_subget = time.time()
-
-        for submission in subreddit.hot(limit=1000):
-            if submission.url.endswith('.gifv') or submission.url.endswith('.gif') or ('gyfcat' in submission.url):
-                image_urls.append(submission.url)
-
-        end_time_subget = time.time()
-        print("Get all subs execution time : {}".format(end_time_subget - start_time_subget))
-
+        image_urls = big_dict.get("NekoHentai")
         print(str(len(image_urls)) + ' submissions found !')
-
         random_image = image_urls[random.randint(0, len(image_urls) - 1)]
         embed = prepare_embed(random_image)
         await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
+
+# !sendconfused command for subreddit 'ConfusedBoners'
+@bot.command()
+async def sendconfused(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        image_urls = big_dict.get("ConfusedBoners")
+        print(str(len(image_urls)) + ' submissions found !')
+        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
+        embed = prepare_embed(random_image)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendrule command for subreddit 'Rule34'
+@bot.command()
+async def sendrule(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        image_urls = big_dict.get("Rule34")
+        print(str(len(image_urls)) + ' submissions found !')
+        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
+        embed = prepare_embed(random_image)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendhhgif command for subreddit 'Hentai_Gif'
+@bot.command()
+async def sendhhgif(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        image_urls = big_dict.get("Hentai_Gif")
+        print(str(len(image_urls)) + ' submissions found !')
+        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
+        embed = prepare_embed(random_image)
+        await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
@@ -460,14 +385,9 @@ async def halp(ctx):
     await ctx.channel.send(embed=embed)
 
 
-# Rule34
-# ConfusedBoners
-# Hentai_Gif
-# Yiff
 # SoftHentai
 # ecchi
 # CumHentai
-# nekogirls
 # HentaiVisualArts(achecker)
 
 bot.loop.create_task(task_update_cache(7200))
