@@ -27,7 +27,7 @@ print('[Init] Bot configuré !')
 subreddit_list = ['dankmemes', 'hentaidankmemes', 'memeframe', 'cursedimages', 'FoodPorn', 'EarthPorn', 'nocontextpics',
                   'WTF', 'aww', 'SFWporn', 'yurimemes', 'yuri', 'NSFWarframe', 'yurigif', 'hentai', 'yiff', 'nekogirls',
                   'NekoHentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners', 'ecchi', 'Artistic_ecchi', 'Artistic_Hentai',
-                  'ShitPostCrusaders']
+                  'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'HentaiVisualArts', 'PerfectTiming']
 
 big_dict = {}
 
@@ -431,6 +431,57 @@ async def sendjojomeme(ctx):
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
 
+# !sendpokeh command for subreddit 'PokePorn'
+@bot.command()
+async def sendpokeh(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("PokePorn")
+        while data is False:
+            data = get_image("PokePorn")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendsoftyaoi command for subreddit 'wholesomeyaoi'
+@bot.command()
+async def sendsoftyaoi(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("wholesomeyaoi")
+        while data is False:
+            data = get_image("wholesomeyaoi")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendlewdart command for subreddit 'HentaiVisualArts'
+@bot.command()
+async def sendlewdart(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("HentaiVisualArts")
+        while data is False:
+            data = get_image("HentaiVisualArts")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendtiming command for subreddit 'PerfectTiming'
+@bot.command()
+async def sendtiming(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("PerfectTiming")
+        while data is False:
+            data = get_image("PerfectTiming")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
 # !halp command for help
 @bot.command()
 async def halp(ctx):
@@ -444,14 +495,22 @@ async def halp(ctx):
     embed.add_field(name="!sendnocontext", value="Envoie une image sans contexte", inline=False)
     embed.add_field(name="!sendwtf", value="Envoie une image WTF", inline=False)
     embed.add_field(name="!sendaww", value="Envoie des photos d'animaux mignons", inline=False)
-    embed.add_field(name="!sendsfwporn", value="Envoie des petits dessins tout mignons !", inline=False)
-    embed.add_field(name="!sendyurimeme", value="Euhhhhhhhhh.......", inline=False)
-    embed.add_field(name="!sendyuri", value="Mais.........", inline=False)
-    embed.add_field(name="!sendyurigif", value="Je crois pas que.....", inline=False)
-    embed.add_field(name="!sendnsfwarframe", value="Non, la c'est n'importe quoi !", inline=False)
-    embed.add_field(name="!sendneko", value="😵", inline=False)
-    embed.add_field(name="!sendnekoh", value="😵", inline=False)
-    embed.add_field(name="!sendhh", value="😵", inline=False)
+    embed.add_field(name="!sendjojomeme", value="Attention aux spoilers !", inline=False)
+    embed.add_field(name="!sendneko", value="Envoie des nekos toutes mimi !", inline=False)
+    embed.add_field(name="!sendsfwporn", value="🔞", inline=False)
+    embed.add_field(name="!sendyuri", value="🔞", inline=False)
+    embed.add_field(name="!sendyurigif", value="🔞", inline=False)
+    embed.add_field(name="!sendyurimeme", value="🔞", inline=False)
+    embed.add_field(name="!sendnsfwarframe", value="🔞", inline=False)
+    embed.add_field(name="!sendnekoh", value="🔞", inline=False)
+    embed.add_field(name="!sendhh", value="🔞", inline=False)
+    embed.add_field(name="!sendhhart", value="🔞", inline=False)
+    embed.add_field(name="!sendhhgif", value="🔞", inline=False)
+    embed.add_field(name="!sendrule", value="🔞", inline=False)
+    embed.add_field(name="!sendconfused", value="🔞", inline=False)
+    embed.add_field(name="!sendecchi", value="🔞", inline=False)
+    embed.add_field(name="!sendecchiart", value="🔞", inline=False)
+    embed.add_field(name="!sendfurry", value="🔞", inline=False)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
              "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
@@ -460,8 +519,6 @@ async def halp(ctx):
 
 
 # CumHentai
-# HentaiVisualArts
-
 
 bot.loop.create_task(task_update_cache(43200))
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
