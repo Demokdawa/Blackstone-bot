@@ -2,10 +2,8 @@ import discord
 import praw
 from discord.ext import commands
 import random
-# import urllib.request as req
 import time
 import asyncio
-# from pygifsicle import gifsicle
 import os
 from gfycat.client import GfycatClient
 
@@ -28,7 +26,8 @@ print('[Init] Bot configuré !')
 
 subreddit_list = ['dankmemes', 'hentaidankmemes', 'memeframe', 'cursedimages', 'FoodPorn', 'EarthPorn', 'nocontextpics',
                   'WTF', 'aww', 'SFWporn', 'yurimemes', 'yuri', 'NSFWarframe', 'yurigif', 'hentai', 'yiff', 'nekogirls',
-                  'nekohentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners']
+                  'nekohentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners', 'ecchi', 'Artistic_ecchi', 'Artistic_Hentai',
+                  'ShitPostCrusaders']
 
 big_dict = {}
 
@@ -36,28 +35,39 @@ big_dict = {}
 ###############################################################################################
 # Functions ###################################################################################
 
-def prepare_embed(random_image):
-    print(random_image)
+def prepare_embed(data):
+
     embed = discord.Embed()
+    embed.set_image(url=data)
+
+    return embed
+
+
+def get_image(subreddit):
+
+    image_urls = big_dict.get(subreddit)
+    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
+    print(random_image)
 
     if random_image.endswith('.jpg') or random_image.endswith('.png'):
-        embed.set_image(url=random_image)
+        return random_image
 
     if random_image.endswith('.gifv'):
         gifed = os.path.splitext(random_image)[0] + '.gif'
-        embed.set_image(url=gifed)
+        return gifed
 
     if random_image.endswith('.gif'):
-        embed.set_image(url=random_image)
+        return random_image
 
     if 'gfycat' in random_image:
         gyfcat_name = random_image.split(".com/")[1]
         client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
         resp = client.query_gfy(gyfcat_name)
         gifed = resp['gfyItem']['gifUrl']
-        embed.set_image(url=gifed)
+        return gifed
 
-    return embed
+    else:
+        return False
 
 
 async def check_react(ctx, embed):
@@ -125,81 +135,90 @@ async def on_ready():
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
 async def sendmeme(ctx):
-    image_urls = big_dict.get("dankmemes")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("dankmemes")
+    while data is False:
+        data = get_image("dankmemes")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
 # !sendlewdmeme command for subreddit 'hentaidankmemes'
 @bot.command()
 async def sendlewdmeme(ctx):
-    image_urls = big_dict.get("hentaidankmemes")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("hentaidankmemes")
+    while data is False:
+        data = get_image("hentaidankmemes")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
 # !sendwfmeme command for subreddit 'memeframe'
 @bot.command()
 async def sendwfmeme(ctx):
-    image_urls = big_dict.get("memeframe")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("memeframe")
+    while data is False:
+        data = get_image("memeframe")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
 # !sendcursed command for subreddit 'cursedimages'
 @bot.command()
 async def sendcursed(ctx):
-    image_urls = big_dict.get("cursedimages")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("cursedimages")
+    while data is False:
+        data = get_image("crusedimages")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
 # !sendyum command for subreddit 'FoodPorn'
 @bot.command()
 async def sendyum(ctx):
-    image_urls = big_dict.get("FoodPorn")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("FoodPorn")
+    while data is False:
+        data = get_image("FoodPorn")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
 # !sendearth command for subreddit 'EarthPorn'
 @bot.command()
 async def sendearth(ctx):
-    image_urls = big_dict.get("EarthPorn")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("EarthPorn")
+    while data is False:
+        data = get_image("EarthPorn")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
 # !sendnocontext command for subreddit 'nocontextpics'        
 @bot.command()
 async def sendnocontext(ctx):
-    image_urls = big_dict.get("nocontextpics")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("nocontextpics")
+    while data is False:
+        data = get_image("nocontextpics")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
 # !sendwtf command for subreddit 'WTF'     
 @bot.command()
 async def sendwtf(ctx):
-    image_urls = big_dict.get("WTF")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("WTF")
+    while data is False:
+        data = get_image("WTF")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
 # !sendaww command for subreddit 'aww'     
 @bot.command()
 async def sendaww(ctx):
-    image_urls = big_dict.get("aww")
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("aww")
+    while data is False:
+        data = get_image("aww")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
@@ -207,9 +226,10 @@ async def sendaww(ctx):
 @bot.command()
 async def sendsfwporn(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("SFWporn")
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("SFWporn")
+        while data is False:
+            data = get_image("SFWporn")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
 
     else:
@@ -220,9 +240,10 @@ async def sendsfwporn(ctx):
 @bot.command()
 async def sendyurimeme(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("yurimemes")
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("yurimemes")
+        while data is False:
+            data = get_image("yurimemes")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
 
     else:
@@ -233,10 +254,10 @@ async def sendyurimeme(ctx):
 @bot.command()
 async def sendyuri(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("yuri")
-        print(str(len(image_urls)) + ' submissions found !')
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("yuri")
+        while data is False:
+            data = get_image("yuri")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
 
     else:
@@ -247,9 +268,10 @@ async def sendyuri(ctx):
 @bot.command()
 async def sendnsfwarframe(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("NSFWarframe")
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("NSFWarframe")
+        while data is False:
+            data = get_image("NSFWarframe")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
 
     else:
@@ -260,10 +282,10 @@ async def sendnsfwarframe(ctx):
 @bot.command()
 async def sendyurigif(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("yurigif")
-        print(str(len(image_urls)) + ' submissions found !')
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("yurigif")
+        while data is False:
+            data = get_image("yurigif")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
@@ -273,10 +295,10 @@ async def sendyurigif(ctx):
 @bot.command()
 async def sendhh(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("hentai")
-        print(str(len(image_urls)) + ' submissions found !')
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("hentai")
+        while data is False:
+            data = get_image("hentai")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
@@ -286,10 +308,10 @@ async def sendhh(ctx):
 @bot.command()
 async def sendfurry(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("yiff")
-        print(str(len(image_urls)) + ' submissions found !')
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("yiff")
+        while data is False:
+            data = get_image("yiff")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
@@ -298,10 +320,10 @@ async def sendfurry(ctx):
 # !sendneko command for subreddit 'nekogirls'
 @bot.command()
 async def sendneko(ctx):
-    image_urls = big_dict.get("nekogirls")
-    print(str(len(image_urls)) + ' submissions found !')
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    embed = prepare_embed(random_image)
+    data = get_image("nekogirls")
+    while data is False:
+        data = get_image("nekogirls")
+    embed = prepare_embed(data)
     await check_react(ctx, embed)
 
 
@@ -309,10 +331,10 @@ async def sendneko(ctx):
 @bot.command()
 async def sendnekoh(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("NekoHentai")
-        print(str(len(image_urls)) + ' submissions found !')
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("NekoHentai")
+        while data is False:
+            data = get_image("NekoHentai")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
@@ -322,10 +344,10 @@ async def sendnekoh(ctx):
 @bot.command()
 async def sendconfused(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("ConfusedBoners")
-        print(str(len(image_urls)) + ' submissions found !')
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("ConfusedBoners")
+        while data is False:
+            data = get_image("ConfusedBoners")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
@@ -335,10 +357,10 @@ async def sendconfused(ctx):
 @bot.command()
 async def sendrule(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("Rule34")
-        print(str(len(image_urls)) + ' submissions found !')
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("Rule34")
+        while data is False:
+            data = get_image("Rule34")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
@@ -348,10 +370,62 @@ async def sendrule(ctx):
 @bot.command()
 async def sendhhgif(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        image_urls = big_dict.get("Hentai_Gif")
-        print(str(len(image_urls)) + ' submissions found !')
-        random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-        embed = prepare_embed(random_image)
+        data = get_image("Hentai_Gif")
+        while data is False:
+            data = get_image("Hentai_Gif")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendecchi command for subreddit 'ecchi'
+@bot.command()
+async def sendecchi(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("ecchi")
+        while data is False:
+            data = get_image("ecchi")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendecchiart command for subreddit 'Artistic_ecchi'
+@bot.command()
+async def sendecchiart(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("Artistic_ecchi")
+        while data is False:
+            data = get_image("Artistic_ecchi")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendhhart command for subreddit 'Artistic_Hentai'
+@bot.command()
+async def sendhhart(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("Artistic_Hentai")
+        while data is False:
+            data = get_image("Artistic_Hentai")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendhhart command for subreddit 'Artistic_Hentai'
+@bot.command()
+async def sendjojomeme(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("ShitPostCrusaders")
+        while data is False:
+            data = get_image("ShitPostCrusaders")
+        embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
@@ -385,10 +459,9 @@ async def halp(ctx):
     await ctx.channel.send(embed=embed)
 
 
-# SoftHentai
-# ecchi
 # CumHentai
-# HentaiVisualArts(achecker)
+# HentaiVisualArts
 
-bot.loop.create_task(task_update_cache(7200))
+
+bot.loop.create_task(task_update_cache(43200))
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
