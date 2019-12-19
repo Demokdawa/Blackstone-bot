@@ -1,6 +1,6 @@
 import discord
 import praw
-from discord.ext import commands
+from discord.ext import tasks, commands
 import random
 import time
 import asyncio
@@ -95,19 +95,21 @@ async def check_react(ctx, embed):
             await ctx.message.delete()
 
 
-async def test():
+@tasks.loop(seconds=180)
+async def update_cache():
+    global big_dict
     async with aiohttp.ClientSession() as cs:
         for sub in subreddit_list:
+            temp_list = []
             async with cs.get('https://api.pushshift.io/reddit/search/submission/?subreddit={}&metadata=true&size=1000'.format(sub)) as r:
                 res = await r.json()
                 for element in res['data']:
-                    print(element['url'])
+                    temp_list.append(element['url'])
+            big_dict[sub] = temp_list
+    print('Cache update done !')
 
-loop = asyncio. get_event_loop()
-loop. run_until_complete(test())
 
-
-def update_cache():
+def update_cache_old():
     global big_dict
     for sub in subreddit_list:
         temp_list = []
@@ -144,6 +146,7 @@ async def task_update_cache(timeout):
 async def on_ready():
     print("[Init] Bot en ligne !")
     await bot.change_presence(activity=discord.Game("lel"))
+
 
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
@@ -556,6 +559,6 @@ async def halp(ctx):
 # need : sub de femdom
 # need : sub titsagainsttits
 
-
-bot.loop.create_task(task_update_cache(43200))
+update_cache.start()
+# bot.loop.create_task(task_update_cache(43200))
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
