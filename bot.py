@@ -6,6 +6,7 @@ import time
 import asyncio
 import os
 from gfycat.client import GfycatClient
+import aiohttp
 
 
 # Initialize ##################################################################################
@@ -27,7 +28,7 @@ print('[Init] Bot configuré !')
 subreddit_list = ['dankmemes', 'hentaidankmemes', 'memeframe', 'cursedimages', 'FoodPorn', 'EarthPorn', 'nocontextpics',
                   'WTF', 'aww', 'SFWporn', 'yurimemes', 'yuri', 'NSFWarframe', 'yurigif', 'hentai', 'yiff', 'nekogirls',
                   'NekoHentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners', 'ecchi', 'Artistic_ecchi', 'Artistic_Hentai',
-                  'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'HentaiVisualArts', 'PerfectTiming']
+                  'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'HentaiVisualArts', 'PerfectTiming', 'Creepy']
 
 big_dict = {}
 
@@ -92,6 +93,18 @@ async def check_react(ctx, embed):
         else:
             await img.delete()
             await ctx.message.delete()
+
+
+async def test():
+    async with aiohttp.ClientSession() as cs:
+        for sub in subreddit_list:
+            async with cs.get('https://api.pushshift.io/reddit/search/submission/?subreddit={}&metadata=true&size=1000'.format(sub)) as r:
+                res = await r.json()
+                for element in res['data']:
+                    print(element['url'])
+
+loop = asyncio. get_event_loop()
+loop. run_until_complete(test())
 
 
 def update_cache():
@@ -482,6 +495,20 @@ async def sendtiming(ctx):
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
+
+# !sendcreepy command for subreddit 'Creepy'
+@bot.command()
+async def sendcreepy(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("Creepy")
+        while data is False:
+            data = get_image("Creepy")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
 # !halp command for help
 @bot.command()
 async def halp(ctx):
@@ -519,6 +546,16 @@ async def halp(ctx):
 
 
 # CumHentai
+# AnimatedPorn
+# Rule34lol
+# Mariorule34
+# Tentai
+# Sukebei
+# Paizuri
+# hentaifemdom (a voir)
+# need : sub de femdom
+# need : sub titsagainsttits
+
 
 bot.loop.create_task(task_update_cache(43200))
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
