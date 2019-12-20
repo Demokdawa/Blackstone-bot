@@ -2,11 +2,11 @@ import discord
 import praw
 from discord.ext import tasks, commands
 import random
-import time
 import asyncio
 import os
 from gfycat.client import GfycatClient
 import aiohttp
+import functools
 
 
 # Initialize ##################################################################################
@@ -32,9 +32,13 @@ subreddit_list = ['dankmemes', 'hentaidankmemes', 'memeframe', 'cursedimages', '
 
 big_dict = {}
 
+rdy = 0
+
+message_check = ['sendmeme', 'sendwtf']
 
 ###############################################################################################
 # Functions ###################################################################################
+
 
 def prepare_embed(data):
 
@@ -95,43 +99,29 @@ async def check_react(ctx, embed):
             await ctx.message.delete()
 
 
-@tasks.loop(seconds=180)
-async def update_cache():
+def sync_update_cache():
     global big_dict
-    async with aiohttp.ClientSession() as cs:
-        for sub in subreddit_list:
-            temp_list = []
-            async with cs.get('https://api.pushshift.io/reddit/search/submission/?subreddit={}&metadata=true&size=1000'.format(sub)) as r:
-                res = await r.json()
-                for element in res['data']:
-                    temp_list.append(element['url'])
-            big_dict[sub] = temp_list
-    print('Cache update done !')
-
-
-def update_cache_old():
-    global big_dict
+    global rdy
     for sub in subreddit_list:
         temp_list = []
         for submission in reddit.subreddit(sub).top(limit=1000):
             temp_list.append(submission.url)
         big_dict[sub] = temp_list
     print('Cache update done !')
+    rdy = 1
 
 
-###############################################################################################
-# Background Tasks ############################################################################
+@tasks.loop(seconds=180)
+async def update_cache():
+    thing = functools.partial(sync_update_cache)
+    await bot.loop.run_in_executor(None, thing)
 
 
-async def task_update_cache(timeout):
-    await bot.wait_until_ready()
-    while not bot.is_closed():
-        try:
-            update_cache()
-            await asyncio.sleep(timeout)
-        except Exception as e:
-            print(str(e))
-            await asyncio.sleep(timeout)
+def check_if_bot_rdy(ctx):
+    if rdy == 1:
+        return True
+    else:
+        return False
 
 
 ###############################################################################################
@@ -150,6 +140,7 @@ async def on_ready():
 
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
+@commands.check(check_if_bot_rdy)
 async def sendmeme(ctx):
     data = get_image("dankmemes")
     while data is False:
@@ -560,5 +551,4 @@ async def halp(ctx):
 # need : sub titsagainsttits
 
 update_cache.start()
-# bot.loop.create_task(task_update_cache(43200))
 bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
