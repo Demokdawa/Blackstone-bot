@@ -27,9 +27,10 @@ print('[Init] Bot configuré !')
 subreddit_list = ['dankmemes', 'hentaidankmemes', 'memeframe', 'cursedimages', 'FoodPorn', 'EarthPorn', 'nocontextpics',
                   'WTF', 'aww', 'SFWporn', 'yurimemes', 'yuri', 'NSFWarframe', 'yurigif', 'hentai', 'yiff', 'nekogirls',
                   'NekoHentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners', 'ecchi', 'Artistic_ecchi', 'Artistic_Hentai',
-                  'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'PerfectTiming', 'Creepy', 'HentaiVisualArts']
+                  'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'PerfectTiming', 'Creepy', 'HentaiVisualArts',
+                  'Rule34lol', 'Sukebei']
 
-subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts']
+subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
 
 big_dict = {}
 
@@ -168,7 +169,6 @@ async def on_command_error(ctx, message):
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
 @check_if_bot_rdy()
-@check_bot_channel()
 async def sendmeme(ctx):
     data = get_image("dankmemes")
     while data is False:
@@ -268,103 +268,85 @@ async def sendaww(ctx):
 # !sendsfwporn command for subreddit 'SFWporn'     
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendsfwporn(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("SFWporn")
+    while data is False:
         data = get_image("SFWporn")
-        while data is False:
-            data = get_image("SFWporn")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendyurimeme command for subreddit 'yurimemes'     
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendyurimeme(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("yurimemes")
+    while data is False:
         data = get_image("yurimemes")
-        while data is False:
-            data = get_image("yurimemes")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendyuri command for subreddit 'yuri'     
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendyuri(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("yuri")
+    while data is False:
         data = get_image("yuri")
-        while data is False:
-            data = get_image("yuri")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendnsfwarframe command for subreddit 'NSFWarframe'     
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendnsfwarframe(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("NSFWarframe")
+    while data is False:
         data = get_image("NSFWarframe")
-        while data is False:
-            data = get_image("NSFWarframe")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendyurigif command for subreddit 'yurigif'     
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendyurigif(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("yurigif")
+    while data is False:
         data = get_image("yurigif")
-        while data is False:
-            data = get_image("yurigif")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendhh command for subreddit 'hentai'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendhh(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("hentai")
+    while data is False:
         data = get_image("hentai")
-        while data is False:
-            data = get_image("hentai")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendfurry command for subreddit 'yiff'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendfurry(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("yiff")
+    while data is False:
         data = get_image("yiff")
-        while data is False:
-            data = get_image("yiff")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendneko command for subreddit 'nekogirls'
@@ -381,155 +363,144 @@ async def sendneko(ctx):
 # !sendneko command for subreddit 'NekoHentai'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendnekoh(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("NekoHentai")
+    while data is False:
         data = get_image("NekoHentai")
-        while data is False:
-            data = get_image("NekoHentai")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendconfused command for subreddit 'ConfusedBoners'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendconfused(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("ConfusedBoners")
+    while data is False:
         data = get_image("ConfusedBoners")
-        while data is False:
-            data = get_image("ConfusedBoners")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 # !sendrule command for subreddit 'Rule34'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendrule(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("Rule34")
+    while data is False:
         data = get_image("Rule34")
-        while data is False:
-            data = get_image("Rule34")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendhhgif command for subreddit 'Hentai_Gif'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendhhgif(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("Hentai_Gif")
+    while data is False:
         data = get_image("Hentai_Gif")
-        while data is False:
-            data = get_image("Hentai_Gif")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendecchi command for subreddit 'ecchi'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendecchi(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("ecchi")
+    while data is False:
         data = get_image("ecchi")
-        while data is False:
-            data = get_image("ecchi")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendjojomeme command for subreddit 'ShitPostCrusaders'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendjojomeme(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("ShitPostCrusaders")
+    while data is False:
         data = get_image("ShitPostCrusaders")
-        while data is False:
-            data = get_image("ShitPostCrusaders")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendpokeh command for subreddit 'PokePorn'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendpokeh(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("PokePorn")
+    while data is False:
         data = get_image("PokePorn")
-        while data is False:
-            data = get_image("PokePorn")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendsoftyaoi command for subreddit 'wholesomeyaoi'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendsoftyaoi(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("wholesomeyaoi")
+    while data is False:
         data = get_image("wholesomeyaoi")
-        while data is False:
-            data = get_image("wholesomeyaoi")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendtiming command for subreddit 'PerfectTiming'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendtiming(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("PerfectTiming")
+    while data is False:
         data = get_image("PerfectTiming")
-        while data is False:
-            data = get_image("PerfectTiming")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendcreepy command for subreddit 'Creepy'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendcreepy(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("Creepy")
+    while data is False:
         data = get_image("Creepy")
-        while data is False:
-            data = get_image("Creepy")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 
 # !sendhart command for subreddit group Artistic_ecchi + Artistic_Hentai + HentaiVisualArts'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendhart(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+    data = get_image("hart")
+    while data is False:
         data = get_image("hart")
-        while data is False:
-            data = get_image("hart")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
+
+
+# !sendhlol command for subreddit 'Rule34lol'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendhlol(ctx):
+    data = get_image("Rule34lol")
+    while data is False:
+        data = get_image("Rule34lol")
+    embed = prepare_embed(data)
+    await check_react(ctx, embed)
 
 # !sup to get status of the bot
 @bot.command()
@@ -562,12 +533,11 @@ async def halp(ctx):
     embed.add_field(name="!sendnsfwarframe", value="🔞", inline=False)
     embed.add_field(name="!sendnekoh", value="🔞", inline=False)
     embed.add_field(name="!sendhh", value="🔞", inline=False)
-    embed.add_field(name="!sendhhart", value="🔞", inline=False)
+    embed.add_field(name="!sendhart", value="🔞", inline=False)
     embed.add_field(name="!sendhhgif", value="🔞", inline=False)
     embed.add_field(name="!sendrule", value="🔞", inline=False)
     embed.add_field(name="!sendconfused", value="🔞", inline=False)
     embed.add_field(name="!sendecchi", value="🔞", inline=False)
-    embed.add_field(name="!sendecchiart", value="🔞", inline=False)
     embed.add_field(name="!sendfurry", value="🔞", inline=False)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
@@ -578,10 +548,8 @@ async def halp(ctx):
 
 # CumHentai
 # AnimatedPorn
-# Rule34lol
 # Mariorule34
 # Tentai
-# Sukebei
 # Paizuri
 # hentaifemdom (a voir)
 # need : sub de femdom
