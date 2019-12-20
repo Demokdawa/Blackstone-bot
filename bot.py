@@ -158,6 +158,7 @@ async def sendmeme(ctx):
 
 # !sendlewdmeme command for subreddit 'hentaidankmemes'
 @bot.command()
+@check_if_bot_rdy()
 async def sendlewdmeme(ctx):
     data = get_image("hentaidankmemes")
     while data is False:
@@ -168,6 +169,7 @@ async def sendlewdmeme(ctx):
 
 # !sendwfmeme command for subreddit 'memeframe'
 @bot.command()
+@check_if_bot_rdy()
 async def sendwfmeme(ctx):
     data = get_image("memeframe")
     while data is False:
@@ -178,6 +180,7 @@ async def sendwfmeme(ctx):
 
 # !sendcursed command for subreddit 'cursedimages'
 @bot.command()
+@check_if_bot_rdy()
 async def sendcursed(ctx):
     data = get_image("cursedimages")
     while data is False:
@@ -188,6 +191,7 @@ async def sendcursed(ctx):
 
 # !sendyum command for subreddit 'FoodPorn'
 @bot.command()
+@check_if_bot_rdy()
 async def sendyum(ctx):
     data = get_image("FoodPorn")
     while data is False:
@@ -198,6 +202,7 @@ async def sendyum(ctx):
 
 # !sendearth command for subreddit 'EarthPorn'
 @bot.command()
+@check_if_bot_rdy()
 async def sendearth(ctx):
     data = get_image("EarthPorn")
     while data is False:
@@ -208,6 +213,7 @@ async def sendearth(ctx):
 
 # !sendnocontext command for subreddit 'nocontextpics'        
 @bot.command()
+@check_if_bot_rdy()
 async def sendnocontext(ctx):
     data = get_image("nocontextpics")
     while data is False:
@@ -218,6 +224,7 @@ async def sendnocontext(ctx):
 
 # !sendwtf command for subreddit 'WTF'     
 @bot.command()
+@check_if_bot_rdy()
 async def sendwtf(ctx):
     data = get_image("WTF")
     while data is False:
@@ -228,6 +235,7 @@ async def sendwtf(ctx):
 
 # !sendaww command for subreddit 'aww'     
 @bot.command()
+@check_if_bot_rdy()
 async def sendaww(ctx):
     data = get_image("aww")
     while data is False:
@@ -238,6 +246,7 @@ async def sendaww(ctx):
 
 # !sendsfwporn command for subreddit 'SFWporn'     
 @bot.command()
+@check_if_bot_rdy()
 async def sendsfwporn(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("SFWporn")
@@ -252,6 +261,7 @@ async def sendsfwporn(ctx):
 
 # !sendyurimeme command for subreddit 'yurimemes'     
 @bot.command()
+@check_if_bot_rdy()
 async def sendyurimeme(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("yurimemes")
@@ -266,6 +276,7 @@ async def sendyurimeme(ctx):
 
 # !sendyuri command for subreddit 'yuri'     
 @bot.command()
+@check_if_bot_rdy()
 async def sendyuri(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("yuri")
@@ -280,6 +291,7 @@ async def sendyuri(ctx):
 
 # !sendnsfwarframe command for subreddit 'NSFWarframe'     
 @bot.command()
+@check_if_bot_rdy()
 async def sendnsfwarframe(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("NSFWarframe")
@@ -294,6 +306,7 @@ async def sendnsfwarframe(ctx):
 
 # !sendyurigif command for subreddit 'yurigif'     
 @bot.command()
+@check_if_bot_rdy()
 async def sendyurigif(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("yurigif")
@@ -307,6 +320,7 @@ async def sendyurigif(ctx):
 
 # !sendhh command for subreddit 'hentai'
 @bot.command()
+@check_if_bot_rdy()
 async def sendhh(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("hentai")
@@ -320,6 +334,7 @@ async def sendhh(ctx):
 
 # !sendfurry command for subreddit 'yiff'
 @bot.command()
+@check_if_bot_rdy()
 async def sendfurry(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("yiff")
@@ -333,6 +348,7 @@ async def sendfurry(ctx):
 
 # !sendneko command for subreddit 'nekogirls'
 @bot.command()
+@check_if_bot_rdy()
 async def sendneko(ctx):
     data = get_image("nekogirls")
     while data is False:
@@ -343,6 +359,7 @@ async def sendneko(ctx):
 
 # !sendneko command for subreddit 'NekoHentai'
 @bot.command()
+@check_if_bot_rdy()
 async def sendnekoh(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("NekoHentai")
@@ -356,6 +373,7 @@ async def sendnekoh(ctx):
 
 # !sendconfused command for subreddit 'ConfusedBoners'
 @bot.command()
+@check_if_bot_rdy()
 async def sendconfused(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("ConfusedBoners")
@@ -369,6 +387,7 @@ async def sendconfused(ctx):
 
 # !sendrule command for subreddit 'Rule34'
 @bot.command()
+@check_if_bot_rdy()
 async def sendrule(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("Rule34")
@@ -382,6 +401,7 @@ async def sendrule(ctx):
 
 # !sendhhgif command for subreddit 'Hentai_Gif'
 @bot.command()
+@check_if_bot_rdy()
 async def sendhhgif(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("Hentai_Gif")
@@ -395,6 +415,7 @@ async def sendhhgif(ctx):
 
 # !sendecchi command for subreddit 'ecchi'
 @bot.command()
+@check_if_bot_rdy()
 async def sendecchi(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("ecchi")
@@ -408,6 +429,7 @@ async def sendecchi(ctx):
 
 # !sendecchiart command for subreddit 'Artistic_ecchi'
 @bot.command()
+@check_if_bot_rdy()
 async def sendecchiart(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("Artistic_ecchi")
@@ -421,6 +443,7 @@ async def sendecchiart(ctx):
 
 # !sendhhart command for subreddit 'Artistic_Hentai'
 @bot.command()
+@check_if_bot_rdy()
 async def sendhhart(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("Artistic_Hentai")
@@ -434,6 +457,7 @@ async def sendhhart(ctx):
 
 # !sendhhart command for subreddit 'Artistic_Hentai'
 @bot.command()
+@check_if_bot_rdy()
 async def sendjojomeme(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("ShitPostCrusaders")
@@ -447,6 +471,7 @@ async def sendjojomeme(ctx):
 
 # !sendpokeh command for subreddit 'PokePorn'
 @bot.command()
+@check_if_bot_rdy()
 async def sendpokeh(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("PokePorn")
@@ -460,6 +485,7 @@ async def sendpokeh(ctx):
 
 # !sendsoftyaoi command for subreddit 'wholesomeyaoi'
 @bot.command()
+@check_if_bot_rdy()
 async def sendsoftyaoi(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("wholesomeyaoi")
@@ -473,6 +499,7 @@ async def sendsoftyaoi(ctx):
 
 # !sendlewdart command for subreddit 'HentaiVisualArts'
 @bot.command()
+@check_if_bot_rdy()
 async def sendlewdart(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("HentaiVisualArts")
@@ -486,6 +513,7 @@ async def sendlewdart(ctx):
 
 # !sendtiming command for subreddit 'PerfectTiming'
 @bot.command()
+@check_if_bot_rdy()
 async def sendtiming(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("PerfectTiming")
@@ -499,6 +527,7 @@ async def sendtiming(ctx):
 
 # !sendcreepy command for subreddit 'Creepy'
 @bot.command()
+@check_if_bot_rdy()
 async def sendcreepy(ctx):
     if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
         data = get_image("Creepy")
