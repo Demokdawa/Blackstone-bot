@@ -111,17 +111,19 @@ def sync_update_cache():
     rdy = 1
 
 
-@tasks.loop(seconds=180)
+@tasks.loop(seconds=3600)
 async def update_cache():
     thing = functools.partial(sync_update_cache)
     await bot.loop.run_in_executor(None, thing)
 
 
-def check_if_bot_rdy(ctx):
-    if rdy == 1:
-        return True
-    else:
-        return False
+def check_if_bot_rdy():
+    def predicate(ctx):
+        if rdy == 0:
+            raise commands.UserInputError("Je suis encore en train de récupèrer tes images, patiente quelques minutes 😎 ")
+        if rdy == 1:
+            return True
+    return commands.check(predicate)
 
 
 ###############################################################################################
@@ -138,9 +140,14 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("lel"))
 
 
+@bot.event
+async def on_command_error(ctx, message):
+    if isinstance(message, commands.UserInputError):
+        await ctx.channel.send(message)
+
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
-@commands.check(check_if_bot_rdy)
+@check_if_bot_rdy()
 async def sendmeme(ctx):
     data = get_image("dankmemes")
     while data is False:
