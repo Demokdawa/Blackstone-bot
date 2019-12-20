@@ -35,6 +35,8 @@ big_dict = {}
 
 rdy = 0
 
+progress = 0
+
 ###############################################################################################
 # Functions ###################################################################################
 
@@ -101,13 +103,22 @@ async def check_react(ctx, embed):
 def sync_update_cache():
     global big_dict
     global rdy
+    global progress
     for sub in subreddit_list:
         if sub in subreddit_group_hart:
             for submission in reddit.subreddit(sub).top(limit=1000):
-                big_dict['hart'].append(submission.url)
+                if 'hart' not in big_dict:
+                    big_dict['hart'] = []
+                else:
+                    big_dict['hart'].append(submission.url)
+            progress += 1
         else:
             for submission in reddit.subreddit(sub).top(limit=1000):
-                big_dict[sub].append(submission.url)
+                if sub not in big_dict:
+                    big_dict[sub] = []
+                else:
+                    big_dict[sub].append(submission.url)
+            progress += 1
     print('Cache update done !')
     rdy = 1
 
@@ -121,7 +132,7 @@ async def update_cache():
 def check_if_bot_rdy():
     def predicate(ctx):
         if rdy == 0:
-            raise commands.UserInputError("Je suis encore en train de récupèrer tes images, patiente quelques minutes 😎 ")
+            raise commands.UserInputError("Je suis encore en train de récupèrer tes images, patiente quelques minutes 😎 ({} / {}) ".format(progress, len(subreddit_list)))
         if rdy == 1:
             return True
     return commands.check(predicate)
@@ -437,35 +448,7 @@ async def sendecchi(ctx):
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
 
 
-# !sendecchiart command for subreddit 'Artistic_ecchi'
-@bot.command()
-@check_if_bot_rdy()
-async def sendecchiart(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        data = get_image("Artistic_ecchi")
-        while data is False:
-            data = get_image("Artistic_ecchi")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-
-
-# !sendhhart command for subreddit 'Artistic_Hentai'
-@bot.command()
-@check_if_bot_rdy()
-async def sendhhart(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        data = get_image("Artistic_Hentai")
-        while data is False:
-            data = get_image("Artistic_Hentai")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-
-
-# !sendhhart command for subreddit 'Artistic_Hentai'
+# !sendjojomeme command for subreddit 'ShitPostCrusaders'
 @bot.command()
 @check_if_bot_rdy()
 async def sendjojomeme(ctx):
@@ -501,20 +484,6 @@ async def sendsoftyaoi(ctx):
         data = get_image("wholesomeyaoi")
         while data is False:
             data = get_image("wholesomeyaoi")
-        embed = prepare_embed(data)
-        await check_react(ctx, embed)
-    else:
-        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
-
-
-# !sendlewdart command for subreddit 'HentaiVisualArts'
-@bot.command()
-@check_if_bot_rdy()
-async def sendlewdart(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
-        data = get_image("HentaiVisualArts")
-        while data is False:
-            data = get_image("HentaiVisualArts")
         embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
@@ -561,6 +530,14 @@ async def sendhart(ctx):
         await check_react(ctx, embed)
     else:
         await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+# !sup to get status of the bot
+@bot.command()
+async def sup(ctx):
+    if rdy == 0:
+        await ctx.channel.send("Je démarre gros, 2 sec 😎 ({} / {})".format(progress, len(subreddit_list)))
+    if rdy == 1:
+        await ctx.channel.send("Je suis la pour toi mon chou !")
 
 
 # !halp command for help
