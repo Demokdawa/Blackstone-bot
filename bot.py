@@ -24,11 +24,11 @@ print('[Init] Bot configuré !')
 ###############################################################################################
 # Config ######################################################################################
 
-subreddit_list = ['dankmemes', 'hentaidankmemes', 'memeframe', 'cursedimages', 'FoodPorn', 'EarthPorn', 'nocontextpics',
-                  'WTF', 'aww', 'SFWporn', 'yurimemes', 'yuri', 'NSFWarframe', 'yurigif', 'hentai', 'yiff', 'nekogirls',
+subreddit_list = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10827, 'cursedimages': 385017, 'FoodPorn': 267418, 'EarthPorn': 566895, 'nocontextpics': 34243,
+                  'WTF': 2106561, 'aww': 4381771, 'SFWporn': 583, 'yurimemes': 535, 'yuri': 12617, 'NSFWarframe': 1316, 'yurigif': 149, 'hentai': 227983, 'yiff', 'nekogirls',
                   'NekoHentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners', 'ecchi', 'Artistic_ecchi', 'Artistic_Hentai',
                   'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'PerfectTiming', 'Creepy', 'HentaiVisualArts',
-                  'Rule34lol', 'Sukebei']
+                  'Rule34lol', 'Sukebei'}
 
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
 
