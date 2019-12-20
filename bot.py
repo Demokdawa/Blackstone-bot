@@ -5,7 +5,6 @@ import random
 import asyncio
 import os
 from gfycat.client import GfycatClient
-import aiohttp
 import functools
 
 
@@ -28,13 +27,13 @@ print('[Init] Bot configuré !')
 subreddit_list = ['dankmemes', 'hentaidankmemes', 'memeframe', 'cursedimages', 'FoodPorn', 'EarthPorn', 'nocontextpics',
                   'WTF', 'aww', 'SFWporn', 'yurimemes', 'yuri', 'NSFWarframe', 'yurigif', 'hentai', 'yiff', 'nekogirls',
                   'NekoHentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners', 'ecchi', 'Artistic_ecchi', 'Artistic_Hentai',
-                  'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'HentaiVisualArts', 'PerfectTiming', 'Creepy']
+                  'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'PerfectTiming', 'Creepy', 'HentaiVisualArts']
+
+subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts']
 
 big_dict = {}
 
 rdy = 0
-
-message_check = ['sendmeme', 'sendwtf']
 
 ###############################################################################################
 # Functions ###################################################################################
@@ -103,10 +102,12 @@ def sync_update_cache():
     global big_dict
     global rdy
     for sub in subreddit_list:
-        temp_list = []
-        for submission in reddit.subreddit(sub).top(limit=1000):
-            temp_list.append(submission.url)
-        big_dict[sub] = temp_list
+        if sub in subreddit_group_hart:
+            for submission in reddit.subreddit(sub).top(limit=1000):
+                big_dict['hart'].append(submission.url)
+        else:
+            for submission in reddit.subreddit(sub).top(limit=1000):
+                big_dict[sub].append(submission.url)
     print('Cache update done !')
     rdy = 1
 
@@ -125,6 +126,14 @@ def check_if_bot_rdy():
             return True
     return commands.check(predicate)
 
+
+def check_bot_channel():
+    def predicate(ctx):
+        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+            return True
+        else:
+            raise commands.UserInputError("Ey non, pas ici petit coquin !")
+    return commands.check(predicate)
 
 ###############################################################################################
 # Custom Convertors ###########################################################################
@@ -148,6 +157,7 @@ async def on_command_error(ctx, message):
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
 @check_if_bot_rdy()
+@check_bot_channel()
 async def sendmeme(ctx):
     data = get_image("dankmemes")
     while data is False:
@@ -533,6 +543,20 @@ async def sendcreepy(ctx):
         data = get_image("Creepy")
         while data is False:
             data = get_image("Creepy")
+        embed = prepare_embed(data)
+        await check_react(ctx, embed)
+    else:
+        await ctx.channel.send("Ey non petit, tu ne peux pas utiliser ca ici !")
+
+
+# !sendhart command for subreddit group Artistic_ecchi + Artistic_Hentai + HentaiVisualArts'
+@bot.command()
+@check_if_bot_rdy()
+async def sendhart(ctx):
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        data = get_image("hart")
+        while data is False:
+            data = get_image("hart")
         embed = prepare_embed(data)
         await check_react(ctx, embed)
     else:
