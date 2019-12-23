@@ -50,7 +50,7 @@ def prepare_embed(data):
 
     embed = discord.Embed()
     
-    if 'gfycat' in random_image:
+    if 'gfycat' in data:
         req.urlretrieve(data, 'tempDiscord.gif')
         full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
         file = discord.File(full_path)
