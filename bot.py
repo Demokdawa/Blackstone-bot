@@ -55,8 +55,8 @@ def prepare_embed(data):
         full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
         file = discord.File(full_path)
         # img = await ctx.channel.send(file=file)
-        os.remove('tempDiscord.gif')
-        embed.set_image(url="attachment://image.png")
+        # os.remove('tempDiscord.gif')
+        embed.set_image(url="attachment://tempDiscord.gif")
         
     else:
         embed.set_image(url=data)
