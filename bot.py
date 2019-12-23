@@ -6,6 +6,7 @@ import asyncio
 import os
 from gfycat.client import GfycatClient
 import functools
+import urllib.request as req
 
 
 # Initialize ##################################################################################
@@ -48,9 +49,20 @@ progress = 0
 def prepare_embed(data):
 
     embed = discord.Embed()
-    embed.set_image(url=data)
+    
+    if 'gfycat' in random_image:
+        req.urlretrieve(data, 'tempDiscord.gif')
+        full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
+        file = discord.File(full_path)
+        # img = await ctx.channel.send(file=file)
+        os.remove('tempDiscord.gif')
+        embed.set_image(url="attachment://image.png")
+        
+    else:
+        embed.set_image(url=data)
+    
 
-    return embed
+    return embed, file
 
 
 def get_image(subreddit):
@@ -70,9 +82,6 @@ def get_image(subreddit):
         return random_image
 
     if 'gfycat' in random_image:
-        return random_image
-
-    if 'gfycati' in random_image:
         gyfcat_name = random_image.split(".com/")[1]
         client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
         resp = client.query_gfy(gyfcat_name)
@@ -83,7 +92,8 @@ def get_image(subreddit):
 
 
 async def check_react(ctx, embed):
-    img = await ctx.channel.send(embed=embed)
+    # img = await ctx.channel.send(embed=embed)
+    img = await channel.send(file=file, embed=embed)
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -442,14 +452,14 @@ async def sendrule(ctx):
 
 # !sendhhgif command for subreddit 'Hentai_Gif'
 @bot.command()
-@check_if_bot_rdy()
+# @check_if_bot_rdy()
 @check_bot_channel()
 async def sendhhgif(ctx):
     data = get_image("Hentai_Gif")
     while data is False:
         data = get_image("Hentai_Gif")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendecchi command for subreddit 'ecchi'
