@@ -53,6 +53,7 @@ def prepare_embed(data):
     print('prepare embed started / ' + data) ## DEBUG LINE
     
     if 'gfycat' in data:
+        print('is gfycat')
         req.urlretrieve(data, 'tempDiscord.gif')
         full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
         file = discord.File(full_path)
@@ -61,6 +62,7 @@ def prepare_embed(data):
         embed.set_image(url="attachment://tempDiscord.gif")
         
     else:
+        print('no gfycat')
         file = []
         embed.set_image(url=data)
     
