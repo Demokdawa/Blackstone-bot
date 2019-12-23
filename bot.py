@@ -24,11 +24,14 @@ print('[Init] Bot configuré !')
 ###############################################################################################
 # Config ######################################################################################
 
-subreddit_list = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10827, 'cursedimages': 385017, 'FoodPorn': 267418, 'EarthPorn': 566895, 'nocontextpics': 34243,
-                  'WTF': 2106561, 'aww': 4381771, 'SFWporn': 583, 'yurimemes': 535, 'yuri': 12617, 'NSFWarframe': 1316, 'yurigif': 149, 'hentai': 227983, 'yiff', 'nekogirls',
-                  'NekoHentai', 'Hentai_Gif', 'Rule34', 'ConfusedBoners', 'ecchi', 'Artistic_ecchi', 'Artistic_Hentai',
-                  'ShitPostCrusaders', 'PokePorn', 'wholesomeyaoi', 'PerfectTiming', 'Creepy', 'HentaiVisualArts',
-                  'Rule34lol', 'Sukebei'}
+subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10827, 'cursedimages': 385017,
+                  'FoodPorn': 267418, 'EarthPorn': 566895, 'nocontextpics': 34243,
+                  'WTF': 2106561, 'aww': 4381771, 'SFWporn': 583, 'yurimemes': 535, 'yuri': 12617, 'NSFWarframe': 1316,
+                  'yurigif': 149, 'hentai': 227983, 'yiff': 87178, 'nekogirls': 450,
+                  'NekoHentai': 120, 'Hentai_Gif': 15130, 'Rule34': 178548, 'ConfusedBoners': 19627, 'ecchi': 80289,
+                  'Artistic_ecchi': 347, 'Artistic_Hentai': 2852,
+                  'ShitPostCrusaders': 327045, 'PokePorn': 27740, 'wholesomeyaoi': 1901, 'PerfectTiming': 28848,
+                  'Creepy': 249925, 'HentaiVisualArts': 1115, 'Rule34lol': 22897, 'Sukebei': 13893}
 
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
 
@@ -67,12 +70,14 @@ def get_image(subreddit):
         return random_image
 
     if 'gfycat' in random_image:
+        return random_image
+
+    if 'gfycati' in random_image:
         gyfcat_name = random_image.split(".com/")[1]
         client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
         resp = client.query_gfy(gyfcat_name)
         gifed = resp['gfyItem']['gifUrl']
         return gifed
-
     else:
         return False
 
@@ -105,7 +110,46 @@ def sync_update_cache():
     global big_dict
     global rdy
     global progress
-    for sub in subreddit_list:
+
+    def get_sub_nbr(sub_size):
+        if sub_size >= 10000:
+            best = sub_size / 10  # 10%
+            return best
+        if sub_size >= 8000:
+            best = sub_size / 9  # 11%
+            return best
+        if sub_size >= 6000:
+            best = sub_size / 9  # 11%
+            return best
+        if sub_size >= 4000:
+            best = sub_size / 5  # 20%
+            return best
+        if sub_size >= 2000:
+            best = sub_size / 3  # 33%
+            return best
+        if sub_size >= 1000:
+            best = sub_size / 1.5  # 66%
+            return best
+        if sub_size >= 800:
+            best = sub_size / 1.4  # 71%
+            return best
+        if sub_size >= 600:
+            best = sub_size / 1.4  # 71%
+            return best
+        if sub_size >= 400:
+            best = sub_size / 1.6  # 62.5%
+            return best
+        if sub_size >= 200:
+            best = sub_size / 1.35  # 74%
+            return best
+        if sub_size >= 100:
+            best = sub_size / 1.30  # 76%
+            return best
+        if sub_size < 100:
+            best = sub_size / 1  # 100%
+            return best
+
+    for sub in subreddit_dict:
         if sub in subreddit_group_hart:
             for submission in reddit.subreddit(sub).top(limit=1000):
                 if 'hart' not in big_dict:
@@ -114,7 +158,7 @@ def sync_update_cache():
                     big_dict['hart'].append(submission.url)
             progress += 1
         else:
-            for submission in reddit.subreddit(sub).top(limit=1000):
+            for submission in reddit.subreddit(sub).top(limit=get_sub_nbr(subreddit_dict[sub])):
                 if sub not in big_dict:
                     big_dict[sub] = []
                 else:
@@ -133,7 +177,7 @@ async def update_cache():
 def check_if_bot_rdy():
     def predicate(ctx):
         if rdy == 0:
-            raise commands.UserInputError("Je suis encore en train de récupèrer tes images, patiente quelques minutes 😎 ({} / {}) ".format(progress, len(subreddit_list)))
+            raise commands.UserInputError("Je suis encore en train de récupèrer tes images, patiente quelques minutes 😎 ({} / {}) ".format(progress, len(subreddit_dict)))
         if rdy == 1:
             return True
     return commands.check(predicate)
@@ -141,7 +185,7 @@ def check_if_bot_rdy():
 
 def check_bot_channel():
     def predicate(ctx):
-        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577:
+        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156:
             return True
         else:
             raise commands.UserInputError("Ey non, pas ici petit coquin !")
@@ -165,6 +209,7 @@ async def on_ready():
 async def on_command_error(ctx, message):
     if isinstance(message, commands.UserInputError):
         await ctx.channel.send(message)
+
 
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
@@ -502,11 +547,12 @@ async def sendhlol(ctx):
     embed = prepare_embed(data)
     await check_react(ctx, embed)
 
+
 # !sup to get status of the bot
 @bot.command()
 async def sup(ctx):
     if rdy == 0:
-        await ctx.channel.send("Je démarre gros, 2 sec 😎 ({} / {})".format(progress, len(subreddit_list)))
+        await ctx.channel.send("Je démarre gros, 2 sec 😎 ({} / {})".format(progress, len(subreddit_dict)))
     if rdy == 1:
         await ctx.channel.send("Je suis la pour toi mon chou !")
 
@@ -539,6 +585,7 @@ async def halp(ctx):
     embed.add_field(name="!sendconfused", value="🔞", inline=False)
     embed.add_field(name="!sendecchi", value="🔞", inline=False)
     embed.add_field(name="!sendfurry", value="🔞", inline=False)
+    embed.add_field(name="!sendhlol", value="🔞", inline=False)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
              "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
@@ -554,6 +601,8 @@ async def halp(ctx):
 # hentaifemdom (a voir)
 # need : sub de femdom
 # need : sub titsagainsttits
+# GloryHo
 
 update_cache.start()
-bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")
+bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
+# bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
