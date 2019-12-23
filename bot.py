@@ -91,7 +91,7 @@ def get_image(subreddit):
         return False
 
 
-async def check_react(ctx, embed):
+async def check_react(ctx, embed, file):
     # img = await ctx.channel.send(embed=embed)
     img = await channel.send(file=file, embed=embed)
 
