@@ -61,6 +61,7 @@ def prepare_embed(data):
         embed.set_image(url="attachment://tempDiscord.gif")
         
     else:
+        file = []
         embed.set_image(url=data)
     
 
@@ -463,6 +464,8 @@ async def sendhhgif(ctx):
     while data is False:
         data = get_image("Hentai_Gif")
     embed, file = prepare_embed(data)
+    print('embed is : ' + embed)
+    print('file is  : ' + file)
     await check_react(ctx, embed, file)
 
 
