@@ -50,6 +50,8 @@ def prepare_embed(data):
 
     embed = discord.Embed()
     
+    print('prepare embed started / ' + data) ## DEBUG LINE
+    
     if 'gfycat' in data:
         req.urlretrieve(data, 'tempDiscord.gif')
         full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
@@ -92,6 +94,8 @@ def get_image(subreddit):
 
 
 async def check_react(ctx, embed, file):
+
+    print('react started / ')
     # img = await ctx.channel.send(embed=embed)
     img = await channel.send(file=file, embed=embed)
 
