@@ -1,16 +1,11 @@
-def sync_func(one, two, three=None):
-    # do blocking stuff
-    return some_stuff
+import ffmpy
+from pygifsicle import gifsicle
 
-async def async_func(whatever):
-    # obtain one, two, three from somewhere?
-    # supports args & kwargs
-    thing = functools.partial(sync_func, one, two, three=3)
+ff = ffmpy.FFmpeg(
+    inputs={"test.mp4": None},
+    outputs={"test.gif": '-r 10 -vf scale=640:360 -b 200k'})
 
-    # run_in_executor supports passing args directly, e.g.
-    # 'run_in_executor(None, func, one, two, three)' but using
-    # partial makes stuff a bit easier to read if you have a
-    # large amount of arguments you don't want to stack onto
-    # a single line.
+# gifsicle(sources="test.gif", colors=256, options=["-O3", "--lossy=120"])
 
-    some_stuff = await bot.loop.run_in_executor(None, thing)
+ff.run()
+

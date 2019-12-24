@@ -47,26 +47,19 @@ progress = 0
 
 
 def prepare_embed(data):
-
-    embed = discord.Embed()
-    
     print('prepare embed started / ' + data) ## DEBUG LINE
     
     if 'gfycat' in data:
         print('is gfycat')
         req.urlretrieve(data, 'tempDiscord.gif')
-        full_path = os.path.join(os.getcwd(), 'tempDiscord.gif')
-        file = discord.File(full_path)
-        # img = await ctx.channel.send(file=file)
-        # os.remove('tempDiscord.gif')
+        file = discord.File(os.getcwd() + "\\tempDiscord.gif", filename='tempDiscord.gif')
+        embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
-        
     else:
         print('no gfycat')
         file = []
+        embed = discord.Embed()
         embed.set_image(url=data)
-    
-
     return embed, file
 
 
@@ -100,7 +93,7 @@ async def check_react(ctx, embed, file):
 
     print('react started / ')
     # img = await ctx.channel.send(embed=embed)
-    img = await channel.send(file=file, embed=embed)
+    img = await ctx.channel.send(file=file, embed=embed)
 
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
@@ -222,10 +215,10 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("lel"))
 
 
-@bot.event
-async def on_command_error(ctx, message):
-    if isinstance(message, commands.UserInputError):
-        await ctx.channel.send(message)
+# @bot.event
+# async def on_command_error(ctx, message):
+#    if isinstance(message, commands.UserInputError):
+#        await ctx.channel.send(message)
 
 
 # !sendmeme command for subreddit 'dankmemes'
@@ -466,8 +459,8 @@ async def sendhhgif(ctx):
     while data is False:
         data = get_image("Hentai_Gif")
     embed, file = prepare_embed(data)
-    print('embed is : ' + embed)
-    print('file is  : ' + file)
+    print('embed is : ' + str(embed))
+    print('file is  : ' + str(file))
     await check_react(ctx, embed, file)
 
 
