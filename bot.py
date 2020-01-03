@@ -247,8 +247,8 @@ async def sendmeme(ctx):
     data = get_image("dankmemes")
     while data is False:
         data = get_image("dankmemes")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendlewdmeme command for subreddit 'hentaidankmemes'
@@ -258,8 +258,8 @@ async def sendlewdmeme(ctx):
     data = get_image("hentaidankmemes")
     while data is False:
         data = get_image("hentaidankmemes")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendwfmeme command for subreddit 'memeframe'
@@ -269,8 +269,8 @@ async def sendwfmeme(ctx):
     data = get_image("memeframe")
     while data is False:
         data = get_image("memeframe")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendcursed command for subreddit 'cursedimages'
@@ -280,8 +280,8 @@ async def sendcursed(ctx):
     data = get_image("cursedimages")
     while data is False:
         data = get_image("crusedimages")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendyum command for subreddit 'FoodPorn'
@@ -291,8 +291,8 @@ async def sendyum(ctx):
     data = get_image("FoodPorn")
     while data is False:
         data = get_image("FoodPorn")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendearth command for subreddit 'EarthPorn'
@@ -302,8 +302,8 @@ async def sendearth(ctx):
     data = get_image("EarthPorn")
     while data is False:
         data = get_image("EarthPorn")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendnocontext command for subreddit 'nocontextpics'        
@@ -313,8 +313,8 @@ async def sendnocontext(ctx):
     data = get_image("nocontextpics")
     while data is False:
         data = get_image("nocontextpics")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendwtf command for subreddit 'WTF'     
@@ -324,8 +324,8 @@ async def sendwtf(ctx):
     data = get_image("WTF")
     while data is False:
         data = get_image("WTF")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendaww command for subreddit 'aww'     
@@ -335,8 +335,8 @@ async def sendaww(ctx):
     data = get_image("aww")
     while data is False:
         data = get_image("aww")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendsfwporn command for subreddit 'SFWporn'     
@@ -347,8 +347,8 @@ async def sendsfwporn(ctx):
     data = get_image("SFWporn")
     while data is False:
         data = get_image("SFWporn")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendyurimeme command for subreddit 'yurimemes'     
@@ -359,8 +359,8 @@ async def sendyurimeme(ctx):
     data = get_image("yurimemes")
     while data is False:
         data = get_image("yurimemes")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendyuri command for subreddit 'yuri'     
@@ -371,8 +371,8 @@ async def sendyuri(ctx):
     data = get_image("yuri")
     while data is False:
         data = get_image("yuri")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendnsfwarframe command for subreddit 'NSFWarframe'     
@@ -383,8 +383,8 @@ async def sendnsfwarframe(ctx):
     data = get_image("NSFWarframe")
     while data is False:
         data = get_image("NSFWarframe")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendyurigif command for subreddit 'yurigif'     
@@ -395,8 +395,8 @@ async def sendyurigif(ctx):
     data = get_image("yurigif")
     while data is False:
         data = get_image("yurigif")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendhh command for subreddit 'hentai'
@@ -407,8 +407,8 @@ async def sendhh(ctx):
     data = get_image("hentai")
     while data is False:
         data = get_image("hentai")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendfurry command for subreddit 'yiff'
@@ -419,8 +419,8 @@ async def sendfurry(ctx):
     data = get_image("yiff")
     while data is False:
         data = get_image("yiff")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendneko command for subreddit 'nekogirls'
@@ -430,8 +430,8 @@ async def sendneko(ctx):
     data = get_image("nekogirls")
     while data is False:
         data = get_image("nekogirls")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendneko command for subreddit 'NekoHentai'
@@ -442,8 +442,8 @@ async def sendnekoh(ctx):
     data = get_image("NekoHentai")
     while data is False:
         data = get_image("NekoHentai")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendconfused command for subreddit 'ConfusedBoners'
@@ -454,8 +454,8 @@ async def sendconfused(ctx):
     data = get_image("ConfusedBoners")
     while data is False:
         data = get_image("ConfusedBoners")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 # !sendrule command for subreddit 'Rule34'
 @bot.command()
@@ -465,8 +465,8 @@ async def sendrule(ctx):
     data = get_image("Rule34")
     while data is False:
         data = get_image("Rule34")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendhhgif command for subreddit 'Hentai_Gif'
@@ -491,8 +491,8 @@ async def sendecchi(ctx):
     data = get_image("ecchi")
     while data is False:
         data = get_image("ecchi")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendjojomeme command for subreddit 'ShitPostCrusaders'
@@ -503,8 +503,8 @@ async def sendjojomeme(ctx):
     data = get_image("ShitPostCrusaders")
     while data is False:
         data = get_image("ShitPostCrusaders")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendpokeh command for subreddit 'PokePorn'
@@ -515,8 +515,8 @@ async def sendpokeh(ctx):
     data = get_image("PokePorn")
     while data is False:
         data = get_image("PokePorn")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendsoftyaoi command for subreddit 'wholesomeyaoi'
@@ -527,8 +527,8 @@ async def sendsoftyaoi(ctx):
     data = get_image("wholesomeyaoi")
     while data is False:
         data = get_image("wholesomeyaoi")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendtiming command for subreddit 'PerfectTiming'
@@ -539,8 +539,8 @@ async def sendtiming(ctx):
     data = get_image("PerfectTiming")
     while data is False:
         data = get_image("PerfectTiming")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendcreepy command for subreddit 'Creepy'
@@ -551,8 +551,8 @@ async def sendcreepy(ctx):
     data = get_image("Creepy")
     while data is False:
         data = get_image("Creepy")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendhart command for subreddit group Artistic_ecchi + Artistic_Hentai + HentaiVisualArts'
@@ -563,8 +563,8 @@ async def sendhart(ctx):
     data = get_image("hart")
     while data is False:
         data = get_image("hart")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sendhlol command for subreddit 'Rule34lol'
@@ -575,8 +575,8 @@ async def sendhlol(ctx):
     data = get_image("Rule34lol")
     while data is False:
         data = get_image("Rule34lol")
-    embed = prepare_embed(data)
-    await check_react(ctx, embed)
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sup to get status of the bot
@@ -637,6 +637,13 @@ async def halp(ctx):
 # need : sub de femdom
 # need : sub titsagainsttits
 # GloryHo
+
+# TO-DO :
+# Accurate settings for gfycat gifs
+# More time to react for heavy-loading gifs
+# More commands
+# Fuse commands
+# Apply restricting % filter on fused commands too
 
 update_cache.start()
 bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
