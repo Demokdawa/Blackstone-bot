@@ -64,7 +64,7 @@ def prepare_embed(data):
                 inputs={"tempDL.mp4": None},
                 outputs={"tempDiscord.gif": '-y -r 10 -vf scale=640:-1'})
             ff.run()
-        file = discord.File(os.getcwd() + "\\tempDiscord.gif", filename='tempDiscord.gif')
+        file = discord.File(os.path.join(os.getcwd(), "tempDiscord.gif"), filename='tempDiscord.gif')
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
     else:
