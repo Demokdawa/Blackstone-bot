@@ -660,7 +660,6 @@ async def halp(ctx):
 # hentaifemdom (a voir)
 # need : sub de femdom
 # need : sub titsagainsttits
-# GloryHo
 
 # TO-DO :
 # Accurate settings for gfycat gifs
