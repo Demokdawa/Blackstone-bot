@@ -7,6 +7,7 @@ import os
 from gfycat.client import GfycatClient
 import functools
 import urllib.request as req
+import ffmpy
 
 
 # Initialize ##################################################################################
@@ -47,17 +48,24 @@ progress = 0
 
 
 def prepare_embed(data):
-    print('prepare embed started / ' + data) ## DEBUG LINE
     
-    if 'gfycat' in data:
+    
+    if isinstance(data, tuple):
+        print('prepare embed started / ' + data[1]) ## DEBUG LINE
         print('is gfycat')
-        req.urlretrieve(data, 'tempDiscord.gif')
+        req.urlretrieve(data[1], 'tempDL.mp4')
+        if data[0] > 1000000:
+            ff = ffmpy.FFmpeg(
+                inputs={"tempDL.mp4": None},
+                outputs={"tempDiscord.gif": '-y -r 9 -vf scale=320:-1'})
+            ff.run()
         file = discord.File(os.getcwd() + "\\tempDiscord.gif", filename='tempDiscord.gif')
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
     else:
+        print('prepare embed started / ' + data) ## DEBUG LINE
         print('no gfycat')
-        file = []
+        file = None
         embed = discord.Embed()
         embed.set_image(url=data)
     return embed, file
@@ -83,8 +91,9 @@ def get_image(subreddit):
         gyfcat_name = random_image.split(".com/")[1]
         client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
         resp = client.query_gfy(gyfcat_name)
-        gifed = resp['gfyItem']['gifUrl']
-        return gifed
+        mp4s = resp['gfyItem']['mp4Size']
+        mp4f = resp['gfyItem']['mp4Url']
+        return mp4s, mp4f
     else:
         return False
 
@@ -92,9 +101,11 @@ def get_image(subreddit):
 async def check_react(ctx, embed, file):
 
     print('react started / ')
-    # img = await ctx.channel.send(embed=embed)
-    img = await ctx.channel.send(file=file, embed=embed)
-
+    if file is None:
+        img = await ctx.channel.send(embed=embed)
+    else:
+        img = await ctx.channel.send(file=file, embed=embed)
+        
     await img.add_reaction('\N{WHITE HEAVY CHECK MARK}')
     await img.add_reaction('\N{CROSS MARK}')
 
@@ -584,6 +595,8 @@ async def halp(ctx):
     embed.add_field(name="!sendaww", value="Envoie des photos d'animaux mignons", inline=False)
     embed.add_field(name="!sendjojomeme", value="Attention aux spoilers !", inline=False)
     embed.add_field(name="!sendneko", value="Envoie des nekos toutes mimi !", inline=False)
+    embed.add_field(name="!sendcreepy", value="Envoie des trucs bien creepy !", inline=False)
+    embed.add_field(name="!sendtiming", value="Envoie de bons timings", inline=False)
     embed.add_field(name="!sendsfwporn", value="🔞", inline=False)
     embed.add_field(name="!sendyuri", value="🔞", inline=False)
     embed.add_field(name="!sendyurigif", value="🔞", inline=False)
@@ -598,6 +611,8 @@ async def halp(ctx):
     embed.add_field(name="!sendecchi", value="🔞", inline=False)
     embed.add_field(name="!sendfurry", value="🔞", inline=False)
     embed.add_field(name="!sendhlol", value="🔞", inline=False)
+    embed.add_field(name="!sendpokeh", value="🔞", inline=False)
+    embed.add_field(name="!sendsoftyaoi", value="🔞", inline=False)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
              "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
