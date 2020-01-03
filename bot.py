@@ -33,7 +33,8 @@ subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10
                   'NekoHentai': 120, 'Hentai_Gif': 15130, 'Rule34': 178548, 'ConfusedBoners': 19627, 'ecchi': 80289,
                   'Artistic_ecchi': 347, 'Artistic_Hentai': 2852,
                   'ShitPostCrusaders': 327045, 'PokePorn': 27740, 'wholesomeyaoi': 1901, 'PerfectTiming': 28848,
-                  'Creepy': 249925, 'HentaiVisualArts': 1115, 'Rule34lol': 22897, 'Sukebei': 13893}
+                  'Creepy': 249925, 'HentaiVisualArts': 1115, 'Rule34lol': 22897, 'Sukebei': 13893, 'Tentai': 6508
+                  'GloryHo': 904}
 
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
 
@@ -577,6 +578,30 @@ async def sendhlol(ctx):
         data = get_image("Rule34lol")
     embed, file = prepare_embed(data)
     await check_react(ctx, embed, file)
+    
+    
+# !sendtacles command for subreddit 'Tentai'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendtacles(ctx):
+    data = get_image("Tentai")
+    while data is False:
+        data = get_image("Tentai")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
+    
+    
+# !sendgho command for subreddit 'GloryHo'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendgho(ctx):
+    data = get_image("GloryHo")
+    while data is False:
+        data = get_image("GloryHo")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file)
 
 
 # !sup to get status of the bot
@@ -631,7 +656,6 @@ async def halp(ctx):
 # CumHentai
 # AnimatedPorn
 # Mariorule34
-# Tentai
 # Paizuri
 # hentaifemdom (a voir)
 # need : sub de femdom
