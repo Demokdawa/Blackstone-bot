@@ -59,6 +59,11 @@ def prepare_embed(data):
                 inputs={"tempDL.mp4": None},
                 outputs={"tempDiscord.gif": '-y -r 9 -vf scale=320:-1'})
             ff.run()
+        if data[2] < 10:
+            ff = ffmpy.FFmpeg(
+                inputs={"tempDL.mp4": None},
+                outputs={"tempDiscord.gif": '-y -r 10 -vf scale=640:-1'})
+            ff.run()
         file = discord.File(os.getcwd() + "\\tempDiscord.gif", filename='tempDiscord.gif')
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
@@ -92,8 +97,11 @@ def get_image(subreddit):
         client = GfycatClient('2_I1XC03', 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHebokbw118L')
         resp = client.query_gfy(gyfcat_name)
         mp4s = resp['gfyItem']['mp4Size']
-        mp4f = resp['gfyItem']['mp4Url']
-        return mp4s, mp4f
+        mp4f = resp['gfyItem']['mobileUrl']
+        mp4nm = resp['gfyItem']['numFrames'] 
+        mp4fr = resp['gfyItem']['frameRate']
+        mp4l = mp4nm / mp4fr
+        return mp4s, mp4f, mp4l
     else:
         return False
 
