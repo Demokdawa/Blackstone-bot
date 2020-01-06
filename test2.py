@@ -1,11 +1,19 @@
 import ffmpy
-from pygifsicle import gifsicle
+import os
 
 ff = ffmpy.FFmpeg(
-    inputs={"test.mp4": None},
-    outputs={"test.gif": '-y -r 9 -loglevel quiet -vf scale=320:-1'})
-
-# gifsicle(sources="test.gif", colors=256, options=["-O3", "--lossy=120"])
-
+    inputs={"test2.mp4": None},
+    outputs={"test2.gif": '-y -r 40 -loglevel quiet -vf scale=640:-1'})
 ff.run()
+
+if os.path.getsize("test2.gif") < 8000000:
+	print("All good")
+else:
+	ff = ffmpy.FFmpeg(
+    inputs={"test2.mp4": None},
+    outputs={"test2.gif": '-y -r 10 -loglevel quiet -vf scale=320:-1'})
+	ff.run()
+
+
+
 

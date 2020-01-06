@@ -33,7 +33,7 @@ subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10
                   'NekoHentai': 120, 'Hentai_Gif': 15130, 'Rule34': 178548, 'ConfusedBoners': 19627, 'ecchi': 80289,
                   'Artistic_ecchi': 347, 'Artistic_Hentai': 2852,
                   'ShitPostCrusaders': 327045, 'PokePorn': 27740, 'wholesomeyaoi': 1901, 'PerfectTiming': 28848,
-                  'Creepy': 249925, 'HentaiVisualArts': 1115, 'Rule34lol': 22897, 'Sukebei': 13893, 'Tentai': 6508
+                  'Creepy': 249925, 'HentaiVisualArts': 1115, 'Rule34lol': 22897, 'Sukebei': 13893, 'Tentai': 6508,
                   'GloryHo': 904}
 
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
@@ -48,23 +48,48 @@ progress = 0
 # Functions ###################################################################################
 
 
+def create_gif(data):
+    ff1 = ffmpy.FFmpeg(
+        inputs={"tempDL.mp4": None},
+        outputs={"tempDiscord.gif": '-y -r 12 -loglevel quiet -vf scale=640:-1'})
+    ff2 = ffmpy.FFmpeg(
+        inputs={"tempDL.mp4": None},
+        outputs={"tempDiscord.gif": '-y -r 10 -loglevel quiet -vf scale=640:-1'})
+    ff3 = ffmpy.FFmpeg(
+        inputs={"tempDL.mp4": None},
+        outputs={"tempDiscord.gif": '-y -r 10 -loglevel quiet -vf scale=480:-1'})
+    ff4 = ffmpy.FFmpeg(
+        inputs={"tempDL.mp4": None},
+        outputs={"tempDiscord.gif": '-y -r 10 -loglevel quiet -vf scale=320:-1'})
+    ff5 = ffmpy.FFmpeg(
+        inputs={"tempDL.mp4": None},
+        outputs={"tempDiscord.gif": '-y -r 8 -loglevel quiet -vf scale=320:-1'})
+
+    if data[2] < 10: # If the gif is less than 10 seconds
+        ff1.run()
+    else: # If the gif is more than 10 seconds
+        ff2.run()
+        if os.path.getsize("tempDiscord.gif") < 8000000:
+            pass
+        else:
+            ff3.run()
+            if os.path.getsize("tempDiscord.gif") < 8000000:
+                pass
+            else:
+                ff4.run()
+                if os.path.getsize("tempDiscord.gif") < 8000000:
+                    pass
+                else:
+                    ff5.run()
+
+
 def prepare_embed(data):
-    
-    
+
     if isinstance(data, tuple):
         print('prepare embed started / ' + data[1]) ## DEBUG LINE
         print('is gfycat')
         req.urlretrieve(data[1], 'tempDL.mp4')
-        if data[0] > 1000000:
-            ff = ffmpy.FFmpeg(
-                inputs={"tempDL.mp4": None},
-                outputs={"tempDiscord.gif": '-y -r 9 -vf scale=320:-1'})
-            ff.run()
-        if data[2] < 10:
-            ff = ffmpy.FFmpeg(
-                inputs={"tempDL.mp4": None},
-                outputs={"tempDiscord.gif": '-y -r 10 -vf scale=640:-1'})
-            ff.run()
+        create_gif(data)
         file = discord.File(os.path.join(os.getcwd(), "tempDiscord.gif"), filename='tempDiscord.gif')
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
@@ -475,12 +500,11 @@ async def sendrule(ctx):
 # @check_if_bot_rdy()
 @check_bot_channel()
 async def sendhhgif(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
     data = get_image("Hentai_Gif")
     while data is False:
         data = get_image("Hentai_Gif")
     embed, file = prepare_embed(data)
-    print('embed is : ' + str(embed))
-    print('file is  : ' + str(file))
     await check_react(ctx, embed, file)
 
 
