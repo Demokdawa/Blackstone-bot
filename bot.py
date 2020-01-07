@@ -8,9 +8,28 @@ from gfycat.client import GfycatClient
 import functools
 import urllib.request as req
 import ffmpy
+import logging
 
 
 # Initialize ##################################################################################
+
+# Enable logging
+log = logging.getLogger("BlackBot_log")
+log.setLevel(logging.DEBUG)
+
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s.%(msecs)03d - %(name)s:%(lineno)d - %(levelname)s - %(message)s", "%Y%m%d%H%M%S")
+console.setFormatter(formatter)
+log.addHandler(console)
+
+fh = logging.FileHandler('Blackbot.log')
+fh.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s.%(msecs)03d - %(message)s", "%Y%m%d%H%M%S")
+fh.setFormatter(formatter)
+log.addHandler(fh)
+
+# Reddit API infos
 reddit = praw.Reddit(client_id='8idC4P5_L45lig', client_secret='yIuMXcbhk7_85syqBj-LF0Uyeb0',
                      user_agent='discord:blackstones (by /u/demo-meme-bot)')
 
@@ -20,12 +39,13 @@ bot = commands.Bot(command_prefix=prefix)
 
 # Remove the default !help command
 bot.remove_command('help')
-print('[Init] Bot configuré !')
+log.info('BlackBot configuré !')  # INFO
 
 
 ###############################################################################################
 # Config ######################################################################################
 
+# Subreddit dictionnary and size
 subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10827, 'cursedimages': 385017,
                   'FoodPorn': 267418, 'EarthPorn': 566895, 'nocontextpics': 34243,
                   'WTF': 2106561, 'aww': 4381771, 'SFWporn': 583, 'yurimemes': 535, 'yuri': 12617, 'NSFWarframe': 1316,
@@ -34,14 +54,20 @@ subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10
                   'Artistic_ecchi': 347, 'Artistic_Hentai': 2852,
                   'ShitPostCrusaders': 327045, 'PokePorn': 27740, 'wholesomeyaoi': 1901, 'PerfectTiming': 28848,
                   'Creepy': 249925, 'HentaiVisualArts': 1115, 'Rule34lol': 22897, 'Sukebei': 13893, 'Tentai': 6508,
-                  'GloryHo': 904}
+                  'GloryHo': 904, 'Paizuri': 4322, 'AnimatedPorn': 1921, 'Gifs': 922421, 'WesternHentai': 14521,
+                  'hentaifemdom': 5027, 'NintendoWaifus': 17897, 'AnimeBooty': 10168, 'HQHentai': 1025,
+                  'thick_hentai': 11141}
 
+# Subreddit groups for multi-subs commands
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
 
+# Dict to store all submissions
 big_dict = {}
 
+# Store the state of the bot (can operate only at 1)
 rdy = 0
 
+# Store the progress of the initial cache sync
 progress = 0
 
 ###############################################################################################
@@ -65,9 +91,9 @@ def create_gif(data):
         inputs={"tempDL.mp4": None},
         outputs={"tempDiscord.gif": '-y -r 8 -loglevel quiet -vf scale=320:-1'})
 
-    if data[2] < 10: # If the gif is less than 10 seconds
+    if data[2] < 10:  # If the gif is less than 10 seconds
         ff1.run()
-    else: # If the gif is more than 10 seconds
+    else:  # If the gif is more than 10 seconds
         ff2.run()
         if os.path.getsize("tempDiscord.gif") < 8000000:
             pass
@@ -86,16 +112,14 @@ def create_gif(data):
 def prepare_embed(data):
 
     if isinstance(data, tuple):
-        print('prepare embed started / ' + data[1]) ## DEBUG LINE
-        print('is gfycat')
+        log.debug('Prepare embed started / ' + data[1] + ' / GFYCAT')  # DEBUG
         req.urlretrieve(data[1], 'tempDL.mp4')
         create_gif(data)
         file = discord.File(os.path.join(os.getcwd(), "tempDiscord.gif"), filename='tempDiscord.gif')
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
     else:
-        print('prepare embed started / ' + data) ## DEBUG LINE
-        print('no gfycat')
+        log.debug('Prepare embed started / ' + data + ' / GIF')  # DEBUG
         file = None
         embed = discord.Embed()
         embed.set_image(url=data)
@@ -106,17 +130,17 @@ def get_image(subreddit):
 
     image_urls = big_dict.get(subreddit)
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    print(random_image)
+    log.debug('Chosen content URL is : ' + random_image)  # DEBUG
 
     if random_image.endswith('.jpg') or random_image.endswith('.png'):
-        return random_image
+        return random_image, False
 
     if random_image.endswith('.gifv'):
         gifed = os.path.splitext(random_image)[0] + '.gif'
-        return gifed
+        return gifed, True
 
     if random_image.endswith('.gif'):
-        return random_image
+        return random_image, True
 
     if 'gfycat' in random_image:
         gyfcat_name = random_image.split(".com/")[1]
@@ -127,14 +151,22 @@ def get_image(subreddit):
         mp4nm = resp['gfyItem']['numFrames'] 
         mp4fr = resp['gfyItem']['frameRate']
         mp4l = mp4nm / mp4fr
-        return mp4s, mp4f, mp4l
+        return (mp4s, mp4f, mp4l), True
     else:
-        return False
+        return False, False
 
 
-async def check_react(ctx, embed, file):
+async def check_react(ctx, embed, file, isgif):
 
-    print('react started / ')
+    log.debug('React check started...')  # DEBUG
+
+    if isgif is True:
+        timer = 18
+    else:
+        timer = 14
+
+    await ctx.message.delete()
+
     if file is None:
         img = await ctx.channel.send(embed=embed)
     else:
@@ -148,17 +180,15 @@ async def check_react(ctx, embed, file):
                                                                   '\N{CROSS MARK}'] and react.message.id == img.id
 
     try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=14.0, check=check)
+        reaction, user = await bot.wait_for('reaction_add', timeout=timer, check=check)
     except asyncio.TimeoutError:
         await img.delete()
-        await ctx.message.delete()
     else:
 
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
             await img.delete()
-            await ctx.message.delete()
 
 
 def sync_update_cache():
@@ -206,7 +236,7 @@ def sync_update_cache():
 
     for sub in subreddit_dict:
         if sub in subreddit_group_hart:
-            for submission in reddit.subreddit(sub).top(limit=1000):
+            for submission in reddit.subreddit(sub).top(limit=get_sub_nbr(subreddit_dict[sub])):
                 if 'hart' not in big_dict:
                     big_dict['hart'] = []
                 else:
@@ -219,7 +249,7 @@ def sync_update_cache():
                 else:
                     big_dict[sub].append(submission.url)
             progress += 1
-    print('Cache update done !')
+    log.info('Cache update done !')  # INFO
     rdy = 1
 
 
@@ -256,113 +286,122 @@ def check_bot_channel():
 # Check if the bot is ready
 @bot.event
 async def on_ready():
-    print("[Init] Bot en ligne !")
-    await bot.change_presence(activity=discord.Game("lel"))
+    log.info('BlackBot en ligne !')  # INFO
+    await bot.change_presence(activity=discord.Game("Lewding.."))
 
 
-# @bot.event
-# async def on_command_error(ctx, message):
-#    if isinstance(message, commands.UserInputError):
-#        await ctx.channel.send(message)
+@bot.event
+async def on_command_error(ctx, message):
+    if isinstance(message, commands.UserInputError):
+        await ctx.channel.send(message)
 
 
 # !sendmeme command for subreddit 'dankmemes'
 @bot.command()
 @check_if_bot_rdy()
 async def sendmeme(ctx):
-    data = get_image("dankmemes")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("dankmemes")
     while data is False:
-        data = get_image("dankmemes")
+        data, isgif = get_image("dankmemes")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendlewdmeme command for subreddit 'hentaidankmemes'
 @bot.command()
 @check_if_bot_rdy()
 async def sendlewdmeme(ctx):
-    data = get_image("hentaidankmemes")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("hentaidankmemes")
     while data is False:
-        data = get_image("hentaidankmemes")
+        data, isgif = get_image("hentaidankmemes")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendwfmeme command for subreddit 'memeframe'
 @bot.command()
 @check_if_bot_rdy()
 async def sendwfmeme(ctx):
-    data = get_image("memeframe")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("memeframe")
     while data is False:
-        data = get_image("memeframe")
+        data, isgif = get_image("memeframe")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendcursed command for subreddit 'cursedimages'
 @bot.command()
 @check_if_bot_rdy()
 async def sendcursed(ctx):
-    data = get_image("cursedimages")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("cursedimages")
     while data is False:
-        data = get_image("crusedimages")
+        data, isgif = get_image("crusedimages")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendyum command for subreddit 'FoodPorn'
 @bot.command()
 @check_if_bot_rdy()
 async def sendyum(ctx):
-    data = get_image("FoodPorn")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("FoodPorn")
     while data is False:
-        data = get_image("FoodPorn")
+        data, isgif = get_image("FoodPorn")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendearth command for subreddit 'EarthPorn'
 @bot.command()
 @check_if_bot_rdy()
 async def sendearth(ctx):
-    data = get_image("EarthPorn")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("EarthPorn")
     while data is False:
-        data = get_image("EarthPorn")
+        data, isgif = get_image("EarthPorn")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendnocontext command for subreddit 'nocontextpics'        
 @bot.command()
 @check_if_bot_rdy()
 async def sendnocontext(ctx):
-    data = get_image("nocontextpics")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("nocontextpics")
     while data is False:
-        data = get_image("nocontextpics")
+        data, isgif = get_image("nocontextpics")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendwtf command for subreddit 'WTF'     
 @bot.command()
 @check_if_bot_rdy()
 async def sendwtf(ctx):
-    data = get_image("WTF")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("WTF")
     while data is False:
-        data = get_image("WTF")
+        data, isgif = get_image("WTF")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendaww command for subreddit 'aww'     
 @bot.command()
 @check_if_bot_rdy()
 async def sendaww(ctx):
-    data = get_image("aww")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("aww")
     while data is False:
-        data = get_image("aww")
+        data, isgif = get_image("aww")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendsfwporn command for subreddit 'SFWporn'     
@@ -370,11 +409,12 @@ async def sendaww(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendsfwporn(ctx):
-    data = get_image("SFWporn")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("SFWporn")
     while data is False:
-        data = get_image("SFWporn")
+        data, isgif = get_image("SFWporn")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendyurimeme command for subreddit 'yurimemes'     
@@ -382,11 +422,12 @@ async def sendsfwporn(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendyurimeme(ctx):
-    data = get_image("yurimemes")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("yurimemes")
     while data is False:
-        data = get_image("yurimemes")
+        data, isgif = get_image("yurimemes")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendyuri command for subreddit 'yuri'     
@@ -394,11 +435,12 @@ async def sendyurimeme(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendyuri(ctx):
-    data = get_image("yuri")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("yuri")
     while data is False:
-        data = get_image("yuri")
+        data, isgif = get_image("yuri")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendnsfwarframe command for subreddit 'NSFWarframe'     
@@ -406,11 +448,12 @@ async def sendyuri(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendnsfwarframe(ctx):
-    data = get_image("NSFWarframe")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("NSFWarframe")
     while data is False:
-        data = get_image("NSFWarframe")
+        data, isgif = get_image("NSFWarframe")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendyurigif command for subreddit 'yurigif'     
@@ -418,11 +461,12 @@ async def sendnsfwarframe(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendyurigif(ctx):
-    data = get_image("yurigif")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("yurigif")
     while data is False:
-        data = get_image("yurigif")
+        data, isgif = get_image("yurigif")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendhh command for subreddit 'hentai'
@@ -430,11 +474,12 @@ async def sendyurigif(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendhh(ctx):
-    data = get_image("hentai")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("hentai")
     while data is False:
-        data = get_image("hentai")
+        data, isgif = get_image("hentai")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendfurry command for subreddit 'yiff'
@@ -442,22 +487,24 @@ async def sendhh(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendfurry(ctx):
-    data = get_image("yiff")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("yiff")
     while data is False:
-        data = get_image("yiff")
+        data, isgif = get_image("yiff")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendneko command for subreddit 'nekogirls'
 @bot.command()
 @check_if_bot_rdy()
 async def sendneko(ctx):
-    data = get_image("nekogirls")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("nekogirls")
     while data is False:
-        data = get_image("nekogirls")
+        data, isgif = get_image("nekogirls")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendneko command for subreddit 'NekoHentai'
@@ -465,11 +512,12 @@ async def sendneko(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendnekoh(ctx):
-    data = get_image("NekoHentai")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("NekoHentai")
     while data is False:
-        data = get_image("NekoHentai")
+        data, isgif = get_image("NekoHentai")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendconfused command for subreddit 'ConfusedBoners'
@@ -477,22 +525,24 @@ async def sendnekoh(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendconfused(ctx):
-    data = get_image("ConfusedBoners")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("ConfusedBoners")
     while data is False:
-        data = get_image("ConfusedBoners")
+        data, isgif = get_image("ConfusedBoners")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 # !sendrule command for subreddit 'Rule34'
 @bot.command()
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendrule(ctx):
-    data = get_image("Rule34")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("Rule34")
     while data is False:
-        data = get_image("Rule34")
+        data, isgif = get_image("Rule34")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendhhgif command for subreddit 'Hentai_Gif'
@@ -501,11 +551,11 @@ async def sendrule(ctx):
 @check_bot_channel()
 async def sendhhgif(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
-    data = get_image("Hentai_Gif")
+    data, isgif = get_image("Hentai_Gif")
     while data is False:
-        data = get_image("Hentai_Gif")
+        data, isgif = get_image("Hentai_Gif")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendecchi command for subreddit 'ecchi'
@@ -513,11 +563,12 @@ async def sendhhgif(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendecchi(ctx):
-    data = get_image("ecchi")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("ecchi")
     while data is False:
-        data = get_image("ecchi")
+        data, isgif = get_image("ecchi")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendjojomeme command for subreddit 'ShitPostCrusaders'
@@ -525,11 +576,12 @@ async def sendecchi(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendjojomeme(ctx):
-    data = get_image("ShitPostCrusaders")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("ShitPostCrusaders")
     while data is False:
-        data = get_image("ShitPostCrusaders")
+        data, isgif = get_image("ShitPostCrusaders")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendpokeh command for subreddit 'PokePorn'
@@ -537,11 +589,12 @@ async def sendjojomeme(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendpokeh(ctx):
-    data = get_image("PokePorn")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("PokePorn")
     while data is False:
-        data = get_image("PokePorn")
+        data, isgif = get_image("PokePorn")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendsoftyaoi command for subreddit 'wholesomeyaoi'
@@ -549,11 +602,12 @@ async def sendpokeh(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendsoftyaoi(ctx):
-    data = get_image("wholesomeyaoi")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("wholesomeyaoi")
     while data is False:
-        data = get_image("wholesomeyaoi")
+        data, isgif = get_image("wholesomeyaoi")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendtiming command for subreddit 'PerfectTiming'
@@ -561,11 +615,12 @@ async def sendsoftyaoi(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendtiming(ctx):
-    data = get_image("PerfectTiming")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("PerfectTiming")
     while data is False:
-        data = get_image("PerfectTiming")
+        data, isgif = get_image("PerfectTiming")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendcreepy command for subreddit 'Creepy'
@@ -573,11 +628,12 @@ async def sendtiming(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendcreepy(ctx):
-    data = get_image("Creepy")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("Creepy")
     while data is False:
-        data = get_image("Creepy")
+        data, isgif = get_image("Creepy")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendhart command for subreddit group Artistic_ecchi + Artistic_Hentai + HentaiVisualArts'
@@ -585,11 +641,12 @@ async def sendcreepy(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendhart(ctx):
-    data = get_image("hart")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("hart")
     while data is False:
-        data = get_image("hart")
+        data, isgif = get_image("hart")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sendhlol command for subreddit 'Rule34lol'
@@ -597,11 +654,12 @@ async def sendhart(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendhlol(ctx):
-    data = get_image("Rule34lol")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("Rule34lol")
     while data is False:
-        data = get_image("Rule34lol")
+        data, isgif = get_image("Rule34lol")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
     
     
 # !sendtacles command for subreddit 'Tentai'
@@ -609,11 +667,12 @@ async def sendhlol(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendtacles(ctx):
-    data = get_image("Tentai")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("Tentai")
     while data is False:
-        data = get_image("Tentai")
+        data, isgif = get_image("Tentai")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
     
     
 # !sendgho command for subreddit 'GloryHo'
@@ -621,11 +680,129 @@ async def sendtacles(ctx):
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendgho(ctx):
-    data = get_image("GloryHo")
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("GloryHo")
     while data is False:
-        data = get_image("GloryHo")
+        data, isgif = get_image("GloryHo")
     embed, file = prepare_embed(data)
-    await check_react(ctx, embed, file)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendpaizu command for subreddit 'Paizuri'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendpaizu(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("Paizuri")
+    while data is False:
+        data, isgif = get_image("Paizuri")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !send3dh command for subreddit 'AnimatedPorn'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def send3dh(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("AnimatedPorn")
+    while data is False:
+        data, isgif = get_image("AnimatedPorn")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendgif command for subreddit 'Gifs'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendgif(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("Gifs")
+    while data is False:
+        data, isgif = get_image("Gifs")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendwh command for subreddit 'WesternHentai'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendwh(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("WesternHentai")
+    while data is False:
+        data, isgif = get_image("WesternHentai")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendwh command for subreddit 'hentaifemdom'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendhfemdom(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("hentaifemdom")
+    while data is False:
+        data, isgif = get_image("hentaifemdom")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendhnwaifu command for subreddit 'NintendoWaifus'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendhnwaifu(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("NintendoWaifus")
+    while data is False:
+        data, isgif = get_image("NintendoWaifus")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendhbooty command for subreddit 'AnimeBooty'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendhbooty(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("AnimeBooty")
+    while data is False:
+        data, isgif = get_image("AnimeBooty")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendhqh command for subreddit 'HQHentai'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendhqh(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("HQHentai")
+    while data is False:
+        data, isgif = get_image("HQHentai")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendthickh command for subreddit 'thick_hentai'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendthickh(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("thick_hentai")
+    while data is False:
+        data, isgif = get_image("thick_hentai")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sup to get status of the bot
@@ -678,15 +855,12 @@ async def halp(ctx):
 
 
 # CumHentai
-# AnimatedPorn
 # Mariorule34
-# Paizuri
-# hentaifemdom (a voir)
 # need : sub de femdom
 # need : sub titsagainsttits
 
 # TO-DO :
-# Accurate settings for gfycat gifs
+# Fix gfycat size
 # More time to react for heavy-loading gifs
 # More commands
 # Fuse commands
