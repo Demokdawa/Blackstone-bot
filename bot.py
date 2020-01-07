@@ -861,7 +861,6 @@ async def halp(ctx):
 
 # TO-DO :
 # Fix gfycat size
-# More time to react for heavy-loading gifs
 # More commands
 # Fuse commands
 # Apply restricting % filter on fused commands too
