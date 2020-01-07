@@ -19,13 +19,13 @@ log.setLevel(logging.DEBUG)
 
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
-formatter = logging.Formatter("%(asctime)s.%(msecs)03d - %(name)s:%(lineno)d - %(levelname)s - %(message)s", "%Y%m%d%H%M%S")
+formatter = logging.Formatter("%(asctime)s - %(message)s", "%Y-%m-%d %H:%M:%S")
 console.setFormatter(formatter)
 log.addHandler(console)
 
 fh = logging.FileHandler('Blackbot.log')
 fh.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(asctime)s.%(msecs)03d - %(message)s", "%Y%m%d%H%M%S")
+formatter = logging.Formatter("%(asctime)s.%(msecs)03d - %(name)s:%(lineno)d - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
 fh.setFormatter(formatter)
 log.addHandler(fh)
 
@@ -547,7 +547,7 @@ async def sendrule(ctx):
 
 # !sendhhgif command for subreddit 'Hentai_Gif'
 @bot.command()
-# @check_if_bot_rdy()
+@check_if_bot_rdy()
 @check_bot_channel()
 async def sendhhgif(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
@@ -867,5 +867,5 @@ async def halp(ctx):
 # Apply restricting % filter on fused commands too
 
 update_cache.start()
-bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
-# bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
+# bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
+bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
