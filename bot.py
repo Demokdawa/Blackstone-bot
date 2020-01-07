@@ -863,7 +863,6 @@ async def halp(ctx):
 # Fix gfycat size
 # More commands
 # Fuse commands
-# Apply restricting % filter on fused commands too
 
 update_cache.start()
 # bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
