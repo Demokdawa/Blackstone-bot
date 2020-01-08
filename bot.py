@@ -119,7 +119,7 @@ def prepare_embed(data):
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
     else:
-        log.debug('Prepare embed started / ' + data + ' / GIF')  # DEBUG
+        log.debug('Prepare embed started / ' + data + ' / NOT GFYCAT')  # DEBUG
         file = None
         embed = discord.Embed()
         embed.set_image(url=data)
@@ -160,7 +160,7 @@ async def check_react(ctx, embed, file, isgif):
 
     log.debug('React check started...')  # DEBUG
 
-    await ctx.msg.clear_reactions()
+    await ctx.message.clear_reactions()
 
     if isgif is True:
         timer = 18
