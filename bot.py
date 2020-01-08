@@ -576,7 +576,6 @@ async def sendecchi(ctx):
 # !sendjojomeme command for subreddit 'ShitPostCrusaders'
 @bot.command()
 @check_if_bot_rdy()
-@check_bot_channel()
 async def sendjojomeme(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
     data, isgif = get_image("ShitPostCrusaders")
@@ -615,7 +614,6 @@ async def sendsoftyaoi(ctx):
 # !sendtiming command for subreddit 'PerfectTiming'
 @bot.command()
 @check_if_bot_rdy()
-@check_bot_channel()
 async def sendtiming(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
     data, isgif = get_image("PerfectTiming")
@@ -628,7 +626,6 @@ async def sendtiming(ctx):
 # !sendcreepy command for subreddit 'Creepy'
 @bot.command()
 @check_if_bot_rdy()
-@check_bot_channel()
 async def sendcreepy(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
     data, isgif = get_image("Creepy")
