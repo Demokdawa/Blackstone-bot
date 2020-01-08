@@ -160,12 +160,12 @@ async def check_react(ctx, embed, file, isgif):
 
     log.debug('React check started...')  # DEBUG
 
+    await ctx.msg.clear_reactions()
+
     if isgif is True:
         timer = 18
     else:
         timer = 14
-
-    await ctx.message.delete()
 
     if file is None:
         img = await ctx.channel.send(embed=embed)
@@ -183,12 +183,14 @@ async def check_react(ctx, embed, file, isgif):
         reaction, user = await bot.wait_for('reaction_add', timeout=timer, check=check)
     except asyncio.TimeoutError:
         await img.delete()
+        await ctx.message.delete()
     else:
 
         if str(reaction.emoji) == '\N{WHITE HEAVY CHECK MARK}':
             await img.clear_reactions()
         else:
             await img.delete()
+            await ctx.message.delete()
 
 
 def sync_update_cache():
@@ -740,7 +742,7 @@ async def sendwh(ctx):
     await check_react(ctx, embed, file, isgif)
 
 
-# !sendwh command for subreddit 'hentaifemdom'
+# !sendhfemdom command for subreddit 'hentaifemdom'
 @bot.command()
 @check_if_bot_rdy()
 @check_bot_channel()
@@ -847,6 +849,10 @@ async def halp(ctx):
     embed.add_field(name="!sendhlol", value="🔞", inline=False)
     embed.add_field(name="!sendpokeh", value="🔞", inline=False)
     embed.add_field(name="!sendsoftyaoi", value="🔞", inline=False)
+    embed.add_field(name="!sendhqh", value="🔞", inline=False)
+    embed.add_field(name="!sendhfemdom", value="🔞", inline=False)
+    embed.add_field(name="!sendhnwaifu", value="🔞", inline=False)
+    embed.add_field(name="!send3dh", value="🔞", inline=False)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
              "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
