@@ -853,6 +853,7 @@ async def halp(ctx):
     embed.add_field(name="!sendhfemdom", value="🔞", inline=False)
     embed.add_field(name="!sendhnwaifu", value="🔞", inline=False)
     embed.add_field(name="!send3dh", value="🔞", inline=False)
+    embed.add_field(name="!sendwh", value="🔞", inline=False)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
              "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
