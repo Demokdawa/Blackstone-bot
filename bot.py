@@ -119,7 +119,7 @@ def prepare_embed(data):
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
     else:
-        log.debug('Prepare embed started / ' + data + ' / GIF')  # DEBUG
+        log.debug('Prepare embed started / ' + data + ' / NO CONVERSION NEEDED')  # DEBUG
         file = None
         embed = discord.Embed()
         embed.set_image(url=data)
@@ -272,7 +272,7 @@ def check_if_bot_rdy():
 
 def check_bot_channel():
     def predicate(ctx):
-        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156:
+        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156 or ctx.guild.id == 664852715347640320:
             return True
         else:
             raise commands.UserInputError("Ey non, pas ici petit coquin !")
@@ -853,6 +853,7 @@ async def halp(ctx):
     embed.add_field(name="!sendhfemdom", value="🔞", inline=False)
     embed.add_field(name="!sendhnwaifu", value="🔞", inline=False)
     embed.add_field(name="!send3dh", value="🔞", inline=False)
+    embed.add_field(name="!sendhbooty", value="🔞", inline=False)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
              "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
