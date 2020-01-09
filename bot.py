@@ -119,7 +119,7 @@ def prepare_embed(data):
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
     else:
-        log.debug('Prepare embed started / ' + data + ' / NO CONVERSION NEEDED')  # DEBUG
+        log.debug('Prepare embed started / ' + data + ' / NOT GFYCAT')  # DEBUG
         file = None
         embed = discord.Embed()
         embed.set_image(url=data)
@@ -160,7 +160,7 @@ async def check_react(ctx, embed, file, isgif):
 
     log.debug('React check started...')  # DEBUG
 
-    await ctx.msg.clear_reactions()
+    await ctx.message.clear_reactions()
 
     if isgif is True:
         timer = 18
@@ -272,7 +272,7 @@ def check_if_bot_rdy():
 
 def check_bot_channel():
     def predicate(ctx):
-        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156 or ctx.guild.id == 664852715347640320:
+        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156:
             return True
         else:
             raise commands.UserInputError("Ey non, pas ici petit coquin !")
@@ -576,7 +576,6 @@ async def sendecchi(ctx):
 # !sendjojomeme command for subreddit 'ShitPostCrusaders'
 @bot.command()
 @check_if_bot_rdy()
-@check_bot_channel()
 async def sendjojomeme(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
     data, isgif = get_image("ShitPostCrusaders")
@@ -615,7 +614,6 @@ async def sendsoftyaoi(ctx):
 # !sendtiming command for subreddit 'PerfectTiming'
 @bot.command()
 @check_if_bot_rdy()
-@check_bot_channel()
 async def sendtiming(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
     data, isgif = get_image("PerfectTiming")
@@ -628,7 +626,6 @@ async def sendtiming(ctx):
 # !sendcreepy command for subreddit 'Creepy'
 @bot.command()
 @check_if_bot_rdy()
-@check_bot_channel()
 async def sendcreepy(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
     data, isgif = get_image("Creepy")
@@ -853,7 +850,7 @@ async def halp(ctx):
     embed.add_field(name="!sendhfemdom", value="🔞", inline=False)
     embed.add_field(name="!sendhnwaifu", value="🔞", inline=False)
     embed.add_field(name="!send3dh", value="🔞", inline=False)
-    embed.add_field(name="!sendhbooty", value="🔞", inline=False)
+    embed.add_field(name="!sendwh", value="🔞", inline=False)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
              "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
