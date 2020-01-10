@@ -272,7 +272,7 @@ def check_if_bot_rdy():
 
 def check_bot_channel():
     def predicate(ctx):
-        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156:
+        if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156 or ctx.guild.id == 664852715347640320:
             return True
         else:
             raise commands.UserInputError("Ey non, pas ici petit coquin !")
