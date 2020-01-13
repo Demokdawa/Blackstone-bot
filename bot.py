@@ -851,7 +851,8 @@ async def halp(ctx):
     embed.add_field(name="!sendhfemdom", value="!sendhnwaifu", inline=True)
     embed.add_field(name="!send3dh", value="!sendwh", inline=True)
     embed.add_field(name="!sendhbooty", value="!sendthickh", inline=True)
-    embed.add_field(name="!sendpaizu", value="//", inline=True)
+    embed.add_field(name="!sendpaizu", value="!sendgho", inline=True)
+    embed.add_field(name="!sendtacles", value="//", inline=True)
     embed.set_footer(
         text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
              "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
@@ -860,7 +861,6 @@ async def halp(ctx):
 
 
 # CumHentai
-# need : sub de femdom
 # need : sub titsagainsttits
 
 # TO-DO :
