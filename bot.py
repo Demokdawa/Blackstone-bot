@@ -56,7 +56,7 @@ subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10
                   'Creepy': 249925, 'HentaiVisualArts': 1115, 'Rule34lol': 22897, 'Sukebei': 13893, 'Tentai': 6508,
                   'GloryHo': 904, 'Paizuri': 4322, 'AnimatedPorn': 1921, 'Gifs': 922421, 'WesternHentai': 14521,
                   'hentaifemdom': 5027, 'NintendoWaifus': 17897, 'AnimeBooty': 10168, 'HQHentai': 1025,
-                  'thick_hentai': 11141, 'Mariorule34': 2179}
+                  'thick_hentai': 11141, 'Mariorule34': 2179, 'HentaiBreeding': 1006}
 
 # Subreddit groups for multi-subs commands
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
@@ -818,6 +818,21 @@ async def sendchampih(ctx):
         data, isgif = get_image("Mariorule34")
     embed, file = prepare_embed(data)
     await check_react(ctx, embed, file, isgif)
+    
+    
+# !sendfilled command for subreddit 'HentaiBreeding'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendfilled(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("HentaiBreeding")
+    while data is False:
+        data, isgif = get_image("HentaiBreeding")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
 
 
 # !sup to get status of the bot
@@ -889,5 +904,5 @@ async def halp(ctx):
 # Get more submissions than 1000 for huge subs
 
 update_cache.start()
-bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
-# bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
+# bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
+bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
