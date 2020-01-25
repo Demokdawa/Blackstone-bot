@@ -280,6 +280,7 @@ def check_bot_channel():
             raise commands.UserInputError("Ey non, pas ici petit coquin !")
     return commands.check(predicate)
 
+
 ###############################################################################################
 # Custom Convertors ###########################################################################
 
@@ -831,32 +832,50 @@ async def sup(ctx):
 # !halp command for help
 @bot.command()
 async def halp(ctx):
-    embed = discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !",
-                          description="Je suis la pour vous aider 😄", color=0xd5d500)
-    embed.add_field(name="!sendmeme", value="!sendwfmeme", inline=True)
-    embed.add_field(name="!sencursed", value="!sendyum", inline=True)
-    embed.add_field(name="!sendearth", value="!sendnocontext", inline=True)
-    embed.add_field(name="!sendnocontext", value="!sendwtf", inline=True)
-    embed.add_field(name="!sendaww", value="!sendjojomeme", inline=True)
-    embed.add_field(name="!sendneko", value="!sendcreepy", inline=True)
-    embed.add_field(name="!sendtiming", value="!sendsfwporn", inline=True)
-    embed.add_field(name="!sendyuri", value="!sendyurigif", inline=True)
-    embed.add_field(name="!sendyurimeme", value="!sendnsfwarframe", inline=True)
-    embed.add_field(name="!sendnekoh", value="!sendhh", inline=True)
-    embed.add_field(name="!sendhart", value="!sendhhgif", inline=True)
-    embed.add_field(name="!sendrule", value="!sendconfused", inline=True)
-    embed.add_field(name="!sendecchi", value="!sendfurry", inline=True)
-    embed.add_field(name="!sendhlol", value="!sendpokeh", inline=True)
-    embed.add_field(name="!sendsoftyaoi", value="!sendhqh", inline=True)
-    embed.add_field(name="!sendhfemdom", value="!sendhnwaifu", inline=True)
-    embed.add_field(name="!send3dh", value="!sendwh", inline=True)
-    embed.add_field(name="!sendhbooty", value="!sendthickh", inline=True)
-    embed.add_field(name="!sendpaizu", value="!sendgho", inline=True)
-    embed.add_field(name="!sendtacles", value="//", inline=True)
-    embed.set_footer(
-        text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
-             "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
-             "directement. ")
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156 or ctx.guild.id == 664852715347640320:
+
+        embed = discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !",
+                              description="Je suis la pour vous aider 😄", color=0xd5d500)
+        embed.add_field(name="!sendmeme", value="!sendwfmeme", inline=True)
+        embed.add_field(name="!sencursed", value="!sendyum", inline=True)
+        embed.add_field(name="!sendearth", value="!sendnocontext", inline=True)
+        embed.add_field(name="!sendnocontext", value="!sendwtf", inline=True)
+        embed.add_field(name="!sendaww", value="!sendjojomeme", inline=True)
+        embed.add_field(name="!sendneko", value="!sendcreepy", inline=True)
+        embed.add_field(name="!sendtiming", value="!sendsfwporn", inline=True)
+        embed.add_field(name="!sendyuri", value="!sendyurigif", inline=True)
+        embed.add_field(name="!sendyurimeme", value="!sendnsfwarframe", inline=True)
+        embed.add_field(name="!sendnekoh", value="!sendhh", inline=True)
+        embed.add_field(name="!sendhart", value="!sendhhgif", inline=True)
+        embed.add_field(name="!sendrule", value="!sendconfused", inline=True)
+        embed.add_field(name="!sendecchi", value="!sendfurry", inline=True)
+        embed.add_field(name="!sendhlol", value="!sendpokeh", inline=True)
+        embed.add_field(name="!sendsoftyaoi", value="!sendhqh", inline=True)
+        embed.add_field(name="!sendhfemdom", value="!sendhnwaifu", inline=True)
+        embed.add_field(name="!send3dh", value="!sendwh", inline=True)
+        embed.add_field(name="!sendhbooty", value="!sendthickh", inline=True)
+        embed.add_field(name="!sendpaizu", value="!sendgho", inline=True)
+        embed.add_field(name="!sendtacles", value="//", inline=True)
+        embed.set_footer(
+            text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
+                 "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
+                 "directement. ")
+    else:
+
+        embed = discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !",
+                              description="Je suis la pour vous aider 😄", color=0xd5d500)
+        embed.add_field(name="!sendmeme", value="!sendwfmeme", inline=True)
+        embed.add_field(name="!sencursed", value="!sendyum", inline=True)
+        embed.add_field(name="!sendearth", value="!sendnocontext", inline=True)
+        embed.add_field(name="!sendnocontext", value="!sendwtf", inline=True)
+        embed.add_field(name="!sendaww", value="!sendjojomeme", inline=True)
+        embed.add_field(name="!sendneko", value="!sendcreepy", inline=True)
+        embed.add_field(name="!sendtiming", value="!sendsfwporn", inline=True)
+        embed.set_footer(
+            text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
+                 "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
+                 "directement. ")
+
     await ctx.channel.send(embed=embed)
 
 
