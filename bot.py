@@ -833,8 +833,6 @@ async def sendfilled(ctx):
     await check_react(ctx, embed, file, isgif)
 
 
-
-
 # !sup to get status of the bot
 @bot.command()
 async def sup(ctx):
