@@ -884,7 +884,7 @@ async def sendpublic(ctx):
     embed, file = prepare_embed(data)
     await check_react(ctx, embed, file, isgif)
     
-
+	
 # !sendmonster command for subreddit group 'monster'
 @bot.command()
 @check_if_bot_rdy()
