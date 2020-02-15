@@ -56,10 +56,21 @@ subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10
                   'Creepy': 249925, 'HentaiVisualArts': 1115, 'Rule34lol': 22897, 'Sukebei': 13893, 'Tentai': 6508,
                   'GloryHo': 904, 'Paizuri': 4322, 'AnimatedPorn': 1921, 'Gifs': 922421, 'WesternHentai': 14521,
                   'hentaifemdom': 5027, 'NintendoWaifus': 17897, 'AnimeBooty': 10168, 'HQHentai': 1025,
-                  'thick_hentai': 11141, 'Mariorule34': 2179, 'HentaiBreeding': 1006}
+                  'thick_hentai': 11141, 'Mariorule34': 2179, 'HentaiBreeding': 1006, 'cumflation': 2817, 'XrayHentai': 72,
+                  'FreeuseHentai': 2075, 'hentaibondage': 14464, 'GameOverGirls': 2487, 'HelplessHentai': 2693, 'consentacles': 5245,
+                  'HentaiBeast': 15812, 'MonsterGirl': 24007, 'SlimeGirls': 1611, 'PublicHentai': 1216, 'Hentaicumsluts': 527, 
+                  'CumHentai': 4303, 'StuckHentai': 790}
 
 # Subreddit groups for multi-subs commands
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
+
+subreddit_group_cum = ['HentaiBreeding', 'XrayHentai', 'cumflation', 'Hentaicumsluts', 'CumHentai']
+
+subreddit_group_used = ['GloryHo', 'FreeuseHentai', 'hentaibondage', 'GameOverGirls', 'HelplessHentai', 'StuckHentai']
+
+subreddit_group_tacles = ['Tentai', 'consentacles']
+
+subreddit_group_monster = ['HentaiBeast', 'MonsterGirl', 'SlimeGirls']
 
 # Dict to store all submissions
 big_dict = {}
@@ -245,6 +256,34 @@ def sync_update_cache():
                     big_dict['hart'] = []
                 else:
                     big_dict['hart'].append(submission.url)
+            progress += 1
+        if sub in subreddit_group_cum:
+            for submission in reddit.subreddit(sub).top(limit=get_sub_nbr(subreddit_dict[sub])):
+                if 'cum' not in big_dict:
+                    big_dict['cum'] = []
+                else:
+                    big_dict['cum'].append(submission.url)
+            progress += 1
+        if sub in subreddit_group_used:
+            for submission in reddit.subreddit(sub).top(limit=get_sub_nbr(subreddit_dict[sub])):
+                if 'used' not in big_dict:
+                    big_dict['used'] = []
+                else:
+                    big_dict['used'].append(submission.url)
+            progress += 1
+        if sub in subreddit_group_tacles:
+            for submission in reddit.subreddit(sub).top(limit=get_sub_nbr(subreddit_dict[sub])):
+                if 'tacles' not in big_dict:
+                    big_dict['tacles'] = []
+                else:
+                    big_dict['tacles'].append(submission.url)
+            progress += 1
+        if sub in subreddit_group_monster:
+            for submission in reddit.subreddit(sub).top(limit=get_sub_nbr(subreddit_dict[sub])):
+                if 'monster' not in big_dict:
+                    big_dict['monster'] = []
+                else:
+                    big_dict['monster'].append(submission.url)
             progress += 1
         else:
             for submission in reddit.subreddit(sub).top(limit=get_sub_nbr(subreddit_dict[sub])):
@@ -664,28 +703,28 @@ async def sendhlol(ctx):
     await check_react(ctx, embed, file, isgif)
     
     
-# !sendtacles command for subreddit 'Tentai'
+# !sendtacles command for subreddit group 'tacles'
 @bot.command()
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendtacles(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
-    data, isgif = get_image("Tentai")
+    data, isgif = get_image("tacles")
     while data is False:
-        data, isgif = get_image("Tentai")
+        data, isgif = get_image("tacles")
     embed, file = prepare_embed(data)
     await check_react(ctx, embed, file, isgif)
     
     
-# !sendgho command for subreddit 'GloryHo'
+# !sendused command for subreddit group 'used'
 @bot.command()
 @check_if_bot_rdy()
 @check_bot_channel()
-async def sendgho(ctx):
+async def sendgused(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
-    data, isgif = get_image("GloryHo")
+    data, isgif = get_image("used")
     while data is False:
-        data, isgif = get_image("GloryHo")
+        data, isgif = get_image("used")
     embed, file = prepare_embed(data)
     await check_react(ctx, embed, file, isgif)
 
@@ -820,19 +859,43 @@ async def sendchampih(ctx):
     await check_react(ctx, embed, file, isgif)
     
     
-# !sendfilled command for subreddit 'HentaiBreeding'
+# !sendfilled command for subreddit group 'cum'
 @bot.command()
 @check_if_bot_rdy()
 @check_bot_channel()
 async def sendfilled(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
-    data, isgif = get_image("HentaiBreeding")
+    data, isgif = get_image("cum")
     while data is False:
-        data, isgif = get_image("HentaiBreeding")
+        data, isgif = get_image("cum")
     embed, file = prepare_embed(data)
     await check_react(ctx, embed, file, isgif)
+    
+    
+# !sendpublic command for subreddit 'PublicHentai'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendpublic(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("PublicHentai")
+    while data is False:
+        data, isgif = get_image("PublicHentai")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+    
 
-
+# !sendmonster command for subreddit group 'monster'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendmonster(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("monster")
+    while data is False:
+        data, isgif = get_image("monster")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
 
 
 # !sup to get status of the bot
