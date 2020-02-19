@@ -720,7 +720,7 @@ async def sendtacles(ctx):
 @bot.command()
 @check_if_bot_rdy()
 @check_bot_channel()
-async def sendgused(ctx):
+async def sendused(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
     data, isgif = get_image("used")
     while data is False:
