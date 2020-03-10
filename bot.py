@@ -994,7 +994,7 @@ async def warn(ctx):
     if result:
         cursor.execute('''UPDATE Users SET WarnsNumber = WarnsNumber + 1 WHERE DiscordUserId = ?''', (ctx.message.author.id,))
     else:
-        cursor.execute('''INSERT INTO Users (DiscordUserId, DiscordUserTag, WarnsNumber) VALUES (?,?,?)''', (ctx.message.author.id, ctx.message.author, '1'))
+        cursor.execute('''INSERT INTO Users (DiscordUserId, DiscordUserTag, WarnsNumber) VALUES (?,?,?)''', (ctx.message.author.id, str(ctx.message.author), 1))
     
     db.commit()
     
