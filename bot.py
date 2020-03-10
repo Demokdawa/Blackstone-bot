@@ -1046,5 +1046,5 @@ async def halp(ctx):
 # Get more submissions than 1000 for huge subs
 
 update_cache.start()
-# bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
-bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
+bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
+# bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
