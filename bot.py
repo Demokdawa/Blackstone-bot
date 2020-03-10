@@ -987,7 +987,7 @@ async def sup(ctx):
 # !warn [pseudo] command to warn a specific user
 @bot.command()
 async def warn(ctx, a1):
-    user = ctx.message.mentions[0].member.id
+    user = ctx.message.mentions[0].id
     if user:
         cursor = db.cursor()
         # TestQuery
