@@ -982,6 +982,7 @@ async def sup(ctx):
 # Config ######################################################################################
 
 # !warn [pseudo] command to warn a specific user
+@bot.command()
 async def warn(ctx):
     await ctx.channel.send(ctx.message.author.id)
 
