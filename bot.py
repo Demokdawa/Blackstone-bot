@@ -408,10 +408,10 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("Lewding.."))
 
 
-@bot.event
-async def on_command_error(ctx, message):
-    if isinstance(message, commands.UserInputError):
-        await ctx.channel.send(message)
+#@bot.event
+#async def on_command_error(ctx, message):
+#    if isinstance(message, commands.UserInputError):
+#        await ctx.channel.send(message)
 
 
 # !sendmeme command for subreddit 'dankmemes'
