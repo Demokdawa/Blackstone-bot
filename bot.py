@@ -986,19 +986,23 @@ async def sup(ctx):
 
 # !warn [pseudo] command to warn a specific user
 @bot.command()
-async def warn(ctx):
-    cursor = db.cursor()
-    # TestQuery
-    cursor.execute('''SELECT IDUser FROM Users WHERE DiscordUserId = ?''', (ctx.message.author.id,))
-    result = cursor.fetchone()
-    if result:
-        cursor.execute('''UPDATE Users SET WarnsNumber = WarnsNumber + 1 WHERE DiscordUserId = ?''', (ctx.message.author.id,))
+async def warn(ctx, a1):
+    user = get_member_named(a1)
+    if user:
+        cursor = db.cursor()
+        # TestQuery
+        cursor.execute('''SELECT IDUser FROM Users WHERE DiscordUserId = ?''', (ctx.message.author.id,))
+        result = cursor.fetchone()
+        if result:
+            cursor.execute('''UPDATE Users SET WarnsNumber = WarnsNumber + 1 WHERE DiscordUserId = ?''', (ctx.message.author.id,))
+        else:
+            cursor.execute('''INSERT INTO Users (DiscordUserId, DiscordUserTag, WarnsNumber) VALUES (?,?,?)''', (ctx.message.author.id, str(ctx.message.author), 1))
+        db.commit()
+        print(user)
+        await ctx.channel.send(str(ctx.message.author.id) + ' is warned !')
     else:
-        cursor.execute('''INSERT INTO Users (DiscordUserId, DiscordUserTag, WarnsNumber) VALUES (?,?,?)''', (ctx.message.author.id, str(ctx.message.author), 1))
+        await ctx.channel.send('L\'utilisateur "' + a1 + '" n\'existe pas !')
     
-    db.commit()
-    
-    await ctx.channel.send(str(ctx.message.author.id) + ' is warned !')
 
 
 # !halp command for help
