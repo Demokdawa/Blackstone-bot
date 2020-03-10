@@ -988,20 +988,17 @@ async def sup(ctx):
 @bot.command()
 async def warn(ctx, a1):
     mentionned_id = ctx.message.mentions[0].id
-    if user:
-        cursor = db.cursor()
-        # TestQuery
-        cursor.execute('''SELECT IDUser FROM Users WHERE DiscordUserId = ?''', (mentionned_id,))
-        result = cursor.fetchone()
-        if result:
-            cursor.execute('''UPDATE Users SET WarnsNumber = WarnsNumber + 1 WHERE DiscordUserId = ?''', (mentionned_id,))
-        else:
-            cursor.execute('''INSERT INTO Users (DiscordUserId, DiscordUserTag, WarnsNumber) VALUES (?,?,?)''', (mentionned_id, str(ctx.message.author), 1))
-        db.commit()
-        print(ctx.message.mentions[0])
-        await ctx.channel.send(str(mentionned_id) + ' is warned !')
+    cursor = db.cursor()
+    # TestQuery
+    cursor.execute('''SELECT IDUser FROM Users WHERE DiscordUserId = ?''', (mentionned_id,))
+    result = cursor.fetchone()
+    if result:
+        cursor.execute('''UPDATE Users SET WarnsNumber = WarnsNumber + 1 WHERE DiscordUserId = ?''', (mentionned_id,))
     else:
-        await ctx.channel.send('L\'utilisateur "' + a1 + '" n\'existe pas !')
+        cursor.execute('''INSERT INTO Users (DiscordUserId, DiscordUserTag, WarnsNumber) VALUES (?,?,?)''', (mentionned_id, str(ctx.message.author), 1))
+    db.commit()
+    print(ctx.message.mentions[0])
+    await ctx.channel.send(str(mentionned_id) + ' is warned !')
     
 
 
