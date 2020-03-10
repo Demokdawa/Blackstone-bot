@@ -1,0 +1,5 @@
+En vrai, je propose un truc (tant qu'on est dans les changements sur discord), je pensait que pour la censure des gros mots on pourrait changer un poil le système.
+Genre on fait 2 listes de mots bannis. Une liste de mots vulgaires mais ca va. Une liste de mots vraiment graves. Les mots graves sont direct censuré (donc delete), et t'a un 2xaverto.
+Les mots "legers" sont pas censurés, mais ca te file un averto (on est limite même pas obligé de faire que le bot te le fasse remarqué, seulement par mp ca suffit).
+LEs avertos font office de "points", quand tu atteint un petit nombre d'averto tu perd de l'xp. Quand tu atteint un grand nombre d'averto, t'est mute, et tu perd beaucoup d'xp.
+Oui c'est assez spécial, mais ca peux être sympa je trouve ^^
