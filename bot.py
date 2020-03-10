@@ -321,11 +321,82 @@ def check_bot_channel():
 
 
 ###############################################################################################
-# Custom Convertors ###########################################################################
+# Rôle Attribution ############################################################################
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    message_to_track = 678911976252112926
+
+    perrin_emoji = 678378425001443343
+    veil_emoji = 678378424925945856
+    meridian_emoji = 678378424976277564
+    loka_emoji = 678378424955306004
+    suda_emoji = 678378424967888906
+    hexis_emoji = 678378425073008695
+
+    guild = bot.get_guild(payload.guild_id)
+    member = guild.get_member(payload.user_id)
+
+    veil = get(guild.roles, id=677885546684743700)
+    meridian = get(guild.roles, id=677886858579017741)
+    suda = get(guild.roles, id=677887426332590080)
+    hexis = get(guild.roles, id=677885889774616607)
+    perrin = get(guild.roles, id=677886031642755073)
+    loka = get(guild.roles, id=677886156108595229)
+
+    if payload.message_id == message_to_track:
+        if payload.emoji.id == meridian_emoji:
+            await member.add_roles(meridian, reason=None, atomic=True)
+        elif payload.emoji.id == veil_emoji:
+            await member.add_roles(veil, reason=None, atomic=True)
+        elif payload.emoji.id == perrin_emoji:
+            await member.add_roles(perrin, reason=None, atomic=True)
+        elif payload.emoji.id == loka_emoji:
+            await member.add_roles(loka, reason=None, atomic=True)
+        elif payload.emoji.id == suda_emoji:
+            await member.add_roles(suda, reason=None, atomic=True)
+        elif payload.emoji.id == hexis_emoji:
+            await member.add_roles(hexis, reason=None, atomic=True)
+
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    message_to_track = 678911976252112926
+
+    perrin_emoji = 678378425001443343
+    veil_emoji = 678378424925945856
+    meridian_emoji = 678378424976277564
+    loka_emoji = 678378424955306004
+    suda_emoji = 678378424967888906
+    hexis_emoji = 678378425073008695
+
+    guild = bot.get_guild(payload.guild_id)
+    member = guild.get_member(payload.user_id)
+
+    veil = get(guild.roles, id=677885546684743700)
+    meridian = get(guild.roles, id=677886858579017741)
+    suda = get(guild.roles, id=677887426332590080)
+    hexis = get(guild.roles, id=677885889774616607)
+    perrin = get(guild.roles, id=677886031642755073)
+    loka = get(guild.roles, id=677886156108595229)
+
+    if payload.message_id == message_to_track:
+        if payload.emoji.id == meridian_emoji:
+            await member.remove_roles(meridian, reason=None, atomic=True)
+        elif payload.emoji.id == veil_emoji:
+            await member.remove_roles(veil, reason=None, atomic=True)
+        elif payload.emoji.id == perrin_emoji:
+            await member.remove_roles(perrin, reason=None, atomic=True)
+        elif payload.emoji.id == loka_emoji:
+            await member.remove_roles(loka, reason=None, atomic=True)
+        elif payload.emoji.id == suda_emoji:
+            await member.remove_roles(suda, reason=None, atomic=True)
+        elif payload.emoji.id == hexis_emoji:
+            await member.remove_roles(hexis, reason=None, atomic=True)
 
 
 ###############################################################################################
-# Actuals commands ############################################################################
+# Image-Serving Commands ######################################################################
 
 # Check if the bot is ready
 @bot.event
@@ -898,13 +969,21 @@ async def sendmonster(ctx):
     await check_react(ctx, embed, file, isgif)
 
 
-# !sup to get status of the bot
+# !sup to get status of the image-serving service
 @bot.command()
 async def sup(ctx):
     if rdy == 0:
         await ctx.channel.send("Je démarre gros, 2 sec 😎 ({} / {})".format(progress, len(subreddit_dict)))
     if rdy == 1:
         await ctx.channel.send("Je suis la pour toi mon chou !")
+        
+        
+###############################################################################################
+# Config ######################################################################################
+
+# !warn [pseudo] command to warn a specific user
+async def warn(ctx):
+    await ctx.channel.send(ctx.message.author.id)
 
 
 # !halp command for help

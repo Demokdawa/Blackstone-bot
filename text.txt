@@ -3,3 +3,13 @@ Genre on fait 2 listes de mots bannis. Une liste de mots vulgaires mais ca va. U
 Les mots "legers" sont pas censurés, mais ca te file un averto (on est limite même pas obligé de faire que le bot te le fasse remarqué, seulement par mp ca suffit).
 LEs avertos font office de "points", quand tu atteint un petit nombre d'averto tu perd de l'xp. Quand tu atteint un grand nombre d'averto, t'est mute, et tu perd beaucoup d'xp.
 Oui c'est assez spécial, mais ca peux être sympa je trouve ^^
+
+Demo
+tu me dis si c'est possible
+on a deux choix je te dis et tu me dis si le premier est faisable sinon méthode deux
+il faudrait que quand on ajoute un emojis pour un rôle de jeu, le bot ajoute le rôle du jeu correspondant mais que peut importe l'émoji, il ajoute également le rôle silencieux. Mais il faudrait faire en sorte qu'il ne le fasse que la première fois que la personne ajoute un emoji
+il faudrait pas qu'un papoteur par exemple quand il veut se rajouter un rôle bah ça lui rajoute silencieux en plus
+Sinon 2ème méthode est-ce que sur tout les émojis on peut dire au bot d'enlever un rôle ? (le même rôle pour chaque emojis qui rajoute un rôle jeu)
+genre on met "Nouveau membre" à tous les nouveaux et dès qu'il rajoute un jeux quelconques : paf ça lui enlève ce rôle pour lui donner accès aux chans non-jeu genre papotage
+
+Pour option 1 : Mais ducoup le mec qui aura son premier role sera silencieux aussi direct ?
