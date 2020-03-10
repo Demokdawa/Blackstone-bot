@@ -9,6 +9,7 @@ import functools
 import urllib.request as req
 import ffmpy
 import logging
+import sqlite3
 
 
 # Initialize ##################################################################################
@@ -41,6 +42,8 @@ bot = commands.Bot(command_prefix=prefix)
 bot.remove_command('help')
 log.info('BlackBot configuré !')  # INFO
 
+# Connect to sqlite3
+db = sqlite3.connect('blackbotdb.sqlite3')
 
 ###############################################################################################
 # Config ######################################################################################
@@ -984,6 +987,7 @@ async def sup(ctx):
 # !warn [pseudo] command to warn a specific user
 @bot.command()
 async def warn(ctx):
+    
     await ctx.channel.send(ctx.message.author.id)
 
 
