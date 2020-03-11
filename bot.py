@@ -339,7 +339,7 @@ async def on_raw_reaction_add(payload):
     ark_emoji = 687352517738233909
     apex_emoji = 687352517524586510
     wf_emoji = 481419061662842880
-    bf_emoji = 687417989774966793
+    bf_emoji = 687421508347232291
 
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id)
@@ -353,7 +353,22 @@ async def on_raw_reaction_add(payload):
     apex = get(guild.roles, id=687275506432737320)
     warframe = get(guild.roles, id=410552725168848896)
     bf = get(guild.roles, id=687275400052736043)
+
     new_member = get(guild.roles, id=687282300672540715)
+    silencieux = get(guild.roles, id=415554374056673301)
+    papoteurs = get(guild.roles, id=368461557107261442)
+    pipelettes = get(guild.roles, id=415554524233728000)
+    commeres = get(guild.roles, id=431052120725258252)
+    loquaces = get(guild.roles, id=524176629237284884)
+    bavard = get(guild.roles, id=524177546443489290)
+    demi_dieu = get(guild.roles, id=524177722402930689)
+    dieu_de_la_parole = get(guild.roles, id=524177779718225923)
+
+    list_of_user_roles = [e.id for e in member.roles]
+
+    print(list_of_user_roles)
+
+    # A.intersection(*other_sets)
 
     if payload.message_id == message_to_track:
         if payload.emoji.id == mc_emoji:
@@ -388,7 +403,7 @@ async def on_raw_reaction_remove(payload):
     ark_emoji = 687352517738233909
     apex_emoji = 687352517524586510
     wf_emoji = 481419061662842880
-    bf_emoji = 687417989774966793
+    bf_emoji = 687421508347232291
 
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id)
@@ -402,7 +417,16 @@ async def on_raw_reaction_remove(payload):
     apex = get(guild.roles, id=687275506432737320)
     warframe = get(guild.roles, id=410552725168848896)
     bf = get(guild.roles, id=687275400052736043)
+
     new_member = get(guild.roles, id=687282300672540715)
+    silencieux = get(guild.roles, id=415554374056673301)
+    papoteurs = get(guild.roles, id=368461557107261442)
+    pipelettes = get(guild.roles, id=415554524233728000)
+    commeres = get(guild.roles, id=431052120725258252)
+    loquaces = get(guild.roles, id=524176629237284884)
+    bavard = get(guild.roles, id=524177546443489290)
+    demi_dieu = get(guild.roles, id=524177722402930689)
+    dieu_de_la_parole = get(guild.roles, id=524177779718225923)
 
     if payload.message_id == message_to_track:
         if payload.emoji.id == mc_emoji:
