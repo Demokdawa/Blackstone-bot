@@ -355,7 +355,7 @@ async def on_raw_reaction_add(payload):
 
     list_of_user_roles = [e.id for e in member.roles]
 
-    channel = bot.channel.get_channel(368464196008148992)
+    channel = bot.get_channel(368464196008148992)
 
     if payload.message_id == message_to_track:
         if 687282300672540715 in list_of_user_roles:
@@ -387,8 +387,6 @@ async def on_raw_reaction_add(payload):
                 await member.add_roles(warframe, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
                 await channel.send('The bread is a lieeeeee')
-
-
 
         else:
             if payload.emoji.id == mc_emoji:
