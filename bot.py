@@ -11,6 +11,7 @@ import urllib.request as req
 import ffmpy
 import logging
 import sqlite3
+import re
 
 
 # Initialize ##################################################################################
@@ -444,6 +445,26 @@ async def on_raw_reaction_remove(payload):
         elif payload.emoji.id == wf_emoji:
             await member.remove_roles(warframe, reason=None, atomic=True)
 
+@bot.event
+async def on_message(message):
+    content = message.content
+
+    word_set = ["encule", "pute", "salope", "saloppe", "connard", "pd", "nique", "petasse", "batar", "batard",
+                "connasse", "enculé", "pédé", "put*", "sallope", "salloppe", "conard", "battar", "battard", "trouduc",
+                "pétasse", "fdp", "tamer", "tg", "ftg", "fuck", "merde", "fck", "putain", "s\'lope", "puta", "con",
+                "cons"]
+
+    regex = re.compile(r'\b(%s)\b' % '|'.join(word_set))
+
+    if regex.search(content) is not None:
+        print('bad words detected')
+        corrected = regex.sub('lapin', content)
+        await message.delete()
+        await message.channel.send(corrected)
+    else:
+        print('no problem bro')
+
+    await bot.process_commands(message)
 
 ###############################################################################################
 # Image-Serving Commands ######################################################################
@@ -1103,5 +1124,5 @@ async def halp(ctx):
 # Fix progress counter value being wrong
 
 update_cache.start()
-# bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
-bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
+bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
+# bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
