@@ -335,11 +335,9 @@ async def on_raw_reaction_add(payload):
     teso_emoji = 687352522318675975
     lol_emoji = 687352522159292456
     mhw_emoji = 687352521756639268
-    ff14_emoji = 687352518358859814
     ark_emoji = 687352517738233909
-    apex_emoji = 687352517524586510
     wf_emoji = 481419061662842880
-    bf_emoji = 687421508347232291
+    fps_emoji = 687789203727188063
 
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id)
@@ -348,11 +346,9 @@ async def on_raw_reaction_add(payload):
     teso = get(guild.roles, id=410552777580871681)
     lol = get(guild.roles, id=410552805657411591)
     mhw = get(guild.roles, id=458249750475702284)
-    ff14 = get(guild.roles, id=687275280385310721)
     ark = get(guild.roles, id=572822480813817868)
-    apex = get(guild.roles, id=687275506432737320)
     warframe = get(guild.roles, id=410552725168848896)
-    bf = get(guild.roles, id=687275400052736043)
+    fps = get(guild.roles, id=687275506432737320)
 
     new_member = get(guild.roles, id=687282300672540715)
     silencieux = get(guild.roles, id=415554374056673301)
@@ -373,20 +369,14 @@ async def on_raw_reaction_add(payload):
             elif payload.emoji.id == mhw_emoji:
                 await member.add_roles(mhw, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-            elif payload.emoji.id == ff14_emoji:
-                await member.add_roles(ff14, silencieux, reason=None, atomic=True)
-                await member.remove_roles(new_member, reason=None, atomic=True)
             elif payload.emoji.id == ark_emoji:
                 await member.add_roles(ark, silencieux, reason=None, atomic=True)
-                await member.remove_roles(new_member, reason=None, atomic=True)
-            elif payload.emoji.id == apex_emoji:
-                await member.add_roles(apex, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
             elif payload.emoji.id == wf_emoji:
                 await member.add_roles(warframe, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-            elif payload.emoji.id == bf_emoji:
-                await member.add_roles(bf, silencieux, reason=None, atomic=True)
+            elif payload.emoji.id == fps_emoji:
+                await member.add_roles(warframe, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
         else:
             if payload.emoji.id == mc_emoji:
@@ -397,16 +387,12 @@ async def on_raw_reaction_add(payload):
                 await member.add_roles(lol, reason=None, atomic=True)
             elif payload.emoji.id == mhw_emoji:
                 await member.add_roles(mhw, reason=None, atomic=True)
-            elif payload.emoji.id == ff14_emoji:
-                await member.add_roles(ff14, reason=None, atomic=True)
             elif payload.emoji.id == ark_emoji:
                 await member.add_roles(ark, reason=None, atomic=True)
-            elif payload.emoji.id == apex_emoji:
-                await member.add_roles(apex, reason=None, atomic=True)
+            elif payload.emoji.id == fps_emoji:
+                await member.add_roles(fps, reason=None, atomic=True)
             elif payload.emoji.id == wf_emoji:
                 await member.add_roles(warframe, reason=None, atomic=True)
-            elif payload.emoji.id == bf_emoji:
-                await member.add_roles(bf, reason=None, atomic=True)
 
 
 @bot.event
@@ -417,11 +403,9 @@ async def on_raw_reaction_remove(payload):
     teso_emoji = 687352522318675975
     lol_emoji = 687352522159292456
     mhw_emoji = 687352521756639268
-    ff14_emoji = 687352518358859814
     ark_emoji = 687352517738233909
-    apex_emoji = 687352517524586510
     wf_emoji = 481419061662842880
-    bf_emoji = 687421508347232291
+    fps_emoji = 687789203727188063
 
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id)
@@ -430,11 +414,9 @@ async def on_raw_reaction_remove(payload):
     teso = get(guild.roles, id=410552777580871681)
     lol = get(guild.roles, id=410552805657411591)
     mhw = get(guild.roles, id=458249750475702284)
-    ff14 = get(guild.roles, id=687275280385310721)
     ark = get(guild.roles, id=572822480813817868)
-    apex = get(guild.roles, id=687275506432737320)
     warframe = get(guild.roles, id=410552725168848896)
-    bf = get(guild.roles, id=687275400052736043)
+    fps = get(guild.roles, id=687275506432737320)
 
     if payload.message_id == message_to_track:
         if payload.emoji.id == mc_emoji:
@@ -445,16 +427,12 @@ async def on_raw_reaction_remove(payload):
             await member.remove_roles(lol, reason=None, atomic=True)
         elif payload.emoji.id == mhw_emoji:
             await member.remove_roles(mhw, reason=None, atomic=True)
-        elif payload.emoji.id == ff14_emoji:
-            await member.remove_roles(ff14, reason=None, atomic=True)
         elif payload.emoji.id == ark_emoji:
             await member.remove_roles(ark, reason=None, atomic=True)
-        elif payload.emoji.id == apex_emoji:
-            await member.remove_roles(apex, reason=None, atomic=True)
+        elif payload.emoji.id == fps_emoji:
+            await member.remove_roles(fps, reason=None, atomic=True)
         elif payload.emoji.id == wf_emoji:
             await member.remove_roles(warframe, reason=None, atomic=True)
-        elif payload.emoji.id == bf_emoji:
-            await member.remove_roles(bf, reason=None, atomic=True)
 
 
 ###############################################################################################
