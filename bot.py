@@ -355,29 +355,41 @@ async def on_raw_reaction_add(payload):
 
     list_of_user_roles = [e.id for e in member.roles]
 
+    channel = bot.channel.get_channel(368464196008148992)
+
     if payload.message_id == message_to_track:
         if 687282300672540715 in list_of_user_roles:
             if payload.emoji.id == mc_emoji:
                 await member.add_roles(mc, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
+                await channel.send('The bread is a lieeeeee')
             elif payload.emoji.id == teso_emoji:
                 await member.add_roles(teso, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
+                await channel.send('The bread is a lieeeeee')
             elif payload.emoji.id == lol_emoji:
                 await member.add_roles(lol, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
+                await channel.send('The bread is a lieeeeee')
             elif payload.emoji.id == mhw_emoji:
                 await member.add_roles(mhw, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
+                await channel.send('The bread is a lieeeeee')
             elif payload.emoji.id == ark_emoji:
                 await member.add_roles(ark, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
+                await channel.send('The bread is a lieeeeee')
             elif payload.emoji.id == wf_emoji:
                 await member.add_roles(warframe, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
+                await channel.send('The bread is a lieeeeee')
             elif payload.emoji.id == fps_emoji:
                 await member.add_roles(warframe, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
+                await channel.send('The bread is a lieeeeee')
+
+
+
         else:
             if payload.emoji.id == mc_emoji:
                 await member.add_roles(mc, reason=None, atomic=True)
@@ -995,7 +1007,7 @@ async def sendpublic(ctx):
     embed, file = prepare_embed(data)
     await check_react(ctx, embed, file, isgif)
     
-	
+
 # !sendmonster command for subreddit group 'monster'
 @bot.command()
 @check_if_bot_rdy()
@@ -1019,7 +1031,7 @@ async def sup(ctx):
         
         
 ###############################################################################################
-# Config ######################################################################################
+# Others commands #############################################################################
 
 # !warn [pseudo] command to warn a specific user
 @bot.command()
@@ -1037,7 +1049,6 @@ async def warn(ctx, a1):
     print(ctx.message.mentions[0])
     await ctx.channel.send(str(mentionned_id) + ' is warned !')
     
-
 
 # !halp command for help
 @bot.command()
@@ -1088,15 +1099,10 @@ async def halp(ctx):
 
     await ctx.channel.send(embed=embed)
 
-
-# CumHentai
-# need : sub titsagainsttits
-
 # TO-DO :
-# Fix gfycat size (IMPORTANT)
-# More commands
+# Improve Gif-conversion system to handle all cases and be flexible
 # Get the script async to avoid huge lagtime
-# Get more submissions than 1000 for huge subs
+# Fix progress counter value being wrong
 
 update_cache.start()
 # bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
