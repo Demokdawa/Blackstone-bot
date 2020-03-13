@@ -362,31 +362,31 @@ async def on_raw_reaction_add(payload):
             if payload.emoji.id == mc_emoji:
                 await member.add_roles(mc, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-                await channel.send('The bread is a lieeeeee')
+                await channel.send('Ey les amis, souhaitez tous la bienvenue a ' + member.name + ' parmis nous !')
             elif payload.emoji.id == teso_emoji:
                 await member.add_roles(teso, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-                await channel.send('The bread is a lieeeeee')
+                await channel.send('Ey les amis, souhaitez tous la bienvenue a ' + member.name + ' parmis nous !')
             elif payload.emoji.id == lol_emoji:
                 await member.add_roles(lol, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-                await channel.send('The bread is a lieeeeee')
+                await channel.send('Ey les amis, souhaitez tous la bienvenue a ' + member.name + ' parmis nous !')
             elif payload.emoji.id == mhw_emoji:
                 await member.add_roles(mhw, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-                await channel.send('The bread is a lieeeeee')
+                await channel.send('Ey les amis, souhaitez tous la bienvenue a ' + member.name + ' parmis nous !')
             elif payload.emoji.id == ark_emoji:
                 await member.add_roles(ark, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-                await channel.send('The bread is a lieeeeee')
+                await channel.send('Ey les amis, souhaitez tous la bienvenue a ' + member.name + ' parmis nous !')
             elif payload.emoji.id == wf_emoji:
                 await member.add_roles(warframe, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-                await channel.send('The bread is a lieeeeee')
+                await channel.send('Ey les amis, souhaitez tous la bienvenue a ' + member.name + ' parmis nous !')
             elif payload.emoji.id == fps_emoji:
                 await member.add_roles(warframe, silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
-                await channel.send('The bread is a lieeeeee')
+                await channel.send('Ey les amis, souhaitez tous la bienvenue a ' + member.name + ' parmis nous !')
 
         else:
             if payload.emoji.id == mc_emoji:
