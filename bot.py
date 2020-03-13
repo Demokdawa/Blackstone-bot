@@ -329,7 +329,7 @@ def check_bot_channel():
 
 @bot.event
 async def on_raw_reaction_add(payload):
-    message_to_track = 687420234449420299
+    message_to_track = 688008749775978506
 
     mc_emoji = 687352522612146193
     teso_emoji = 687352522318675975
@@ -407,7 +407,7 @@ async def on_raw_reaction_add(payload):
 
 @bot.event
 async def on_raw_reaction_remove(payload):
-    message_to_track = 687420234449420299
+    message_to_track = 688008749775978506
 
     mc_emoji = 687352522612146193
     teso_emoji = 687352522318675975
