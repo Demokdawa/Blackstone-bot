@@ -1072,7 +1072,7 @@ async def warn(ctx, a1):
 # !halp command for help
 @bot.command()
 async def halp(ctx):
-    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156 or ctx.guild.id == 664852715347640320:
+    if ctx.guild.id == 649901370526400522 or ctx.guild.id == 595287360976060577 or ctx.guild.id == 589088834550235156 or ctx.guild.id == 664852715347640320 or ctx.guild.id == 702868312773754961:
 
         embed = discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !",
                               description="Je suis la pour vous aider 😄", color=0xd5d500)
