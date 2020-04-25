@@ -445,26 +445,90 @@ async def on_raw_reaction_remove(payload):
         elif payload.emoji.id == wf_emoji:
             await member.remove_roles(warframe, reason=None, atomic=True)
 
+#@bot.event
+#async def on_message(message):
+#    content = message.content
+#
+#    word_set = ["encule", "pute", "salope", "saloppe", "connard", "pd", "nique", "petasse", "batar", "batard",
+#                "connasse", "enculé", "pédé", "put*", "sallope", "salloppe", "conard", "battar", "battard", "trouduc",
+#                "pétasse", "fdp", "tamer", "tg", "ftg", "fuck", "merde", "fck", "putain", "s\'lope", "puta", "con",
+#                "cons"]
+#
+#    regex = re.compile(r'\b(%s)\b' % '|'.join(word_set))
+#
+#    if regex.search(content) is not None:
+#        print('bad words detected')
+#        corrected = regex.sub('lapin', content)
+#        await message.delete()
+#        await message.channel.send(corrected)
+#    else:
+#        print('no problem bro')
+#
+#    await bot.process_commands(message)
+
+
 @bot.event
 async def on_message(message):
     content = message.content
 
-    word_set = ["encule", "pute", "salope", "saloppe", "connard", "pd", "nique", "petasse", "batar", "batard",
-                "connasse", "enculé", "pédé", "put*", "sallope", "salloppe", "conard", "battar", "battard", "trouduc",
-                "pétasse", "fdp", "tamer", "tg", "ftg", "fuck", "merde", "fck", "putain", "s\'lope", "puta", "con",
-                "cons"]
+    word_set = {"encule": "lapin",
+                "pute": "lapin",
+                "salope": "lapin",
+                "saloppe": "lapin",
+                "connard": "lapin",
+                "pd": "lapin",
+                "nique": "lapin",
+                "petasse": "lapin",
+                "batar": "lapin",
+                "batard": "lapin",
+                "connasse": "lapin",
+                "enculé": "lapin",
+                "pédé": "lapin",
+                "put*": "lapin",
+                "sallope": "lapin",
+                "salloppe": "lapin",
+                "conard": "lapin",
+                "battar": "lapin",
+                "battard": "lapin",
+                "trouduc": "lapin",
+                "pétasse": "lapin",
+                "fdp": "lapin",
+                "tamer": "lapin",
+                "tg": "lapin",
+                "ftg": "lapin",
+                "fuck": "lapin",
+                "merde": "lapin",
+                "fck": "lapin",
+                "putain": "lapin",
+                "s\'lope": "lapin",
+                "puta": "lapin",
+                "con": "lapin",
+                "cons": "lapin"}
 
-    regex = re.compile(r'\b(%s)\b' % '|'.join(word_set))
+    curse_words_nbr = 0
+    rval = ''
 
-    if regex.search(content) is not None:
-        print('bad words detected')
-        corrected = regex.sub('lapin', content)
+    for i in content.split(' '):
+        for k, v in word_set.items():
+            replaced = False
+            if k == i:
+                replaced = True
+                curse_words_nbr += 1
+                rval += f"{v} "
+                break
+            else:
+                pass
+        if not replaced:
+            rval += f"{i} "
+
+    if curse_words_nbr > 0:
         await message.delete()
-        await message.channel.send(corrected)
+        await message.channel.send(rval)
     else:
         print('no problem bro')
 
     await bot.process_commands(message)
+
 
 ###############################################################################################
 # Image-Serving Commands ######################################################################
