@@ -11,7 +11,6 @@ import urllib.request as req
 import ffmpy
 import logging
 import sqlite3
-import re
 
 
 # Initialize ##################################################################################
@@ -64,7 +63,7 @@ subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10
                   'thick_hentai': 11141, 'Mariorule34': 2179, 'HentaiBreeding': 1006, 'cumflation': 2817, 'XrayHentai': 72,
                   'FreeuseHentai': 2075, 'hentaibondage': 14464, 'GameOverGirls': 2487, 'HelplessHentai': 2693, 'consentacles': 5245,
                   'HentaiBeast': 15812, 'MonsterGirl': 24007, 'SlimeGirls': 1611, 'PublicHentai': 1216, 'Hentaicumsluts': 527, 
-                  'CumHentai': 4303, 'StuckHentai': 790}
+                  'CumHentai': 4303, 'StuckHentai': 790, 'Yaoi': 17839}
 
 # Subreddit groups for multi-subs commands
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
@@ -85,6 +84,41 @@ rdy = 0
 
 # Store the progress of the initial cache sync
 progress = 0
+
+# Store the curse words and their replacement
+word_set = {"encule": "lapin",
+            "pute": "lapin",
+            "salope": "lapin",
+            "saloppe": "lapin",
+            "connard": "lapin",
+            "pd": "lapin",
+            "nique": "lapin",
+            "petasse": "lapin",
+            "batar": "lapin",
+            "batard": "lapin",
+            "connasse": "lapin",
+            "enculé": "lapin",
+            "pédé": "lapin",
+            "put*": "lapin",
+            "sallope": "lapin",
+            "salloppe": "lapin",
+            "conard": "lapin",
+            "battar": "lapin",
+            "battard": "lapin",
+            "trouduc": "lapin",
+            "pétasse": "lapin",
+            "fdp": "lapin",
+            "tamer": "lapin",
+            "tg": "lapin",
+            "ftg": "lapin",
+            "fuck": "lapin",
+            "merde": "lapin",
+            "fck": "lapin",
+            "putain": "lapin",
+            "s\'lope": "lapin",
+            "puta": "lapin",
+            "con": "lapin",
+            "cons": "lapin"}
 
 ###############################################################################################
 # Functions ###################################################################################
@@ -445,65 +479,10 @@ async def on_raw_reaction_remove(payload):
         elif payload.emoji.id == wf_emoji:
             await member.remove_roles(warframe, reason=None, atomic=True)
 
-#@bot.event
-#async def on_message(message):
-#    content = message.content
-#
-#    word_set = ["encule", "pute", "salope", "saloppe", "connard", "pd", "nique", "petasse", "batar", "batard",
-#                "connasse", "enculé", "pédé", "put*", "sallope", "salloppe", "conard", "battar", "battard", "trouduc",
-#                "pétasse", "fdp", "tamer", "tg", "ftg", "fuck", "merde", "fck", "putain", "s\'lope", "puta", "con",
-#                "cons"]
-#
-#    regex = re.compile(r'\b(%s)\b' % '|'.join(word_set))
-#
-#    if regex.search(content) is not None:
-#        print('bad words detected')
-#        corrected = regex.sub('lapin', content)
-#        await message.delete()
-#        await message.channel.send(corrected)
-#    else:
-#        print('no problem bro')
-#
-#    await bot.process_commands(message)
-
 
 @bot.event
 async def on_message(message):
     content = message.content
-
-    word_set = {"encule": "lapin",
-                "pute": "lapin",
-                "salope": "lapin",
-                "saloppe": "lapin",
-                "connard": "lapin",
-                "pd": "lapin",
-                "nique": "lapin",
-                "petasse": "lapin",
-                "batar": "lapin",
-                "batard": "lapin",
-                "connasse": "lapin",
-                "enculé": "lapin",
-                "pédé": "lapin",
-                "put*": "lapin",
-                "sallope": "lapin",
-                "salloppe": "lapin",
-                "conard": "lapin",
-                "battar": "lapin",
-                "battard": "lapin",
-                "trouduc": "lapin",
-                "pétasse": "lapin",
-                "fdp": "lapin",
-                "tamer": "lapin",
-                "tg": "lapin",
-                "ftg": "lapin",
-                "fuck": "lapin",
-                "merde": "lapin",
-                "fck": "lapin",
-                "putain": "lapin",
-                "s\'lope": "lapin",
-                "puta": "lapin",
-                "con": "lapin",
-                "cons": "lapin"}
 
     curse_words_nbr = 0
     rval = ''
@@ -1100,6 +1079,19 @@ async def sendmonster(ctx):
     data, isgif = get_image("monster")
     while data is False:
         data, isgif = get_image("monster")
+    embed, file = prepare_embed(data)
+    await check_react(ctx, embed, file, isgif)
+
+
+# !sendyaoi command for subreddit 'yaoi'
+@bot.command()
+@check_if_bot_rdy()
+@check_bot_channel()
+async def sendmonster(ctx):
+    await ctx.message.add_reaction('\N{HOURGLASS}')
+    data, isgif = get_image("yaoi")
+    while data is False:
+        data, isgif = get_image("yaoi")
     embed, file = prepare_embed(data)
     await check_react(ctx, embed, file, isgif)
 
