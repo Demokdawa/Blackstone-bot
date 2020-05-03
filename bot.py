@@ -63,7 +63,7 @@ subreddit_dict = {'dankmemes': 3575074, 'hentaidankmemes': 3960, 'memeframe': 10
                   'thick_hentai': 11141, 'Mariorule34': 2179, 'HentaiBreeding': 1006, 'cumflation': 2817, 'XrayHentai': 72,
                   'FreeuseHentai': 2075, 'hentaibondage': 14464, 'GameOverGirls': 2487, 'HelplessHentai': 2693, 'consentacles': 5245,
                   'HentaiBeast': 15812, 'MonsterGirl': 24007, 'SlimeGirls': 1611, 'PublicHentai': 1216, 'Hentaicumsluts': 527, 
-                  'CumHentai': 4303, 'StuckHentai': 790, 'Yaoi': 17839}
+                  'CumHentai': 4303, 'StuckHentai': 790, 'yaoi': 17839}
 
 # Subreddit groups for multi-subs commands
 subreddit_group_hart = ['Artistic_ecchi', 'Artistic_Hentai', 'HentaiVisualArts', 'Sukebei']
