@@ -1087,7 +1087,7 @@ async def sendmonster(ctx):
 @bot.command()
 @check_if_bot_rdy()
 @check_bot_channel()
-async def sendmonster(ctx):
+async def sendyaoi(ctx):
     await ctx.message.add_reaction('\N{HOURGLASS}')
     data, isgif = get_image("yaoi")
     while data is False:
