@@ -483,9 +483,10 @@ async def on_raw_reaction_remove(payload):
 @bot.event
 async def on_message(message):
     content = message.content
+    author = message.author
 
     curse_words_nbr = 0
-    rval = ''
+    rval = str(author + ' : ')
 
     for i in content.split(' '):
         for k, v in word_set.items():
@@ -1151,7 +1152,7 @@ async def halp(ctx):
         embed.add_field(name="!send3dh", value="!sendwh", inline=True)
         embed.add_field(name="!sendhbooty", value="!sendthickh", inline=True)
         embed.add_field(name="!sendpaizu", value="!sendgho", inline=True)
-        embed.add_field(name="!sendtacles", value="//", inline=True)
+        embed.add_field(name="!sendtacles", value="sendyaoi", inline=True)
         embed.set_footer(
             text="Lorsque que vous demandez une image, le bot l'affichera pendant 14 secondes, puis elle disparaîtra. \n "
                  "Cliquer sur la réaction ✅ la laissera en permanent. \n Cliquer sur la réaction ❌ supprimera l'image "
@@ -1178,7 +1179,8 @@ async def halp(ctx):
 # Improve Gif-conversion system to handle all cases and be flexible
 # Get the script async to avoid huge lagtime
 # Fix progress counter value being wrong
+# Fix double welcome message
 
 update_cache.start()
-# bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
-bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
+bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
+# bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
