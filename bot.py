@@ -86,39 +86,39 @@ rdy = 0
 progress = 0
 
 # Store the curse words and their replacement
-word_set = {"encule": "lapin",
-            "pute": "lapin",
-            "salope": "lapin",
-            "saloppe": "lapin",
-            "connard": "lapin",
-            "pd": "lapin",
-            "nique": "lapin",
-            "petasse": "lapin",
-            "batar": "lapin",
-            "batard": "lapin",
-            "connasse": "lapin",
-            "enculé": "lapin",
-            "pédé": "lapin",
-            "put*": "lapin",
-            "sallope": "lapin",
-            "salloppe": "lapin",
-            "conard": "lapin",
-            "battar": "lapin",
-            "battard": "lapin",
-            "trouduc": "lapin",
-            "pétasse": "lapin",
-            "fdp": "lapin",
-            "tamer": "lapin",
-            "tg": "lapin",
-            "ftg": "lapin",
-            "fuck": "lapin",
-            "merde": "lapin",
-            "fck": "lapin",
-            "putain": "lapin",
-            "s\'lope": "lapin",
-            "puta": "lapin",
-            "con": "lapin",
-            "cons": "lapin"}
+word_set = {"encule": "écrémé",
+            "pute": "flute",
+            "salope": "antilope",
+            "saloppe": "antilope",
+            "connard": "roublard",
+            "pd": "bébé",
+            "nique": "brique",
+            "petasse": "patate",
+            "batar": "gaspard",
+            "batard": "gaspard",
+            "connasse": "contrebasse",
+            "enculé": "écrémé",
+            "pédé": "bébé",
+            "put*": "lutin",
+            "sallope": "antilope",
+            "salloppe": "antilope",
+            "conard": "cougar",
+            "battar": "babar",
+            "battard": "babar",
+            "trouduc": "viaduc",
+            "pétasse": "patate",
+            "fdp": "btp",
+            "tamer": "cachère",
+            "tg": "TGV",
+            "ftg": "TGV",
+            "fuck": "figue",
+            "merde": "transit",
+            "fck": "figue",
+            "putain": "lutin",
+            "s\'lope": "antilope",
+            "puta": "pasta",
+            "con": "sion",
+            "cons": "sion"}
 
 ###############################################################################################
 # Functions ###################################################################################
@@ -480,13 +480,15 @@ async def on_raw_reaction_remove(payload):
             await member.remove_roles(warframe, reason=None, atomic=True)
 
 
+# Censoring function
 @bot.event
 async def on_message(message):
+
     content = message.content
-    author = message.author
+    author = message.author.display_name
 
     curse_words_nbr = 0
-    rval = str(author + ' : ')
+    rval = '**' + author + '** : '
 
     for i in content.split(' '):
         for k, v in word_set.items():
@@ -502,10 +504,21 @@ async def on_message(message):
             rval += f"{i} "
 
     if curse_words_nbr > 0:
+
+        embed = discord.Embed()
+        embed.set_author(name="[WARN] " + str(message.author), icon_url=message.author.avatar_url)
+        embed.add_field(name="User", value="<@" + str(message.author.id) + ">", inline=True)
+        embed.add_field(name="Reason", value="Bad word usage", inline=True)
+        embed.add_field(name="Channel", value="<#" + str(message.channel.id) + ">", inline=False)
+        embed.add_field(name="Message", value="ptite pute", inline=False)
+
+        channel = bot.get_channel(437386371435331595)
+        await channel.send(embed=embed)
+
         await message.delete()
         await message.channel.send(rval)
     else:
-        print('no problem bro')
+        pass
 
     await bot.process_commands(message)
 
@@ -520,10 +533,10 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("Lewding.."))
 
 
-@bot.event
-async def on_command_error(ctx, message):
-    if isinstance(message, commands.UserInputError):
-        await ctx.channel.send(message)
+#@bot.event
+#async def on_command_error(ctx, message):
+#    if isinstance(message, commands.UserInputError):
+#        await ctx.channel.send(message)
 
 
 # !sendmeme command for subreddit 'dankmemes'
@@ -1105,7 +1118,6 @@ async def sup(ctx):
     if rdy == 1:
         await ctx.channel.send("Je suis la pour toi mon chou !")
         
-        
 ###############################################################################################
 # Others commands #############################################################################
 
@@ -1180,7 +1192,8 @@ async def halp(ctx):
 # Get the script async to avoid huge lagtime
 # Fix progress counter value being wrong
 # Fix double welcome message
+# Get reddit post values dynamically
 
 update_cache.start()
-bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
-# bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
+# bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
+bot.run("NjI3MTEwMzM1ODAyNzY5NDA4.XY34wA.ksGsiEaAlgzbZlYVldLSrjivmKM")  # Prod
