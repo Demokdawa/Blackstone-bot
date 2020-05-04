@@ -510,7 +510,7 @@ async def on_message(message):
         embed.add_field(name="User", value="<@" + str(message.author.id) + ">", inline=True)
         embed.add_field(name="Reason", value="Bad word usage", inline=True)
         embed.add_field(name="Channel", value="<#" + str(message.channel.id) + ">", inline=False)
-        embed.add_field(name="Message", value="ptite pute", inline=False)
+        embed.add_field(name="Message", value=str(message.content), inline=False)
 
         channel = bot.get_channel(437386371435331595)
         await channel.send(embed=embed)
@@ -533,10 +533,12 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game("Lewding.."))
 
 
-#@bot.event
-#async def on_command_error(ctx, message):
-#    if isinstance(message, commands.UserInputError):
-#        await ctx.channel.send(message)
+@bot.event
+async def on_command_error(ctx, message):
+    if isinstance(message, commands.UserInputError):
+        await ctx.channel.send(message)
+    else:
+        log.info(message)
 
 
 # !sendmeme command for subreddit 'dankmemes'
@@ -1193,6 +1195,8 @@ async def halp(ctx):
 # Fix progress counter value being wrong
 # Fix double welcome message
 # Get reddit post values dynamically
+# Change all bot config to dynamic
+# Adds logs to know user statistics
 
 update_cache.start()
 # bot.run("NjU4NDQwNzUwMDg1NzAxNjYy.Xf_zWQ.d_a8nNxBy6b7SpA56wQdhsFLJBE")  # Dev
