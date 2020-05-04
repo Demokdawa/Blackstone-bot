@@ -112,13 +112,13 @@ word_set = {"encule": "écrémé",
             "tg": "TGV",
             "ftg": "TGV",
             "fuck": "figue",
-            "merde": "transit",
+            "merde": "mare d'eau",
             "fck": "figue",
             "putain": "lutin",
-            "s\'lope": "antilope",
+            "s'lope": "antilope",
             "puta": "pasta",
-            "con": "sion",
-            "cons": "sion"}
+            "con": "constipé",
+            "cons": "constipés"}
 
 ###############################################################################################
 # Functions ###################################################################################
