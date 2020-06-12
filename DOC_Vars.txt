@@ -1,0 +1,6 @@
+NSFW_MODE. 0 = NSFW is disabled entirely for the server
+           1 = NSFW is allowed on the server, on a per-channel rule
+           2 = NSFW is allowed on the whole server without restrictions
+
+SHORT_REDDIT_TIMER. A value between 4 and 30 in seconds
+LONG_REDDIT_TIMER. A value between 10 and 90 in seconds
