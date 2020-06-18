@@ -3,7 +3,7 @@ from discord.ext import tasks, commands
 from discord.utils import get
 import sys
 import logging
-from cogs.db_operations import db_uwu_check, create_serv_data, check_serv_data
+from cogs.db_operations import db_uwu_check, create_serv_data, check_serv_data, db_inspass_admin
 from loadconfig import is_dev, bot_token_prod, bot_token_dev
 
 # Initialize ##################################################################################
@@ -60,6 +60,8 @@ async def on_guild_join(guild):
         pass
     else:
         create_serv_data(guild.name, guild.id)
+
+    db_inspass_admin(guild.name, guild.id, guild.owner.name, guild.owner.id)
 
 
 # Redirect errors and helper menus

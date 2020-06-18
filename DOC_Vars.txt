@@ -4,3 +4,8 @@ NSFW_MODE. 0 = NSFW is disabled entirely for the server
 
 SHORT_REDDIT_TIMER. A value between 4 and 30 in seconds
 LONG_REDDIT_TIMER. A value between 10 and 90 in seconds
+
+### Les rôles d'administration d'UwU ###
+1 | Créateur du Bot                         | Peut tout faire !
+2 | Administrateur(s) du serveur spécifique | Peut configurer son serveur
+3 | Modérateur(s) du serveur spécifique     | Peut utiliser certaines commandes de modération sur son serveur

@@ -51,7 +51,7 @@ def check_serv_data(guild_id):
         return False
 
 
-# Create server initial data
+# Create server initial data (with their default values)
 def create_serv_data(guild_name, guild_id):
     cursor = connection.cursor()
     cursor.execute('''INSERT INTO servers_settings_global (guild_name, guild_id) VALUES (%s, %s)''', (guild_name, guild_id))
@@ -66,7 +66,7 @@ def db_get_conf_server_all(guild_id):
     connection.commit()
     cursor = connection.cursor()
     cursor.execute('''SELECT nsfw_mode, short_reddit_timer, long_reddit_timer, censor_log_channel, welcome_channel, 
-    welcome_role, approb_role from servers_settings_global WHERE guild_id = %s''', (guild_id,))
+    welcome_role, approb_role, goulag_channel from servers_settings_global WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchone()  # Result is a [tuple]
     cursor.close()
     if result:
@@ -95,7 +95,7 @@ def db_get_conf_welcome_channel(guild_id):
 def db_get_reddit_command_dict():
     connection.commit()
     cursor = connection.cursor()
-    cursor.execute('''SELECT command_name, sub_name, is_nsfw, submission_nb, sub_group from reddit_scrap WHERE 
+    cursor.execute('''SELECT command_name, sub_name, is_nsfw, submission_nb, sub_group from uwu_reddit_scrap WHERE 
     sub_group = '' ''')
     result = cursor.fetchall()  # Result is a [list] of [tuple]
     cursor.close()
@@ -108,7 +108,7 @@ def db_get_reddit_command_dict():
 def db_get_reddit_sub_dict():
     connection.commit()
     cursor = connection.cursor()
-    cursor.execute('''SELECT sub_name, is_nsfw, submission_nb, sub_group from reddit_scrap''')
+    cursor.execute('''SELECT sub_name, is_nsfw, submission_nb, sub_group from uwu_reddit_scrap''')
     result = cursor.fetchall()  # Result is a [list] of [tuple]
     cursor.close()
     res = {}
@@ -172,6 +172,7 @@ def db_get_emoji_roles(guild_id, message_id):
 # Insert val_tuple values into DB depengind on invoked usage
 def db_insup_value(target_param, val_tuple):
     cursor = connection.cursor()
+    connection.commit()
     if target_param == "nsfw_mode":
         guild_id, nsfw_mode = val_tuple
         cursor.execute('''UPDATE servers_settings_global SET nsfw_mode = %s 
@@ -246,6 +247,25 @@ def db_insup_value(target_param, val_tuple):
     connection.commit()
     cursor.close()
 
+
+# Check if owner-admin exist, and if not, create it
+def db_inspass_admin(guild_name, guild_id, user_name, user_id):
+    connection.commit()
+    cursor = connection.cursor()
+    cursor.execute('''SELECT user_id from uwu_global_admins WHERE guild_id = %s and user_id = %s 
+                    and privilege_level = 2''', (guild_id, user_id,))
+    result = cursor.fetchone()
+    if result:
+        pass
+    else:
+        cursor.execute('''INSERT INTO uwu_global_admins (guild_name, guild_id, user_name, user_id, privilege_level)
+                        VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, 2,))
+    connection.commit()
+    cursor.close()
+
+# ?
+def db_insup_admin():
+    pass
 
 class DBOperations(commands.Cog):
     def __init__(self, bot):

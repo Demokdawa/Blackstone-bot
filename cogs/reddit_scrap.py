@@ -1,6 +1,7 @@
 from discord.ext import tasks, commands
 from itertools import zip_longest
-from cogs.db_operations import db_get_reddit_command_dict, db_get_reddit_sub_dict, db_get_conf_server_all, db_get_nsfw_channels, db_get_emoji_roles
+from cogs.db_operations import db_get_reddit_command_dict, db_get_reddit_sub_dict, db_get_conf_server_all,\
+    db_get_nsfw_channels
 from cogs.utils import guild_from_context
 import ffmpy
 import os
