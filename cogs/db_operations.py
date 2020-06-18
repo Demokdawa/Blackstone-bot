@@ -175,7 +175,7 @@ def db_check_privilege(guild_id, user_id):
     result = cursor.fetchone()  # Result is a [tuple]
     cursor.close()
     if result:
-        return result
+        return result[0]
     else:
         return False
 

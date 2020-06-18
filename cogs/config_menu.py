@@ -2,7 +2,7 @@ import discord
 from discord.ext import tasks, commands
 from discord.utils import get
 import logging
-from cogs.utils import chk_arg1_prm, check_channel_id
+from cogs.utils import chk_arg1_prm
 from cogs.db_operations import db_insup_value, db_check_privilege
 
 # Retrieve logger
@@ -20,7 +20,7 @@ class ConfigMenu(commands.Cog):
     @commands.command()
     async def sendconfig(self, ctx, arg1: chk_arg1_prm, arg2=None, arg3=None, arg4=None):
 
-        if arg1 == 'nsfw_mode':  #GOOD
+        if arg1 == 'nsfw_mode':  # GOOD
             print('yes')
             if arg2.isdigit() and arg2 is not None:
                 if not 0 <= int(arg2) <= 2:
@@ -38,7 +38,7 @@ class ConfigMenu(commands.Cog):
                     "`Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 0 et 2 requis)`"
                     .format(arg2))
         ##
-        elif arg1 == 'short_reddit_timer':  #GOOD
+        elif arg1 == 'short_reddit_timer':  # GOOD
             if arg2.isdigit() and arg2 is not None:
                 if not 4 <= int(arg2) <= 30:
                     await ctx.channel.send(
@@ -55,7 +55,7 @@ class ConfigMenu(commands.Cog):
                     "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 4 et 30 requis)"
                     .format(arg2))
         ##
-        elif arg1 == 'long_reddit_timer':  #GOOD
+        elif arg1 == 'long_reddit_timer':  # GOOD
             if arg2.isdigit() and arg2 is not None:
                 if not 10 <= int(arg2) <= 90:
                     await ctx.channel.send(
@@ -73,12 +73,12 @@ class ConfigMenu(commands.Cog):
                     .format(arg2))
         ##
         # Reduce size of the line using a list instead
-        elif arg1 in ['censor_log_channel', 'welcome_channel']:  #GOOD
+        elif arg1 in ['censor_log_channel', 'welcome_channel']:  # GOOD
             channel_obj = get(ctx.guild.channels, name=arg2)
             if channel_obj is None:
                 await ctx.channel.send(
                     "Ce channel n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 2]"
-                    .format(arg2))
+                        .format(arg2))
             else:
                 db_insup_value(arg1, (ctx.guild.id, channel_obj.id))
         ##
@@ -100,10 +100,10 @@ class ConfigMenu(commands.Cog):
             else:
                 db_insup_value(arg1, (ctx.guild.id, role_obj.id))
         ##
-        elif arg1 == 'add_banned_word':  #GOOD
+        elif arg1 == 'add_banned_word':  # GOOD
             db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg2, arg3))
         ##
-        elif arg1 == 'del_banned_word':  #GOOD
+        elif arg1 == 'del_banned_word':  # GOOD
             db_insup_value(arg1, (ctx.guild.id, arg2))
         ##
         elif arg1 == 'add_emoji_role':
@@ -121,30 +121,28 @@ class ConfigMenu(commands.Cog):
                     else:
                         db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg4, int(arg2), int(arg3), role_obj.id))
         ##
-        elif arg1 == 'add_uwu_admin':
+        elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:
             res = db_check_privilege(ctx.guild.id, ctx.author.id)
             if res is False:  # User is not an admin
                 await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
             elif res in [1, 2]:  # User have enough privileges
-                pass
-            else:
-                await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
-        ##
-        elif arg1 == 'del_uwu_admin':
-            res = db_check_privilege(ctx.guild.id, ctx.author.id)
-            if res is False:  # User is not an admin
-                await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
-            elif res in [1, 2]:  # User have enough privileges
-                if 1 == 1: #NEED TO CHECK IF USER_ID EXIST
+                member_obj = get(ctx.guild.members, id=int(arg2))
+                if member_obj is not None:  # NEED TO CHECK IF USER_ID EXIST
                     if arg3.isdigit() and arg3 is not None:
                         if int(arg3) in [2, 3]:
-                            # YES, DO SOMETHING MABOI
+                            log.info('USER FOUND BOI, COMMANDE GOOD')
                         else:
-                            # BAD NUMBER, SHOULD BE 2 OR 3, SEND ERROR MSG
+                            await ctx.channel.send(
+                                "Paramètre manquant / incorrect : **{}** [Arg 3] (nombre entier entre 2 et 3 requis)"
+                                .format(arg3))
                     else:
-                        # NOT A NUMBER OR PARAM NOT SET
+                        await ctx.channel.send(
+                            "Paramètre manquant / incorrect : **{}** [Arg 3] (nombre entier entre 2 et 3 requis)"
+                            .format(arg3))
                 else:
-                    # IF USER_ID NOT EXIST, SEND ERROR MSG
+                    await ctx.channel.send(
+                        "Cet utilisateur n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 2]"
+                        .format(arg2))
             else:
                 await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
         ##
