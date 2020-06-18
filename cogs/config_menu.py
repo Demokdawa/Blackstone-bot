@@ -3,7 +3,7 @@ from discord.ext import tasks, commands
 from discord.utils import get
 import logging
 from cogs.utils import chk_arg1_prm, check_channel_id
-from cogs.db_operations import db_insup_value
+from cogs.db_operations import db_insup_value, db_check_privilege
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -120,6 +120,34 @@ class ConfigMenu(commands.Cog):
                             .format(arg4))
                     else:
                         db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg4, int(arg2), int(arg3), role_obj.id))
+        ##
+        elif arg1 == 'add_uwu_admin':
+            res = db_check_privilege(ctx.guild.id, ctx.author.id)
+            if res is False:  # User is not an admin
+                await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
+            elif res in [1, 2]:  # User have enough privileges
+                pass
+            else:
+                await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
+        ##
+        elif arg1 == 'del_uwu_admin':
+            res = db_check_privilege(ctx.guild.id, ctx.author.id)
+            if res is False:  # User is not an admin
+                await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
+            elif res in [1, 2]:  # User have enough privileges
+                if 1 == 1: #NEED TO CHECK IF USER_ID EXIST
+                    if arg3.isdigit() and arg3 is not None:
+                        if int(arg3) in [2, 3]:
+                            # YES, DO SOMETHING MABOI
+                        else:
+                            # BAD NUMBER, SHOULD BE 2 OR 3, SEND ERROR MSG
+                    else:
+                        # NOT A NUMBER OR PARAM NOT SET
+                else:
+                    # IF USER_ID NOT EXIST, SEND ERROR MSG
+            else:
+                await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
+        ##
         else:
             await ctx.channel.send(
                 "Paramètre manquant / incorrect : **{}** [Arg 1] (l'action sélectionnée n'existe pas"

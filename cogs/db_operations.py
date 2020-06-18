@@ -39,7 +39,7 @@ def db_uwu_check():
 
 
 # Check if server data already exist
-def check_serv_data(guild_id):
+def db_check_serv_data(guild_id):
     connection.commit()
     cursor = connection.cursor()
     cursor.execute('''SELECT guild_id from servers_settings_global WHERE guild_id = %s''', (guild_id,))
@@ -52,7 +52,7 @@ def check_serv_data(guild_id):
 
 
 # Create server initial data (with their default values)
-def create_serv_data(guild_name, guild_id):
+def db_create_serv_data(guild_name, guild_id):
     cursor = connection.cursor()
     cursor.execute('''INSERT INTO servers_settings_global (guild_name, guild_id) VALUES (%s, %s)''', (guild_name, guild_id))
     connection.commit()
@@ -166,6 +166,20 @@ def db_get_emoji_roles(guild_id, message_id):
         return None
 
 
+# Check the privilege of a user that try to input admin commands
+def db_check_privilege(guild_id, user_id):
+    connection.commit()
+    cursor = connection.cursor()
+    cursor.execute('''SELECT privilege_level from uwu_global_admins WHERE guild_id = %s AND user_id = %s ''',
+                   (guild_id, user_id,))
+    result = cursor.fetchone()  # Result is a [tuple]
+    cursor.close()
+    if result:
+        return result
+    else:
+        return False
+
+
 # INSERT/UPDATE INFOS TO DB #############################################################################
 ##################################################################################################
 
@@ -263,9 +277,6 @@ def db_inspass_admin(guild_name, guild_id, user_name, user_id):
     connection.commit()
     cursor.close()
 
-# ?
-def db_insup_admin():
-    pass
 
 class DBOperations(commands.Cog):
     def __init__(self, bot):

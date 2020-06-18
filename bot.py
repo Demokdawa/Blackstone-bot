@@ -3,7 +3,7 @@ from discord.ext import tasks, commands
 from discord.utils import get
 import sys
 import logging
-from cogs.db_operations import db_uwu_check, create_serv_data, check_serv_data, db_inspass_admin
+from cogs.db_operations import db_uwu_check, db_create_serv_data, db_check_serv_data, db_inspass_admin
 from loadconfig import is_dev, bot_token_prod, bot_token_dev
 
 # Initialize ##################################################################################
@@ -56,10 +56,10 @@ async def on_ready():
 # On guild_join, check server data in DB
 @bot.event
 async def on_guild_join(guild):
-    if check_serv_data(guild.id) is True:
+    if db_check_serv_data(guild.id) is True:
         pass
     else:
-        create_serv_data(guild.name, guild.id)
+        db_create_serv_data(guild.name, guild.id)
 
     db_inspass_admin(guild.name, guild.id, guild.owner.name, guild.owner.id)
 
@@ -114,6 +114,16 @@ async def on_command_error(ctx, message):
                             value="Ajoute/supprime un rôle a la personne qui ajoute/supprime un emoji au message ciblé"
                             "Syntaxe : [id message suivi] [id emoji] [nom du rôle]",
                             inline=False)
+            embed.add_field(name="add_uwu_admin",
+                            value="Ajoute un admin UwU sur le serveur"
+                            "Syntaxe : [id de l'utilisateur] [privilege]"
+                            "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
+                            inline=False)
+            embed.add_field(name="del_uwu_admin",
+                            value="Supprime un admin UwU sur le serveur"
+                            "Syntaxe : [id de l'utilisateur] [privilege]"
+                            "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
+                            inline=False)
             await ctx.channel.send(embed=embed)
     elif isinstance(message, commands.UserInputError):
         await ctx.channel.send(message)
@@ -131,6 +141,13 @@ else:
     bot.run(bot_token_prod, bot=True, reconnect=True)  # Prod
 
 # TO-DO :
-# Fix double welcome message
-# Change all bot config to dynamic
+# Partie gestion admin UwU a finir !
+# Verifier toutes les commandes/menus/checks
+# Ajouter les commandes manquantes
+# Ajouter la mécanique de warning (lecture écriture BDD)
+# Ajouter la mécanique de goulag
+# Ajouter des commandes de listing pour voir les configurations actuelles
+#
+#
+# Fix le double message de bienvenue !
 
