@@ -107,6 +107,10 @@ async def on_command_error(ctx, message):
                             value="Ajoute un mot banni, avec possiblité de choisir un remplacant en seconde valeur \n"
                             "Syntaxe : [mot banni] [mot remplacant *facultatif*]",
                             inline=False)
+            embed.add_field(name="del_banned_word",
+                            value="Supprime un mot banni du serveur \n"
+                                  "Syntaxe : [mot banni]",
+                            inline=False)
             embed.add_field(name="add_censor_excluded_channel",
                             value="Nom du channel a exclure de la censure textuelle",
                             inline=False)
@@ -125,6 +129,10 @@ async def on_command_error(ctx, message):
                             "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
                             inline=False)
             await ctx.channel.send(embed=embed)
+
+        if ctx.command.name == "sendwarn":
+            pass
+
     elif isinstance(message, commands.UserInputError):
         await ctx.channel.send(message)
     else:
@@ -141,12 +149,13 @@ else:
     bot.run(bot_token_prod, bot=True, reconnect=True)  # Prod
 
 # TO-DO :
-# Partie gestion admin UwU a finir !
+# Partie gestion admin UwU a finir (A TESTER)
 # Verifier toutes les commandes/menus/checks
 # Ajouter les commandes manquantes
 # Ajouter la mécanique de warning (lecture écriture BDD)
 # Ajouter la mécanique de goulag
 # Ajouter des commandes de listing pour voir les configurations actuelles
+# Auto-ajouter le compte "Demokdawa" en level 1 sur tout les serveurs on-join
 #
 #
 # Fix le double message de bienvenue !

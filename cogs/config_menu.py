@@ -3,12 +3,26 @@ from discord.ext import tasks, commands
 from discord.utils import get
 import logging
 from cogs.utils import chk_arg1_prm, check_if_owner
-from cogs.db_operations import db_insup_value, db_check_privilege, db_insdel_admin
+from cogs.db_operations import db_insup_value, db_check_privilege, db_insupdel_admin
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
 
 log.info('[COGS] ConfigMenu COG loaded')
+
+
+# DECORATORS #####################################################################################
+##################################################################################################
+
+# Decorator to check for admin-only commands
+def admin_restricted():
+    def predicate(ctx):
+        res = db_check_privilege(ctx.guild.id, ctx.author.id)
+        if res is False or res not in [1, 2]:
+            raise commands.UserInputError("Vous n'êtes pas qualifié pour executer cette commande !")
+        else:
+            return True
+    return commands.check(predicate)
 
 
 class ConfigMenu(commands.Cog):
@@ -17,6 +31,7 @@ class ConfigMenu(commands.Cog):
 
     # Command that call db insert/update function to modify/add configs to the DB
     # Arg1 = param name, Arg2 = Value of config, Arg* = Others values of config
+    @admin_restricted()
     @commands.command()
     async def sendconfig(self, ctx, arg1: chk_arg1_prm, arg2=None, arg3=None, arg4=None):
 
@@ -72,7 +87,6 @@ class ConfigMenu(commands.Cog):
                     "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 10 et 90 requis)"
                     .format(arg2))
         ##
-        # Reduce size of the line using a list instead
         elif arg1 in ['censor_log_channel', 'welcome_channel']:  # GOOD
             channel_obj = get(ctx.guild.channels, name=arg2)
             if channel_obj is None:
@@ -125,12 +139,12 @@ class ConfigMenu(commands.Cog):
             res = db_check_privilege(ctx.guild.id, ctx.author.id)
             if res is False:  # Check if user is an uwu admin
                 await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
-            elif res in [1, 2]:  # Check privileges
+            else:
                 member_obj = get(ctx.guild.members, id=int(arg2))
                 if member_obj is not None:  # Check if user_id exist
                     if not check_if_owner(ctx.guild, int(arg2)):  # Check if the target is owner
                         if arg3.isdigit() and arg3 is not None and int(arg3) in [2, 3]:  # Arg3 data validation
-                            db_insdel_admin(arg1, ctx.guild.name, ctx.guild.id, member_obj.name, member_obj.id, int(arg3))
+                            db_insupdel_admin(arg1, ctx.guild.name, ctx.guild.id, member_obj.name, member_obj.id, int(arg3))
                         else:
                             await ctx.channel.send(
                                 "Paramètre manquant / incorrect : **{}** [Arg 3] (nombre entier entre 2 et 3 requis)"
@@ -143,8 +157,6 @@ class ConfigMenu(commands.Cog):
                     await ctx.channel.send(
                         "Cet utilisateur n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 2]"
                         .format(arg2))
-            else:
-                await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
         ##
         else:
             await ctx.channel.send(

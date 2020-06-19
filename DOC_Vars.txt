@@ -9,3 +9,9 @@ LONG_REDDIT_TIMER. A value between 10 and 90 in seconds
 1 | Créateur du Bot                         | Peut tout faire !
 2 | Administrateur(s) du serveur spécifique | Peut configurer son serveur
 3 | Modérateur(s) du serveur spécifique     | Peut utiliser certaines commandes de modération sur son serveur
+
+### Les niveau de warns ###
+1 | Petit warn pour avertir
+2 | Moyen warn, pour marquer un plus gros avertissement
+3 | Gros warn, lorsqu'une faute grave est commise
+4 | Warn qui peux précéder un ban ou en dernier recours

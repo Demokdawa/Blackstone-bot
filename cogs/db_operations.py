@@ -170,7 +170,7 @@ def db_get_emoji_roles(guild_id, message_id):
 def db_check_privilege(guild_id, user_id):
     connection.commit()
     cursor = connection.cursor()
-    cursor.execute('''SELECT privilege_level from uwu_global_admins WHERE guild_id = %s AND user_id = %s ''',
+    cursor.execute('''SELECT privilege_level from server_global_admins WHERE guild_id = %s AND user_id = %s ''',
                    (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
     cursor.close()
@@ -266,34 +266,57 @@ def db_insup_value(target_param, val_tuple):
 def db_inspass_admin(guild_name, guild_id, user_name, user_id):
     connection.commit()
     cursor = connection.cursor()
-    cursor.execute('''SELECT user_id from uwu_global_admins WHERE guild_id = %s and user_id = %s 
+    cursor.execute('''SELECT user_id from server_global_admins WHERE guild_id = %s and user_id = %s 
                     and privilege_level = 2''', (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
     if result:
         pass
     else:
-        cursor.execute('''INSERT INTO uwu_global_admins (guild_name, guild_id, user_name, user_id, privilege_level)
+        cursor.execute('''INSERT INTO server_global_admins (guild_name, guild_id, user_name, user_id, privilege_level)
                         VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, 2,))
     connection.commit()
     cursor.close()
 
 
-def db_insdel_admin(target_param, guild_name, guild_id, user_name, user_id, privilege_level):
+# Insert / Update / Delete an admin from the DB
+def db_insupdel_admin(target_param, guild_name, guild_id, user_name, user_id, privilege_level):
     cursor = connection.cursor()
     connection.commit()
-    cursor.execute('''SELECT user_id FROM uwu_global_admins WHERE guild_id = %s and user_id = %s
+    cursor.execute('''SELECT user_id FROM server_global_admins WHERE guild_id = %s and user_id = %s
                     and privilege_level = %s''', (guild_id, user_id, privilege_level,))
     result = cursor.fetchone()  # Result is a [tuple]
 
     if target_param == 'add_uwu_admin':
         if result:
-            cursor.execute('''UPDATE uwu_global_admins SET privilege_level =%s 
+            cursor.execute('''UPDATE server_global_admins SET privilege_level =%s 
                             WHERE guild_id = %s and user_id = %s''', (privilege_level, guild_id, user_id,))
         else:
-            cursor.execute('''INSERT INTO uwu_global_admins (guild_name, guild_id, user_name, user_id, privilege_level)
+            cursor.execute('''INSERT INTO server_global_admins (guild_name, guild_id, user_name, user_id, privilege_level)
                             VALUES (%s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, privilege_level,))
     elif target_param == 'del_uwu_admin':
-        cursor.execute('''DELETE FROM uwu_global_admins WHERE guild_id = %s and user_id = %s''', (guild_id, user_id,))
+        cursor.execute('''DELETE FROM server_global_admins WHERE guild_id = %s and user_id = %s''', (guild_id, user_id,))
+
+    connection.commit()
+    cursor.close()
+
+
+# Add a warn to a user, create it if not already in DB
+def add_warn(guild_name, guild_id, user_name, user_id, warn_level):
+    cursor = connection.cursor()
+    connection.commit()
+    cursor.execute('''SELECT user_id FROM server_moderation_data WHERE guild_id = %s and user_id = %s''',
+                   (guild_id, user_id,))
+    result = cursor.fetchone()  # Return is a [tuple]
+
+    if result:
+        cursor.execute('''UPDATE server_moderation_data SET warn_level = warn_level + %s
+                        WHERE guild_id = %s and user_id = %s''', (warn_level, guild_id, user_id,))
+    else:
+        cursor.execute('''INSERT INTO server_moderation_data (guild_name, guild_id, user_name, user_id, warn_level)
+                        VALUES (%s, %s, %s, %s, %s,)''', (guild_name, guild_id, user_name, user_id, warn_level,))
+
+    connection.commit()
+    cursor.close()
 
 
 class DBOperations(commands.Cog):

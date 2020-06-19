@@ -115,7 +115,7 @@ class CensorWord(commands.Cog):
                 pass  # Do nothing and let the message pass the filter
             else:
                 embed = discord.Embed()
-                embed.set_author(name="[WARN] " + str(message.author.display_name), icon_url=message.author.avatar_url)
+                embed.set_author(name="[CORRECT] " + str(message.author.display_name), icon_url=message.author.avatar_url)
                 embed.add_field(name="User", value="<@" + str(message.author.id) + ">", inline=True)
                 embed.add_field(name="Reason", value="Bad word usage", inline=True)
                 embed.add_field(name="Channel", value="<#" + str(message.channel.id) + ">", inline=False)

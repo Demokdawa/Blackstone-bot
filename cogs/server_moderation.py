@@ -1,7 +1,8 @@
 import logging
+import discord
 from discord.ext import commands
 from discord.utils import get
-from cogs.db_operations import db_get_emoji_roles, db_get_conf_server_all
+from cogs.db_operations import db_get_emoji_roles, db_get_conf_server_all, db_check_privilege, add_warn
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -34,7 +35,17 @@ def check_cog_censor_config():
                                               "Configurations erronées/manquantes : {}/n"
                                               "Utilise la commande configuration pour voir ce qui ne va pas !"
                                               .format(error_nbr))
+    return commands.check(predicate)
 
+
+# Decorator to check for moderation-only commands
+def mod_restricted():
+    def predicate(ctx):
+        res = db_check_privilege(ctx.guild.id, ctx.author.id)
+        if res is False:
+            raise commands.UserInputError("Vous n'êtes pas qualifié pour executer cette commande !")
+        else:
+            return True
     return commands.check(predicate)
 
 
@@ -104,6 +115,44 @@ class ServerModeration(commands.Cog):
             await member.remove_roles(get(guild.roles, id=linked_role), reason=None, atomic=True)
         else:
             print("Emoji ne correspond a rien, aucune action !")
+
+    # MODERATION COMMANDS ############################################################################
+    ##################################################################################################
+
+    @mod_restricted()
+    @commands.command()
+    async def sendwarn(self, ctx, user: discord.User, arg2: int, arg3='X'):
+        if 1 <= arg2 >= 4:
+            add_warn(ctx.guild.name, ctx.guild.id, user.name, user.id, arg2)
+
+            embed = discord.Embed()
+            embed.set_author(name="[WARN] " + str(ctx.author.display_name), icon_url=ctx.author.avatar_url)
+            embed.add_field(name="User", value="<@" + str(ctx.author.id) + ">", inline=True)
+            embed.add_field(name="Reason", value=arg3, inline=True)
+            embed.add_field(name="Warn-Level", value=str(arg2), inline=False)
+
+            # Get censor log configured channel for the guild from DB
+            channel = self.bot.get_channel(db_get_conf_server_all(ctx.guild.id)[3])
+            await channel.send(embed=embed)
+
+        else:
+            await ctx.channel.send(
+                "Valeur incorrecte : **{}** [Arg 2] (nombre entier entre 1 et 4 requis)"
+                .format(arg2))
+
+    # LOCAL ERROR-HANDLERS ############################################################################
+    ##################################################################################################
+
+    @sendwarn.error
+    async def sendwarn_error(self, ctx, error):
+        argument = list(ctx.command.clean_params)[len(ctx.args[2:] if ctx.command.cog else ctx.args[1:])]
+        # NEED TO USE ARGUMENT VAR TO DIFFERENTIATE MESSAGES DEPENDING ON CONVERTERS THAT FAILS
+        if isinstance(error, commands.BadArgument):
+            await ctx.send('Je n\'ai pas pu trouver ce membre, desolé !')
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed = discord.Embed(title="Commande sendwarn 🤖", description="", color=0xd5d500)
+            embed.add_field(name="__**Syntaxe : **__", value="!sendwarn [mention] [warning-level] [raison]", inline=False)
+            await ctx.channel.send(embed=embed)
 
 
 def setup(bot):
