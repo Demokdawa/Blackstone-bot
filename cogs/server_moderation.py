@@ -153,7 +153,7 @@ class ServerModeration(commands.Cog):
             embed = discord.Embed(title="Commande sendwarn 🤖", description="", color=0xd5d500)
             embed.add_field(name="__**Syntaxe : **__", value="!sendwarn [mention] [warning-level] [raison]", inline=False)
             await ctx.channel.send(embed=embed)
-
+            
 
 def setup(bot):
     bot.add_cog(ServerModeration(bot))
