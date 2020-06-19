@@ -268,7 +268,7 @@ def db_inspass_admin(guild_name, guild_id, user_name, user_id):
     cursor = connection.cursor()
     cursor.execute('''SELECT user_id from uwu_global_admins WHERE guild_id = %s and user_id = %s 
                     and privilege_level = 2''', (guild_id, user_id,))
-    result = cursor.fetchone()
+    result = cursor.fetchone()  # Result is a [tuple]
     if result:
         pass
     else:
@@ -276,6 +276,24 @@ def db_inspass_admin(guild_name, guild_id, user_name, user_id):
                         VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, 2,))
     connection.commit()
     cursor.close()
+
+
+def db_insdel_admin(target_param, guild_name, guild_id, user_name, user_id, privilege_level):
+    cursor = connection.cursor()
+    connection.commit()
+    cursor.execute('''SELECT user_id FROM uwu_global_admins WHERE guild_id = %s and user_id = %s
+                    and privilege_level = %s''', (guild_id, user_id, privilege_level,))
+    result = cursor.fetchone()  # Result is a [tuple]
+
+    if target_param == 'add_uwu_admin':
+        if result:
+            cursor.execute('''UPDATE uwu_global_admins SET privilege_level =%s 
+                            WHERE guild_id = %s and user_id = %s''', (privilege_level, guild_id, user_id,))
+        else:
+            cursor.execute('''INSERT INTO uwu_global_admins (guild_name, guild_id, user_name, user_id, privilege_level)
+                            VALUES (%s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, privilege_level,))
+    elif target_param == 'del_uwu_admin':
+        cursor.execute('''DELETE FROM uwu_global_admins WHERE guild_id = %s and user_id = %s''', (guild_id, user_id,))
 
 
 class DBOperations(commands.Cog):

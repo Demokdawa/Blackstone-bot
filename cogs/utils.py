@@ -26,6 +26,15 @@ def chk_arg1_prm(param):
         raise commands.BadArgument("Premier paramètre incorrect : '{}'".format(param))
 
 
+# Take guild object and user_id as args
+# Check specified user_id is the owner of the guild
+def check_if_owner(guild, user_id):
+    if user_id == guild.owner.id:
+        return True
+    else:
+        return False
+
+
 class Utils(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

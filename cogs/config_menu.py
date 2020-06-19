@@ -2,8 +2,8 @@ import discord
 from discord.ext import tasks, commands
 from discord.utils import get
 import logging
-from cogs.utils import chk_arg1_prm
-from cogs.db_operations import db_insup_value, db_check_privilege
+from cogs.utils import chk_arg1_prm, check_if_owner
+from cogs.db_operations import db_insup_value, db_check_privilege, db_insdel_admin
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -78,7 +78,7 @@ class ConfigMenu(commands.Cog):
             if channel_obj is None:
                 await ctx.channel.send(
                     "Ce channel n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 2]"
-                        .format(arg2))
+                    .format(arg2))
             else:
                 db_insup_value(arg1, (ctx.guild.id, channel_obj.id))
         ##
@@ -123,22 +123,22 @@ class ConfigMenu(commands.Cog):
         ##
         elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:
             res = db_check_privilege(ctx.guild.id, ctx.author.id)
-            if res is False:  # User is not an admin
+            if res is False:  # Check if user is an uwu admin
                 await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
-            elif res in [1, 2]:  # User have enough privileges
+            elif res in [1, 2]:  # Check privileges
                 member_obj = get(ctx.guild.members, id=int(arg2))
-                if member_obj is not None:  # NEED TO CHECK IF USER_ID EXIST
-                    if arg3.isdigit() and arg3 is not None:
-                        if int(arg3) in [2, 3]:
-                            log.info('USER FOUND BOI, COMMANDE GOOD')
+                if member_obj is not None:  # Check if user_id exist
+                    if not check_if_owner(ctx.guild, int(arg2)):  # Check if the target is owner
+                        if arg3.isdigit() and arg3 is not None and int(arg3) in [2, 3]:  # Arg3 data validation
+                            db_insdel_admin(arg1, ctx.guild.name, ctx.guild.id, member_obj.name, member_obj.id, int(arg3))
                         else:
                             await ctx.channel.send(
                                 "Paramètre manquant / incorrect : **{}** [Arg 3] (nombre entier entre 2 et 3 requis)"
                                 .format(arg3))
                     else:
                         await ctx.channel.send(
-                            "Paramètre manquant / incorrect : **{}** [Arg 3] (nombre entier entre 2 et 3 requis)"
-                            .format(arg3))
+                            "Vous ne pouvez pas modifier le status du propriétaire du serveur ! : **{}** [Arg 2]"
+                            .format(arg2))
                 else:
                     await ctx.channel.send(
                         "Cet utilisateur n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 2]"
