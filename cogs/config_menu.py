@@ -5,7 +5,7 @@ import logging
 from itertools import zip_longest
 from cogs.utils import chk_arg1_sndcfg, chk_arg1_shcfg, check_if_owner
 from cogs.db_operations import db_insup_value, db_check_privilege, db_insupdel_admin, db_get_conf_server_all, \
-    db_get_censor_words, db_get_excl_channels, db_get_server_emoji_roles, db_get_nsfw_channels
+    db_get_censor_words, db_get_excl_channels, db_get_server_emoji_roles, db_get_nsfw_channels, db_del_value
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -106,6 +106,10 @@ class ConfigMenu(commands.Cog):
             else:
                 db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, channel_obj.id))
         ##
+        elif arg1 in ['del_nsfw_channel', 'del_censor_excluded_channel']:
+            channel_obj = get(ctx.guild.channels, name=arg2)
+            db_del_value(arg1, (ctx.guild.id, channel_obj.id))
+        ##
         elif arg1 == 'welcome_role' or arg1 == 'approb_role':
             role_obj = get(ctx.guild.roles, name=arg2)
             if role_obj is None:
@@ -118,7 +122,7 @@ class ConfigMenu(commands.Cog):
         elif arg1 == 'add_banned_word':  # GOOD
             db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg2, arg3))
         ##
-        elif arg1 == 'del_banned_word':  # GOOD
+        elif arg1 == 'del_banned_word':
             db_insup_value(arg1, (ctx.guild.id, arg2))
         ##
         elif arg1 == 'add_emoji_role':
@@ -135,6 +139,16 @@ class ConfigMenu(commands.Cog):
                             .format(arg4))
                     else:
                         db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg4, int(arg2), int(arg3), role_obj.id))
+        ##
+        elif arg1 == 'del_emoji_role':
+            if not arg2.isdigit() or arg2 is None:
+                await ctx.channel.send("Paramètre manquant / incorrect : **{}** [Arg 2]".format(arg2))
+            else:
+                if not arg3.isdigit() or arg3 is None:
+                    await ctx.channel.send("Paramètre manquant / incorrect : **{}** [Arg 3]".format(arg3))
+                else:
+                    role_obj = get(ctx.guild.roles, name=arg4)
+                    db_del_value(arg1, (ctx.guild.id, int(arg2), int(arg3), int(arg4)))
         ##
         elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:
             res = db_check_privilege(ctx.guild.id, ctx.author.id)

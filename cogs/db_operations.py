@@ -241,12 +241,12 @@ def db_insup_value(target_param, val_tuple):
         cursor.execute('''UPDATE servers_settings_global SET approb_role = %s 
                                           WHERE guild_id = %s''', (approb_role, guild_id,))
     ##
-    elif target_param == "add_nsfw_channel":
+    elif target_param == "add_nsfw_channel":  # ADD_SELECT CHECK
         guild_id, guild_name, add_nsfw_channel = val_tuple
         cursor.execute('''INSERT INTO servers_nsfw_channel (guild_id, guild_name, add_nsfw_channel) 
                                   VALUES (%s, %s, %s)''', (guild_id, guild_name, add_nsfw_channel,))
     ##
-    elif target_param == "add_censor_excluded_channel":
+    elif target_param == "add_censor_excluded_channel":  # ADD_SELECT CHECK
         guild_id, guild_name, add_censor_excluded_channel = val_tuple
         cursor.execute('''INSERT INTO servers_censor_excluded_channel (guild_id, guild_name, add_censor_excluded_channel) 
                                   VALUES (%s, %s, %s)''', (guild_id, guild_name, add_censor_excluded_channel,))
@@ -263,15 +263,39 @@ def db_insup_value(target_param, val_tuple):
             cursor.execute('''INSERT INTO servers_banned_word (guild_id, guild_name, word, word_replacement) 
                               VALUES (%s, %s, %s, %s)''', (guild_id, guild_name, word, word_replacement,))
     ##
-    elif target_param == "del_banned_word":
-        guild_id, word = val_tuple
-        cursor.execute('''DELETE FROM servers_banned_word WHERE guild_id = %s and word = %s''', (guild_id, word,))
-    ##
-    elif target_param == "add_emoji_role":
+    elif target_param == "add_emoji_role":  # ADD_SELECT CHECK
         guild_id, guild_name, role_name, tracked_message, emoji_id, role_id = val_tuple
         cursor.execute('''INSERT INTO servers_emoji_roles 
                                     (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id) 
         VALUES (%s, %s, %s, %s)''', (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id,))
+
+    connection.commit()
+    cursor.close()
+
+
+#
+def db_del_value(target_param, val_tuple):
+    cursor = connection.cursor()
+    connection.commit()
+    ##
+    if target_param == 'del_nsfw_channel':
+        guild_id, channel_id = val_tuple
+        cursor.execute('''DELETE FROM servers_nsfw_channel WHERE guild_id = %s and channel_id = %s''',
+                       (guild_id, channel_id,))
+    ##
+    elif target_param == 'del_censor_excluded_channel':
+        guild_id, channel_id = val_tuple
+        cursor.execute('''DELETE FROM servers_censor_excluded_channel WHERE guild_id = %s and channel_id = %s''',
+                       (guild_id, channel_id,))
+    ##
+    elif target_param == 'del_banned_word':
+        guild_id, word = val_tuple
+        cursor.execute('''DELETE FROM servers_banned_word WHERE guild_id = %s and word = %s''', (guild_id, word,))
+    ##
+    elif target_param == 'del_emoji_role':
+        guild_id, tracked_message, emoji_id, role_id = val_tuple
+        cursor.execute('''DELETE FROM servers_emoji_roles WHERE guild_id = %s and tracked_message =%s 
+        and emoji_id = %s and  role_id = %s''', (guild_id, tracked_message, emoji_id, role_id,))
 
     connection.commit()
     cursor.close()
