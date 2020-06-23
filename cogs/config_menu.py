@@ -5,7 +5,7 @@ import logging
 from itertools import zip_longest
 from cogs.utils import chk_arg1_sndcfg, chk_arg1_shcfg, check_if_owner
 from cogs.db_operations import db_insup_value, db_check_privilege, db_insupdel_admin, db_get_conf_server_all, \
-    db_get_censor_words, db_get_excl_channels
+    db_get_censor_words, db_get_excl_channels, db_get_server_emoji_roles, db_get_nsfw_channels
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -167,7 +167,7 @@ class ConfigMenu(commands.Cog):
     @admin_restricted()
     @commands.command()
     async def shodconfig(self, ctx, arg1: chk_arg1_shcfg):
-        if arg1 == 'general':
+        if arg1 == 'general':  # A FINIR/ CHECKER
             # Get infos from DB
             conf_server_all = db_get_conf_server_all(ctx.guild.id)
             # Create embed
@@ -183,7 +183,7 @@ class ConfigMenu(commands.Cog):
             embed.add_field(name="goulag_channel", value=conf_server_all[7], inline=False)
             await ctx.channel.send(embed=embed)
         ##
-        if arg1 == 'censor':
+        if arg1 == 'censor':  # A FINIR/ CHECKER
             # Get infos from DB
             censor_words_dict = db_get_censor_words(ctx.guild.id)
             # Create embed
@@ -198,7 +198,7 @@ class ConfigMenu(commands.Cog):
 
             await ctx.channel.send(embed=embed)
         ##
-        if arg1 == 'censor_excluded':
+        if arg1 == 'censor_excluded':  # A FINIR/ CHECKER
             # Get infos from DB
             censor_excl_list = db_get_excl_channels(ctx.guild.id)
             # Create embed
@@ -209,9 +209,38 @@ class ConfigMenu(commands.Cog):
                 if b is not None:
                     embed.add_field(name="<#" + str(a[0]) + ">", value="<#" + str(b[0]) + ">", inline=True)
                 else:
-                    embed.add_field(name="<#" + str(a[0]) + ">", value='.', inline=True)
+                    embed.add_field(name="<#" + str(a[0]) + ">", value='\u200b', inline=True)
 
             await ctx.channel.send(embed=embed)
+        ##
+        if arg1 == 'emoji_roles':  # A FINIR/ CHECKER
+            # Get infos from DB
+            emoji_roles_list = db_get_server_emoji_roles(ctx.guild.id)
+            # Create embed
+            embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
+            embed.add_field(name="__**Configuration d'emoji-roles: **__", value="\u200b", inline=False)
+            # Iterate trough list (NEED TO ADD A NONE CHECK)
+            for e in emoji_roles_list:
+                embed.add_field(name=f"<@" + str(e[0]) + "> | " + "<@&" + str(e[1]) + ">", value=str(e[2]), inline=True)
+
+            await ctx.channel.send(embed=embed)
+        ##
+        if arg1 == 'nsfw_channels':  # A FINIR/ CHECKER
+            # Get infos from DB
+            nsfw_channel_list = db_get_nsfw_channels(ctx.guild.id)
+            # Create embed
+            embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
+            embed.add_field(name="__**Configuration des channels NSFW: **__", value="\u200b", inline=False)
+            #
+            for a, b in zip_longest(nsfw_channel_list[::2], nsfw_channel_list[1::2]):  # List format to get 1/2 pairs
+                if b is not None:
+                    embed.add_field(name=f"<#" + str(a) + ">", value=f"<#" + str(b) + ">", inline=True)
+                else:
+                    embed.add_field(name=f"<#" + str(a) + ">", value='\u200b', inline=True)
+        ##
+        if arg1 == 'moderation_data':  # A FINIR/ CHECKER
+            # Get infos from DB
+            pass
 
 
 def setup(bot):

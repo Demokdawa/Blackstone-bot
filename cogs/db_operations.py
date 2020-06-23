@@ -138,6 +138,7 @@ def db_get_censor_words(guild_id):
     return query_dict
 
 
+# Get all excluded channels that does not get censored on the server
 def db_get_excl_channels(guild_id):
     connection.commit()
     cursor = connection.cursor()
@@ -152,6 +153,7 @@ def db_get_excl_channels(guild_id):
         return None
 
 
+# Get all the emoji-roles on the server matching a specific message
 def db_get_emoji_roles(guild_id, message_id):
     connection.commit()
     cursor = connection.cursor()
@@ -162,6 +164,19 @@ def db_get_emoji_roles(guild_id, message_id):
     if result:
         query_dict = dict(result)
         return query_dict
+    else:
+        return None
+
+
+# Get all the emoji-roles on the server
+def db_get_server_emoji_roles(guild_id):
+    connection.commit()
+    cursor = connection.cursor()
+    cursor.execute('''SELECT emoji_id, role_id, tracked_message from servers_emoji_roles WHERE guild_id = %s''', (guild_id,))
+    result = cursor.fetchall()  # Result is a [list of tuples]
+    cursor.close()
+    if result:
+        return result
     else:
         return None
 
