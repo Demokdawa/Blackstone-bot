@@ -211,6 +211,8 @@ class ConfigMenu(commands.Cog):
                 else:
                     embed.add_field(name="<#" + str(a[0]) + ">", value='.', inline=True)
 
+            await ctx.channel.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(ConfigMenu(bot))
