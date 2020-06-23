@@ -155,7 +155,7 @@ class ConfigMenu(commands.Cog):
                             .format(arg2))
                 else:
                     await ctx.channel.send(
-                        "Cet utilisateur n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 2]"
+                        "Aucun utilisateur n'a été trouvé sur cet ID : **{}** [Arg 2]"
                         .format(arg2))
         ##
         else:
