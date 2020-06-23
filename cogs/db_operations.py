@@ -195,10 +195,10 @@ def db_check_privilege(guild_id, user_id):
         return False
 
 
-# INSERT/UPDATE INFOS TO DB #############################################################################
-##################################################################################################
+# INSERT/UPDATE/DELETE INFOS TO DB #############################################################################
+#########################################################################################################
 
-# Insert val_tuple values into DB depengind on invoked usage
+# Insert val_tuple values into DB depending on invoked usage
 def db_insup_value(target_param, val_tuple):
     cursor = connection.cursor()
     connection.commit()
@@ -273,7 +273,7 @@ def db_insup_value(target_param, val_tuple):
     cursor.close()
 
 
-#
+# Delete val_tuple values from DB depending on invoked usage
 def db_del_value(target_param, val_tuple):
     cursor = connection.cursor()
     connection.commit()
