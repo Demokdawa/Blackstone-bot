@@ -28,7 +28,7 @@ def chk_arg1_sndcfg(param):
 
 # Check if arg1 in !shodconfig command is correct
 def chk_arg1_shcfg(param):
-    parameters_list = ["general", "censor", "censor_excluded", "emoji_roles", "nsfw_channels", "moderation"]
+    parameters_list = ["general", "censor", "censor_excluded", "emoji_roles", "nsfw_channels"]
 
     if param in parameters_list:
         return param

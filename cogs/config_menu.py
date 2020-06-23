@@ -238,10 +238,6 @@ class ConfigMenu(commands.Cog):
                 else:
                     embed.add_field(name=f"<#" + str(a) + ">", value='\u200b', inline=True)
         ##
-        if arg1 == 'moderation':  # A FINIR/ CHECKER
-            # Get infos from DB
-            pass
-        ##
         else:
             await ctx.channel.send(
                 "Paramètre manquant / incorrect : **{}** [Arg 1] (l'action sélectionnée n'existe pas)"
@@ -259,8 +255,7 @@ class ConfigMenu(commands.Cog):
             embed.add_field(name="censor", value="Mots bannis et remplacants.", inline=False)
             embed.add_field(name="censor_excluded", value="Channels exclus de la censure textuelle.", inline=False)
             embed.add_field(name="emoji_roles", value="Reactions d'emoji donnant accés à certains rôles.", inline=False)
-            embed.add_field(name="nsfw_channels", value="Channels ou les commandes NSFW sont autorisées", inline=False)
-            embed.add_field(name="moderation", value="Warns des utilisateurs du serveur", inline=False)
+            embed.add_field(name="nsfw_channels", value="Channels ou les commandes NSFW sont autorisées.", inline=False)
             await ctx.channel.send(embed=embed)
 
 
