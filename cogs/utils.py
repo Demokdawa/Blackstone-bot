@@ -14,11 +14,21 @@ def guild_from_context(ctx):
 
 
 # Check if arg1 in !sendconfig command is correct
-def chk_arg1_prm(param):
+def chk_arg1_sndcfg(param):
     parameters_list = ["nsfw_mode", "short_reddit_timer", "long_reddit_timer", "censor_log_channel",
                        "welcome_channel", "welcome_role", "approb_role", "add_nsfw_channel", "add_banned_word",
                        "del_banned_word", "add_censor_excluded_channel", "add_emoji_role", "add_uwu_admin",
                        "del_uwu_admin"]
+
+    if param in parameters_list:
+        return param
+    else:
+        raise commands.BadArgument("Premier paramètre incorrect : '{}'".format(param))
+
+
+# Check if arg1 in !shodconfig command is correct
+def chk_arg1_shcfg(param):
+    parameters_list = ["general", "censor", "censor_excluded"]
 
     if param in parameters_list:
         return param

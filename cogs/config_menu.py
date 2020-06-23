@@ -2,8 +2,10 @@ import discord
 from discord.ext import tasks, commands
 from discord.utils import get
 import logging
-from cogs.utils import chk_arg1_prm, check_if_owner
-from cogs.db_operations import db_insup_value, db_check_privilege, db_insupdel_admin
+from itertools import zip_longest
+from cogs.utils import chk_arg1_sndcfg, chk_arg1_shcfg, check_if_owner
+from cogs.db_operations import db_insup_value, db_check_privilege, db_insupdel_admin, db_get_conf_server_all, \
+    db_get_censor_words, db_get_excl_channels
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -33,10 +35,9 @@ class ConfigMenu(commands.Cog):
     # Arg1 = param name, Arg2 = Value of config, Arg* = Others values of config
     @admin_restricted()
     @commands.command()
-    async def sendconfig(self, ctx, arg1: chk_arg1_prm, arg2=None, arg3=None, arg4=None):
+    async def sendconfig(self, ctx, arg1: chk_arg1_sndcfg, arg2=None, arg3=None, arg4=None):
 
         if arg1 == 'nsfw_mode':  # GOOD
-            print('yes')
             if arg2.isdigit() and arg2 is not None:
                 if not 0 <= int(arg2) <= 2:
                     await ctx.channel.send(
@@ -162,6 +163,53 @@ class ConfigMenu(commands.Cog):
             await ctx.channel.send(
                 "Paramètre manquant / incorrect : **{}** [Arg 1] (l'action sélectionnée n'existe pas"
                 .format(arg1))
+
+    @admin_restricted()
+    @commands.command()
+    async def shodconfig(self, ctx, arg1: chk_arg1_shcfg):
+        if arg1 == 'general':
+            # Get infos from DB
+            conf_server_all = db_get_conf_server_all(ctx.guild.id)
+            # Create embed
+            embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
+            embed.add_field(name="__**Configurations globales : **__", value="\u200b", inline=False)
+            embed.add_field(name="nsfw_mode", value=conf_server_all[0], inline=False)
+            embed.add_field(name="short_reddit_timer", value=conf_server_all[1], inline=False)
+            embed.add_field(name="long_reddit_timer", value=conf_server_all[2], inline=False)
+            embed.add_field(name="censor_log_channel", value=conf_server_all[3], inline=False)
+            embed.add_field(name="welcome_channel", value=conf_server_all[4], inline=False)
+            embed.add_field(name="welcome_role", value=conf_server_all[5], inline=False)
+            embed.add_field(name="approb_role", value=conf_server_all[6], inline=False)
+            embed.add_field(name="goulag_channel", value=conf_server_all[7], inline=False)
+            await ctx.channel.send(embed=embed)
+        ##
+        if arg1 == 'censor':
+            # Get infos from DB
+            censor_words_dict = db_get_censor_words(ctx.guild.id)
+            # Create embed
+            embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
+            embed.add_field(name="__**Configuration de la censure: **__", value="\u200b", inline=False)
+            # Iterate trough dict
+            for k, v in censor_words_dict.items():
+                if v is None:
+                    embed.add_field(name=k, value="\u200b", inline=False)
+                else:
+                    embed.add_field(name=k, value=v, inline=False)
+
+            await ctx.channel.send(embed=embed)
+        ##
+        if arg1 == 'censor_excluded':
+            # Get infos from DB
+            censor_excl_list = db_get_excl_channels(ctx.guild.id)
+            # Create embed
+            embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
+            embed.add_field(name="__**Configuration de channels exclus (censure): **__", value="\u200b", inline=False)
+            # List iteration + manipulation to get pairs to show on menu
+            for a, b in zip_longest(censor_excl_list[::2], censor_excl_list[1::2]):  # List format to get 1/2 pairs
+                if b is not None:
+                    embed.add_field(name="<#" + str(a[0]) + ">", value="<#" + str(b[0]) + ">", inline=True)
+                else:
+                    embed.add_field(name="<#" + str(a[0]) + ">", value='.', inline=True)
 
 
 def setup(bot):

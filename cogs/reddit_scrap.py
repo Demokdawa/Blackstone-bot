@@ -335,7 +335,7 @@ class RedditScrap(commands.Cog):
                  "directement. ")
 
         if db_get_conf_server_all(ctx.guild.id)[0] == 0:  # Checking current nsfw_mode (disabled)
-            for a, b in zip_longest(c_list_sfw[::2], c_list_sfw[1::2]):
+            for a, b in zip_longest(c_list_sfw[::2], c_list_sfw[1::2]):  # List format to get 1/2 pairs
                 if b is not None:
                     embed.add_field(name=a[0], value=b[0], inline=True)
                 else:
@@ -343,7 +343,7 @@ class RedditScrap(commands.Cog):
 
         elif db_get_conf_server_all(ctx.guild.id)[0] == 1:  # Checking current nsfw_mode (semi-enabled)
             if ctx.channel.id in db_get_nsfw_channels(ctx.guild.id):  # If channel is an authorized nsfw channel
-                for a, b in zip_longest(c_list_nsfw[::2], c_list_nsfw[1::2]):
+                for a, b in zip_longest(c_list_nsfw[::2], c_list_nsfw[1::2]):  # # List format to get 1/2 pairs
                     if b is not None:
                         embed.add_field(name=a[0], value=b[0], inline=True)
                     else:
@@ -356,7 +356,7 @@ class RedditScrap(commands.Cog):
                         embed.add_field(name=a[0], value='.', inline=True)
 
         elif db_get_conf_server_all(ctx.guild.id)[0] == 2:  # Checking current nsfw_mode (enable)
-            for a, b in zip_longest(c_list_nsfw[::2], c_list_nsfw[1::2]):
+            for a, b in zip_longest(c_list_nsfw[::2], c_list_nsfw[1::2]):  # # List format to get 1/2 pairs
                 if b is not None:
                     embed.add_field(name=a[0], value=b[0], inline=True)
                 else:
