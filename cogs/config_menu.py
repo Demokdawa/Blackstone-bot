@@ -161,7 +161,7 @@ class ConfigMenu(commands.Cog):
         ##
         else:
             await ctx.channel.send(
-                "Paramètre manquant / incorrect : **{}** [Arg 1] (l'action sélectionnée n'existe pas"
+                "Paramètre manquant / incorrect : **{}** [Arg 1] (l'action sélectionnée n'existe pas)"
                 .format(arg1))
 
     @admin_restricted()
@@ -238,9 +238,30 @@ class ConfigMenu(commands.Cog):
                 else:
                     embed.add_field(name=f"<#" + str(a) + ">", value='\u200b', inline=True)
         ##
-        if arg1 == 'moderation_data':  # A FINIR/ CHECKER
+        if arg1 == 'moderation':  # A FINIR/ CHECKER
             # Get infos from DB
             pass
+        ##
+        else:
+            await ctx.channel.send(
+                "Paramètre manquant / incorrect : **{}** [Arg 1] (l'action sélectionnée n'existe pas)"
+                .format(arg1))
+
+    # LOCAL ERROR-HANDLERS ############################################################################
+    ###################################################################################################
+
+    @shodconfig.error
+    async def shodconfig_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed = discord.Embed(title="Commande shodconfig 🤖", description="", color=0xd5d500)
+            embed.add_field(name="__**Syntaxe : **__", value="!shodconfig [configuration]", inline=False)
+            embed.add_field(name="general", value="Options de configurations globales du serveur.", inline=False)
+            embed.add_field(name="censor", value="Mots bannis et remplacants.", inline=False)
+            embed.add_field(name="censor_excluded", value="Channels exclus de la censure textuelle.", inline=False)
+            embed.add_field(name="emoji_roles", value="Reactions d'emoji donnant accés à certains rôles.", inline=False)
+            embed.add_field(name="nsfw_channels", value="Channels ou les commandes NSFW sont autorisées", inline=False)
+            embed.add_field(name="moderation", value="Warns des utilisateurs du serveur", inline=False)
+            await ctx.channel.send(embed=embed)
 
 
 def setup(bot):
