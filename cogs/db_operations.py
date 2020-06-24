@@ -65,9 +65,12 @@ def db_create_serv_data(guild_name, guild_id):
 def db_get_conf_server_all(guild_id):
     connection.commit()
     cursor = connection.cursor()
+
     cursor.execute('''SELECT nsfw_mode, short_reddit_timer, long_reddit_timer, censor_log_channel, welcome_channel, 
-    welcome_role, approb_role, goulag_channel, warn_to_goulag from servers_settings_global WHERE guild_id = %s''', (guild_id,))
+    welcome_role, approb_role, goulag_channel, warn_to_goulag, pm_on_join_user, pm_on_join_emoji 
+    from servers_settings_global WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchone()  # Result is a [tuple]
+
     cursor.close()
     if result:
         return result

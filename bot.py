@@ -163,6 +163,12 @@ else:
 # [TEST] toutes les commandes/menus/checks
 # [ADD] les commandes manquantes
 # [ADD] la mécanique de goulag
+# [ADD] Implementer des features check pour chaque COG
+# - Creer une table qui garde l'état d'activation des features (tout est désactivé de base)
+# - Désactiver une feature si la configuration est mauvaise
+# - Ajouter une commande pour lister ces états
+# - Creer des fonctions check pour chaque COG et les lancer avant chaque commande
+
 # [TEST] les commandes de listing pour voir les configurations actuelles
 # [MISC] Auto-ajouter le compte "Demokdawa" en level 1 sur tout les serveurs on-join
 # [ADD] un système de page si l'affichage dépasse la limite
