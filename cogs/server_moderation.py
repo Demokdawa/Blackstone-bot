@@ -2,7 +2,8 @@ import logging
 import discord
 from discord.ext import commands
 from discord.utils import get
-from cogs.db_operations import db_get_emoji_roles, db_get_conf_server_all, db_check_privilege, add_warn
+from cogs.db_operations import db_get_emoji_roles, db_get_conf_server_all, db_check_privilege, db_add_warn, \
+    db_get_admins
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -123,7 +124,7 @@ class ServerModeration(commands.Cog):
     @commands.command()
     async def sendwarn(self, ctx, user: discord.User, arg2: int, arg3='X'):
         if 1 <= int(arg2) <= 4:
-            add_warn(ctx.guild.name, ctx.guild.id, user.name, user.id, arg2)
+            db_add_warn(ctx.guild.name, ctx.guild.id, user.name, user.id, arg2)
 
             embed = discord.Embed()
             embed.set_author(name="[WARN] " + str(user.display_name), icon_url=user.avatar_url)
@@ -143,8 +144,22 @@ class ServerModeration(commands.Cog):
 
     @mod_restricted()
     @commands.command()
-    async def shodadmins(self, ctx):
-        pass
+    async def shodadmin(self, ctx):
+        # Get infos from DB
+        admin_list = db_get_admins(ctx.guild.id)
+        # Create embed
+        embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
+        embed.add_field(name="__**Liste des droits : **__", value="\u200b", inline=False)
+
+        for e in admin_list:
+            if e[1] == 1:
+                embed.add_field(name="\u200b", value="<@" + str(e[0]) + "> | Precurseur", inline=False)
+            if e[1] == 2:
+                embed.add_field(name="\u200b", value="<@" + str(e[0]) + "> | Admin", inline=False)
+            if e[1] == 3:
+                embed.add_field(name="\u200b", value="<@" + str(e[0]) + "> | Moderateur", inline=False)
+
+        await ctx.channel.send(embed=embed)
 
     # LOCAL ERROR-HANDLERS ############################################################################
     ###################################################################################################

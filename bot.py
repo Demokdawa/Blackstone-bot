@@ -162,9 +162,8 @@ else:
 # [TEST] commande de showconfig globale et censored
 # [TEST] toutes les commandes/menus/checks
 # [ADD] les commandes manquantes
-# [ADD] la mécanique de warning (lecture écriture BDD)
 # [ADD] la mécanique de goulag
-# [ADD] les commandes de listing pour voir les configurations actuelles
+# [TEST] les commandes de listing pour voir les configurations actuelles
 # [MISC] Auto-ajouter le compte "Demokdawa" en level 1 sur tout les serveurs on-join
 # [ADD] un système de page si l'affichage dépasse la limite
 # [ADD] un MP a Nexx déclenché via emoji

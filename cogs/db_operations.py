@@ -66,25 +66,11 @@ def db_get_conf_server_all(guild_id):
     connection.commit()
     cursor = connection.cursor()
     cursor.execute('''SELECT nsfw_mode, short_reddit_timer, long_reddit_timer, censor_log_channel, welcome_channel, 
-    welcome_role, approb_role, goulag_channel from servers_settings_global WHERE guild_id = %s''', (guild_id,))
+    welcome_role, approb_role, goulag_channel, warn_to_goulag from servers_settings_global WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchone()  # Result is a [tuple]
     cursor.close()
     if result:
         return result
-    else:
-        return None
-
-
-def db_get_conf_welcome_channel(guild_id):
-    connection.commit()
-    cursor = connection.cursor()
-    cursor.execute('''SELECT welcome_channel from servers_emoji_roles WHERE guild_id = %s AND tracked_message = %s''',
-                   (guild_id,))
-    result = cursor.fetchall()  # Result is a [list of tuples]
-    cursor.close()
-    if result:
-        query_dict = dict(result)
-        return query_dict
     else:
         return None
 
@@ -185,12 +171,26 @@ def db_get_server_emoji_roles(guild_id):
 def db_check_privilege(guild_id, user_id):
     connection.commit()
     cursor = connection.cursor()
-    cursor.execute('''SELECT privilege_level from servers_global_privileges WHERE guild_id = %s AND user_id = %s ''',
+    cursor.execute('''SELECT privilege_level from servers_global_privileges WHERE guild_id = %s and user_id = %s''',
                    (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
     cursor.close()
     if result:
         return result[0]
+    else:
+        return False
+
+
+def db_get_admins(guild_id):
+    pass
+    connection.commit()
+    cursor = connection.cursor()
+    cursor.execute('''SELECT user_id, privilege_level from servers_global_privileges WHERE guild_id = %s''',
+                   (guild_id,))
+    result = cursor.fetchall()  # Result is a [list] of [tuples]
+    cursor.close()
+    if result:
+        return result
     else:
         return False
 
@@ -364,7 +364,7 @@ def db_inspass_developper(guild_name, guild_id, dev_name, dev_id):
 
 
 # Add a warn to a user, create it if not already in DB
-def add_warn(guild_name, guild_id, user_name, user_id, warn_level):
+def db_add_warn(guild_name, guild_id, user_name, user_id, warn_level):
     cursor = connection.cursor()
     connection.commit()
     cursor.execute('''SELECT user_id FROM servers_moderation_data WHERE guild_id = %s and user_id = %s''',
