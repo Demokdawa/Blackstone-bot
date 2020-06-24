@@ -23,7 +23,8 @@ def chk_arg1_sndcfg(param):
     if param in parameters_list:
         return param
     else:
-        raise commands.BadArgument("Premier paramètre incorrect : '{}'".format(param))
+        raise commands.BadArgument(
+            "Paramètre manquant / incorrect : **{}** [Arg 1] (l'action sélectionnée n'existe pas)".format(param))
 
 
 # Check if arg1 in !shodconfig command is correct
@@ -33,7 +34,8 @@ def chk_arg1_shcfg(param):
     if param in parameters_list:
         return param
     else:
-        raise commands.BadArgument("Premier paramètre incorrect : '{}'".format(param))
+        raise commands.BadArgument(
+            "Paramètre manquant / incorrect : **{}** [Arg 1] (l'action sélectionnée n'existe pas)".format(param))
 
 
 # Take guild object and user_id as args

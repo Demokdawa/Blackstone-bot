@@ -163,4 +163,5 @@ else:
 #
 #
 # Fix le double message de bienvenue !
+# Plus d'utilisations des mentions dans le futur !
 

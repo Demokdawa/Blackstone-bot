@@ -169,13 +169,25 @@ class ConfigMenu(commands.Cog):
     @admin_restricted()
     @commands.command()
     async def shodconfig(self, ctx, arg1: chk_arg1_shcfg):
-        if arg1 == 'general':  # A FINIR/ CHECKER
+        if arg1 == 'general':  # GOOD
             # Get infos from DB
             conf_server_all = db_get_conf_server_all(ctx.guild.id)
             # Create embed
             embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
             embed.add_field(name="__**Configurations globales : **__", value="\u200b", inline=False)
-            embed.add_field(name="nsfw_mode", value=conf_server_all[0], inline=False)
+            # Change field depending on NSFW mode
+            if conf_server_all[0] == 0:
+                embed.add_field(name="nsfw_mode",
+                                value=conf_server_all[0] + ' : NSFW disabled on the server', inline=False)
+            elif conf_server_all[0] == 1:
+                embed.add_field(name="nsfw_mode",
+                                value=conf_server_all[0] + ' : NSFW allowed on the server, on a per-channel rule',
+                                inline=False)
+            elif conf_server_all[0] == 2:
+                embed.add_field(name="nsfw_mode",
+                                value=conf_server_all[0] + ' : NSFW allowed on the server without any restriction',
+                                inline=False)
+            # Embed
             embed.add_field(name="short_reddit_timer", value=conf_server_all[1], inline=False)
             embed.add_field(name="long_reddit_timer", value=conf_server_all[2], inline=False)
             embed.add_field(name="censor_log_channel", value=conf_server_all[3], inline=False)
@@ -185,37 +197,40 @@ class ConfigMenu(commands.Cog):
             embed.add_field(name="goulag_channel", value=conf_server_all[7], inline=False)
             await ctx.channel.send(embed=embed)
         ##
-        if arg1 == 'censor':  # A FINIR/ CHECKER
+        elif arg1 == 'censor':  # GOOD
             # Get infos from DB
             censor_words_dict = db_get_censor_words(ctx.guild.id)
             # Create embed
             embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
             embed.add_field(name="__**Configuration de la censure: **__", value="\u200b", inline=False)
-            # Iterate trough dict
-            for k, v in censor_words_dict.items():
-                if v is None:
-                    embed.add_field(name=k, value="\u200b", inline=False)
-                else:
-                    embed.add_field(name=k, value=v, inline=False)
+            if not censor_words_dict:  # Check if no values to display
+                embed.add_field(name="\u200b", value="Aucune configuration trouvée.", inline=True)
+            else:
+                # Iterate trough dict
+                for k, v in censor_words_dict.items():
+                    if v is None:
+                        embed.add_field(name=k, value="\u200b", inline=True)
+                    else:
+                        embed.add_field(name=k, value=v, inline=True)
 
             await ctx.channel.send(embed=embed)
         ##
-        if arg1 == 'censor_excluded':  # A FINIR/ CHECKER
+        elif arg1 == 'censor_excluded':  # GOOD
             # Get infos from DB
             censor_excl_list = db_get_excl_channels(ctx.guild.id)
             # Create embed
             embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
             embed.add_field(name="__**Configuration de channels exclus (censure): **__", value="\u200b", inline=False)
-            # List iteration + manipulation to get pairs to show on menu
-            for a, b in zip_longest(censor_excl_list[::2], censor_excl_list[1::2]):  # List format to get 1/2 pairs
-                if b is not None:
-                    embed.add_field(name="<#" + str(a[0]) + ">", value="<#" + str(b[0]) + ">", inline=True)
-                else:
-                    embed.add_field(name="<#" + str(a[0]) + ">", value='\u200b', inline=True)
+            if not censor_excl_list:  # Check if no values to display
+                embed.add_field(name="\u200b", value="Aucune configuration trouvée.", inline=True)
+            else:
+                # List iteration to show all channels
+                for e in censor_excl_list:
+                    embed.add_field(name="**ID :** " + str(e), value="<#" + str(e) + ">", inline=True)
 
             await ctx.channel.send(embed=embed)
         ##
-        if arg1 == 'emoji_roles':  # A FINIR/ CHECKER
+        elif arg1 == 'emoji_roles':  # A FINIR/ CHECKER
             # Get infos from DB
             emoji_roles_list = db_get_server_emoji_roles(ctx.guild.id)
             # Create embed
@@ -223,22 +238,24 @@ class ConfigMenu(commands.Cog):
             embed.add_field(name="__**Configuration d'emoji-roles: **__", value="\u200b", inline=False)
             # Iterate trough list (NEED TO ADD A NONE CHECK)
             for e in emoji_roles_list:
-                embed.add_field(name=f"<@" + str(e[0]) + "> | " + "<@&" + str(e[1]) + ">", value=str(e[2]), inline=True)
+                embed.add_field(name=str(e[2]), value="<@" + str(e[0]) + "> | " + "<@&" + str(e[1]) + ">", inline=True)
 
             await ctx.channel.send(embed=embed)
         ##
-        if arg1 == 'nsfw_channels':  # A FINIR/ CHECKER
+        elif arg1 == 'nsfw_channels':  # GOOD
             # Get infos from DB
             nsfw_channel_list = db_get_nsfw_channels(ctx.guild.id)
             # Create embed
             embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
             embed.add_field(name="__**Configuration des channels NSFW: **__", value="\u200b", inline=False)
-            #
-            for a, b in zip_longest(nsfw_channel_list[::2], nsfw_channel_list[1::2]):  # List format to get 1/2 pairs
-                if b is not None:
-                    embed.add_field(name=f"<#" + str(a) + ">", value=f"<#" + str(b) + ">", inline=True)
-                else:
-                    embed.add_field(name=f"<#" + str(a) + ">", value='\u200b', inline=True)
+            if not nsfw_channel_list:  # Check if no values to display
+                embed.add_field(name="\u200b", value="Aucune configuration trouvée.", inline=True)
+            else:
+                # List iteration to show all channels
+                for e in nsfw_channel_list:
+                    embed.add_field(name="**ID :** " + str(e), value="<#" + str(e) + ">", inline=True)
+
+            await ctx.channel.send(embed=embed)
         ##
         else:
             await ctx.channel.send(
