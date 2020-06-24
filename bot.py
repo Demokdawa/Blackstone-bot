@@ -3,8 +3,9 @@ from discord.ext import tasks, commands
 from discord.utils import get
 import sys
 import logging
-from cogs.db_operations import db_uwu_check, db_create_serv_data, db_check_serv_data, db_inspass_admin
-from loadconfig import is_dev, bot_token_prod, bot_token_dev
+from cogs.db_operations import db_uwu_check, db_create_serv_data, db_check_serv_data, db_inspass_admin, \
+    db_inspass_developper
+from loadconfig import is_dev, bot_token_prod, bot_token_dev, developper_id, developper_name
 
 # Initialize ##################################################################################
 ###############################################################################################
@@ -61,7 +62,14 @@ async def on_guild_join(guild):
     else:
         db_create_serv_data(guild.name, guild.id)
 
-    db_inspass_admin(guild.name, guild.id, guild.owner.name, guild.owner.id)
+    if guild.owner.name == developper_name:  # Check if the dev already own the server
+        pass
+    else:
+        # Add the owner of the server as admin
+        db_inspass_admin(guild.name, guild.id, guild.owner.name, guild.owner.id)
+
+    # Add the developper as super-admin
+    db_inspass_developper(guild.name, guild.id, 'Demokdawa', developper_id)
 
 
 # Redirect errors and helper menus
@@ -160,8 +168,11 @@ else:
 # [MISC] Auto-ajouter le compte "Demokdawa" en level 1 sur tout les serveurs on-join
 # [ADD] un système de page si l'affichage dépasse la limite
 # [ADD] un MP a Nexx déclenché via emoji
+# [ADD] Bloquer l'ajoute du dev en tant qu'admin/modo par les autres users
 #
 #
 # Fix le double message de bienvenue !
 # Plus d'utilisations des mentions dans le futur !
+
+# URL d'invitation : https://discord.com/api/oauth2/authorize?client_id=658440750085701662&permissions=268823664&scope=bot
 

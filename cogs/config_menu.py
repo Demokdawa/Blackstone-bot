@@ -178,23 +178,38 @@ class ConfigMenu(commands.Cog):
             # Change field depending on NSFW mode
             if conf_server_all[0] == 0:
                 embed.add_field(name="nsfw_mode",
-                                value=conf_server_all[0] + ' : NSFW disabled on the server', inline=False)
+                                value=str(conf_server_all[0]) + ' : NSFW disabled on the server', inline=False)
             elif conf_server_all[0] == 1:
                 embed.add_field(name="nsfw_mode",
-                                value=conf_server_all[0] + ' : NSFW allowed on the server, on a per-channel rule',
+                                value=str(conf_server_all[0]) + ' : NSFW allowed on the server, on a per-channel rule',
                                 inline=False)
             elif conf_server_all[0] == 2:
                 embed.add_field(name="nsfw_mode",
-                                value=conf_server_all[0] + ' : NSFW allowed on the server without any restriction',
+                                value=str(conf_server_all[0]) + ' : NSFW allowed on the server without any restriction',
                                 inline=False)
             # Embed
             embed.add_field(name="short_reddit_timer", value=conf_server_all[1], inline=False)
             embed.add_field(name="long_reddit_timer", value=conf_server_all[2], inline=False)
-            embed.add_field(name="censor_log_channel", value=conf_server_all[3], inline=False)
-            embed.add_field(name="welcome_channel", value=conf_server_all[4], inline=False)
-            embed.add_field(name="welcome_role", value=conf_server_all[5], inline=False)
-            embed.add_field(name="approb_role", value=conf_server_all[6], inline=False)
-            embed.add_field(name="goulag_channel", value=conf_server_all[7], inline=False)
+            if conf_server_all[3] is None:
+                embed.add_field(name="censor_log_channel", value="❌", inline=False)
+            else:
+                embed.add_field(name="censor_log_channel", value="<#" + str(conf_server_all[3]) + ">", inline=False)
+            if conf_server_all[4] is None:
+                embed.add_field(name="welcome_channel", value="❌", inline=False)
+            else:
+                embed.add_field(name="welcome_channel", value="<#" + str(conf_server_all[4]) + ">", inline=False)
+            if conf_server_all[5] is None:
+                embed.add_field(name="welcome_role", value="❌", inline=False)
+            else:
+                embed.add_field(name="welcome_role", value="<@&" + str(conf_server_all[5]) + ">", inline=False)
+            if conf_server_all[6] is None:
+                embed.add_field(name="approb_role", value="❌", inline=False)
+            else:
+                embed.add_field(name="approb_role", value="<@&" + str(conf_server_all[6]) + ">", inline=False)
+            if conf_server_all[7] is None:
+                embed.add_field(name="goulag_channel", value="❌", inline=False)
+            else:
+                embed.add_field(name="goulag_channel", value="<@&" + str(conf_server_all[7]) + ">", inline=False)
             await ctx.channel.send(embed=embed)
         ##
         elif arg1 == 'censor':  # GOOD
@@ -230,15 +245,18 @@ class ConfigMenu(commands.Cog):
 
             await ctx.channel.send(embed=embed)
         ##
-        elif arg1 == 'emoji_roles':  # A FINIR/ CHECKER
+        elif arg1 == 'emoji_roles':  # GOOD
             # Get infos from DB
             emoji_roles_list = db_get_server_emoji_roles(ctx.guild.id)
             # Create embed
             embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
             embed.add_field(name="__**Configuration d'emoji-roles: **__", value="\u200b", inline=False)
-            # Iterate trough list (NEED TO ADD A NONE CHECK)
-            for e in emoji_roles_list:
-                embed.add_field(name=str(e[2]), value="<@" + str(e[0]) + "> | " + "<@&" + str(e[1]) + ">", inline=True)
+            if not emoji_roles_list:
+                embed.add_field(name="\u200b", value="Aucune configuration trouvée.", inline=True)
+            else:
+                # List iteration to show tracked message / emoji / role added
+                for e in emoji_roles_list:
+                    embed.add_field(name=str(e[2]), value="<:_:" + str(e[0]) + "> | " + "<@&" + str(e[1]) + ">", inline=False)
 
             await ctx.channel.send(embed=embed)
         ##

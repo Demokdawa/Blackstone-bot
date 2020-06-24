@@ -24,7 +24,7 @@ def censor_message(message):
     for i in message.content.split(' '):
         for k, v in censor_words_dict.items():
             replaced = False
-            if k == i:
+            if k.casefold() == i.casefold():
                 replaced = True
                 curse_words_nbr += 1
                 if v is None:

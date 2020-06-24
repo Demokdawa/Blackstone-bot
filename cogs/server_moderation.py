@@ -14,7 +14,7 @@ log.info('[COGS] Moderation COG loaded')
 ##################################################################################################
 
 # Decorator to check if server_moderation is configured on this server
-def check_cog_censor_config():
+def check_cog_mod_config():
     def predicate(ctx):
         conf_server_all = db_get_conf_server_all(ctx.guild.id)
         error_nbr = 0
@@ -122,12 +122,13 @@ class ServerModeration(commands.Cog):
     @mod_restricted()
     @commands.command()
     async def sendwarn(self, ctx, user: discord.User, arg2: int, arg3='X'):
-        if 1 <= arg2 >= 4:
+        if 1 <= int(arg2) <= 4:
             add_warn(ctx.guild.name, ctx.guild.id, user.name, user.id, arg2)
 
             embed = discord.Embed()
-            embed.set_author(name="[WARN] " + str(ctx.author.display_name), icon_url=ctx.author.avatar_url)
-            embed.add_field(name="User", value="<@" + str(ctx.author.id) + ">", inline=True)
+            embed.set_author(name="[WARN] " + str(user.display_name), icon_url=user.avatar_url)
+            embed.add_field(name="User", value="<@" + str(user.id) + ">", inline=True)
+            embed.add_field(name="Moderator", value="<@" + str(ctx.author.id) + ">", inline=True)
             embed.add_field(name="Reason", value=arg3, inline=True)
             embed.add_field(name="Warn-Level", value=str(arg2), inline=False)
 
@@ -140,12 +141,18 @@ class ServerModeration(commands.Cog):
                 "Valeur incorrecte : **{}** [Arg 2] (nombre entier entre 1 et 4 requis)"
                 .format(arg2))
 
+    @mod_restricted()
+    @commands.command()
+    async def shodadmins(self, ctx):
+        pass
+
     # LOCAL ERROR-HANDLERS ############################################################################
     ###################################################################################################
 
     @sendwarn.error
     async def sendwarn_error(self, ctx, error):
         argument = list(ctx.command.clean_params)[len(ctx.args[2:] if ctx.command.cog else ctx.args[1:])]
+        print(argument)
         # NEED TO USE ARGUMENT VAR TO DIFFERENTIATE MESSAGES DEPENDING ON CONVERTERS THAT FAILS
         if isinstance(error, commands.BadArgument):
             await ctx.send('Je n\'ai pas pu trouver ce membre, desolé !')

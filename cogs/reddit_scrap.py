@@ -221,7 +221,7 @@ def nsfw_check():
     return commands.check(predicate)
 
 
-# Decorator to check if reddit_scrap is configured on this server
+# Sanity-check decorator to see if everything config related to this cog is fine
 def check_cog_redditscrap_config():
     def predicate(ctx):
         conf_server_all = db_get_conf_server_all(ctx.guild.id)
@@ -237,7 +237,6 @@ def check_cog_redditscrap_config():
                 error_nbr += 1
 
             if error_nbr == 0:
-                print("No errors")
                 return True
             else:
                 raise commands.UserInputError("Ce serveur n\'est pas configuré pour utiliser cette commande.\n"
