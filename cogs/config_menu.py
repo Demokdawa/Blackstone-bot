@@ -44,11 +44,7 @@ class ConfigMenu(commands.Cog):
                         "`Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 0 et 2 requis)`"
                         .format(arg2))
                 else:
-                    success = db_insup_value(arg1, (ctx.guild.id, int(arg2)))
-                    if success is True:
-                        await ctx.channel.send('**`SUCCESS`**')
-                    else:
-                        await ctx.channel.send('**`ERROR`**')
+                    db_insup_value(arg1, (ctx.guild.id, int(arg2)))
             else:
                 await ctx.channel.send(
                     "`Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 0 et 2 requis)`"
@@ -61,11 +57,7 @@ class ConfigMenu(commands.Cog):
                         "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 4 et 30 requis)"
                         .format(arg2))
                 else:
-                    success = db_insup_value(arg1, (ctx.guild.id, int(arg2)))
-                    if success is True:
-                        await ctx.channel.send('**`SUCCESS`**')
-                    else:
-                        await ctx.channel.send('**`ERROR`**')
+                    db_insup_value(arg1, (ctx.guild.id, int(arg2)))
             else:
                 await ctx.channel.send(
                     "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 4 et 30 requis)"
@@ -78,11 +70,7 @@ class ConfigMenu(commands.Cog):
                         "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 10 et 90 requis)"
                         .format(arg2))
                 else:
-                    success = db_insup_value(arg1, (ctx.guild.id, int(arg2)))
-                    if success is True:
-                        await ctx.channel.send('**`SUCCESS`**')
-                    else:
-                        await ctx.channel.send('**`ERROR`**')
+                    db_insup_value(arg1, (ctx.guild.id, int(arg2)))
             else:
                 await ctx.channel.send(
                     "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 10 et 90 requis)"
@@ -97,20 +85,20 @@ class ConfigMenu(commands.Cog):
             else:
                 db_insup_value(arg1, (ctx.guild.id, channel_obj.id))
         ##
-        elif arg1 in ['add_nsfw_channel', 'add_censor_excluded_channel']:
+        elif arg1 in ['add_nsfw_channel', 'add_censor_excluded_channel']:  # GOOD
             channel_obj = get(ctx.guild.channels, name=arg2)
             if channel_obj is None:
                 await ctx.channel.send(
                     "Ce channel n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 2]"
                     .format(arg2))
             else:
-                db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, channel_obj.id))
+                db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, channel_obj.id, channel_obj.name))
         ##
-        elif arg1 in ['del_nsfw_channel', 'del_censor_excluded_channel']:
+        elif arg1 in ['del_nsfw_channel', 'del_censor_excluded_channel']:  # GOOD
             channel_obj = get(ctx.guild.channels, name=arg2)
             db_del_value(arg1, (ctx.guild.id, channel_obj.id))
         ##
-        elif arg1 == 'welcome_role' or arg1 == 'approb_role':
+        elif arg1 == 'welcome_role' or arg1 == 'approb_role':  # GOOD
             role_obj = get(ctx.guild.roles, name=arg2)
             if role_obj is None:
                 await ctx.channel.send(
@@ -122,8 +110,8 @@ class ConfigMenu(commands.Cog):
         elif arg1 == 'add_banned_word':  # GOOD
             db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg2, arg3))
         ##
-        elif arg1 == 'del_banned_word':
-            db_insup_value(arg1, (ctx.guild.id, arg2))
+        elif arg1 == 'del_banned_word':  # GOOD
+            db_del_value(arg1, (ctx.guild.id, arg2))
         ##
         elif arg1 == 'add_emoji_role':
             if not arg2.isdigit() or arg2 is None:

@@ -114,18 +114,19 @@ async def on_command_error(ctx, message):
             embed.add_field(name="add_censor_excluded_channel",
                             value="Nom du channel a exclure de la censure textuelle",
                             inline=False)
-            embed.add_field(name="add_emoj_role",
-                            value="Ajoute/supprime un rôle a la personne qui ajoute/supprime un emoji au message ciblé"
+            embed.add_field(name="add_emoji_role",
+                            value="Ajoute un rôle a la personne qui ajoute/supprime un emoji au message "
+                                  "ciblé \n"
                             "Syntaxe : [id message suivi] [id emoji] [nom du rôle]",
                             inline=False)
             embed.add_field(name="add_uwu_admin",
-                            value="Ajoute un admin UwU sur le serveur"
-                            "Syntaxe : [id de l'utilisateur] [privilege]"
+                            value="Ajoute un admin UwU sur le serveur \n"
+                            "Syntaxe : [id de l'utilisateur] [privilege] \n"
                             "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
                             inline=False)
             embed.add_field(name="del_uwu_admin",
-                            value="Supprime un admin UwU sur le serveur"
-                            "Syntaxe : [id de l'utilisateur] [privilege]"
+                            value="Supprime un admin UwU sur le serveur \n"
+                            "Syntaxe : [id de l'utilisateur] [privilege] \n"
                             "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
                             inline=False)
             await ctx.channel.send(embed=embed)
@@ -158,6 +159,7 @@ else:
 # [ADD] les commandes de listing pour voir les configurations actuelles
 # [MISC] Auto-ajouter le compte "Demokdawa" en level 1 sur tout les serveurs on-join
 # [ADD] un système de page si l'affichage dépasse la limite
+# [ADD] un MP a Nexx déclenché via emoji
 #
 #
 # Fix le double message de bienvenue !

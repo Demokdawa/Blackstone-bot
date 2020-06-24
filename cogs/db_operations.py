@@ -204,12 +204,8 @@ def db_insup_value(target_param, val_tuple):
     connection.commit()
     if target_param == "nsfw_mode":
         guild_id, nsfw_mode = val_tuple
-        cursor.execute('''UPDATE servers_settings_global SET nsfw_mode = %s 
+        cursor.execute('''UPDATE servers_settings_global SET nsfw_mode = %s
                           WHERE guild_id = %s''', (nsfw_mode, guild_id,))
-        if cursor.rowcount == 1:
-            return True
-        else:
-            return False
     ##
     elif target_param == "short_reddit_timer":
         guild_id, short_reddit_timer = val_tuple
@@ -241,15 +237,27 @@ def db_insup_value(target_param, val_tuple):
         cursor.execute('''UPDATE servers_settings_global SET approb_role = %s 
                                           WHERE guild_id = %s''', (approb_role, guild_id,))
     ##
-    elif target_param == "add_nsfw_channel":  # ADD_SELECT CHECK
-        guild_id, guild_name, add_nsfw_channel = val_tuple
-        cursor.execute('''INSERT INTO servers_nsfw_channel (guild_id, guild_name, add_nsfw_channel) 
-                                  VALUES (%s, %s, %s)''', (guild_id, guild_name, add_nsfw_channel,))
+    elif target_param == "add_nsfw_channel":
+        guild_id, guild_name, channel_id, channel_name = val_tuple
+        cursor.execute('''SELECT channel_name from servers_nsfw_channel WHERE guild_id = %s and channel_id = %s''',
+                       (guild_id, channel_id,))
+        result = cursor.fetchone()
+        if result:
+            pass
+        else:
+            cursor.execute('''INSERT INTO servers_nsfw_channel (guild_id, guild_name, channel_id, channel_name) 
+                                      VALUES (%s, %s, %s, %s)''', (guild_id, guild_name, channel_id, channel_name,))
     ##
-    elif target_param == "add_censor_excluded_channel":  # ADD_SELECT CHECK
-        guild_id, guild_name, add_censor_excluded_channel = val_tuple
-        cursor.execute('''INSERT INTO servers_censor_excluded_channel (guild_id, guild_name, add_censor_excluded_channel) 
-                                  VALUES (%s, %s, %s)''', (guild_id, guild_name, add_censor_excluded_channel,))
+    elif target_param == "add_censor_excluded_channel":
+        guild_id, guild_name, channel_id, channel_name = val_tuple
+        cursor.execute('''SELECT channel_name from servers_censor_excluded_channel WHERE guild_id = %s
+                        and channel_id = %s''', (guild_id, channel_id,))
+        result = cursor.fetchone()
+        if result:
+            pass
+        else:
+            cursor.execute('''INSERT INTO servers_censor_excluded_channel (guild_id, guild_name, channel_id, 
+                            channel_name) VALUES (%s, %s, %s, %s)''', (guild_id, guild_name, channel_id, channel_name,))
     ##
     elif target_param == "add_banned_word":
         guild_id, guild_name, word, word_replacement = val_tuple
@@ -267,7 +275,7 @@ def db_insup_value(target_param, val_tuple):
         guild_id, guild_name, role_name, tracked_message, emoji_id, role_id = val_tuple
         cursor.execute('''INSERT INTO servers_emoji_roles 
                                     (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id) 
-        VALUES (%s, %s, %s, %s)''', (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id,))
+        VALUES (%s, %s, %s, %s, %s, %s)''', (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id,))
 
     connection.commit()
     cursor.close()
