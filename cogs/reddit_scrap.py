@@ -2,7 +2,6 @@ from discord.ext import tasks, commands
 from itertools import zip_longest
 from cogs.db_operations import db_get_reddit_command_dict, db_get_reddit_sub_dict, db_get_conf_server_all,\
     db_get_nsfw_channels
-from cogs.utils import guild_from_context
 import ffmpy
 import os
 import urllib.request as req
@@ -300,7 +299,6 @@ class RedditScrap(commands.Cog):
     @check_cog_redditscrap_config()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
-        guild_from_context(ctx)
         sub = c_dict.get(ctx.invoked_with)[0]
         await ctx.message.add_reaction('\N{HOURGLASS}')
         data, isgif = get_image(sub)

@@ -168,6 +168,7 @@ else:
 # - Désactiver une feature si la configuration est mauvaise
 # - Ajouter une commande pour lister ces états
 # - Creer des fonctions check pour chaque COG et les lancer avant chaque commande
+# [ADD] Ajouter un check precurseur sur la commande de reload cog
 
 # [TEST] les commandes de listing pour voir les configurations actuelles
 # [MISC] Auto-ajouter le compte "Demokdawa" en level 1 sur tout les serveurs on-join

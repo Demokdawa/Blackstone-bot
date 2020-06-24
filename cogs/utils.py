@@ -1,5 +1,6 @@
 import logging
 from discord.ext import commands
+from cogs.db_operations import db_check_privilege
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -7,10 +8,18 @@ log = logging.getLogger("BlackBot_log")
 log.info('[COGS] Utils COG loaded')
 
 
-# Return current guild id from context
-def guild_from_context(ctx):
-    current_guild = ctx.message.guild.id
-    return current_guild
+# DECORATORS #####################################################################################
+##################################################################################################
+
+# Decorator to check for precursor-only commands
+def precursor_restricted():
+    def predicate(ctx):
+        res = db_check_privilege(ctx.guild.id, ctx.author.id)
+        if res is False or res != 1:
+            raise commands.UserInputError("Vous n'êtes pas qualifié pour executer cette commande !")
+        else:
+            return True
+    return commands.check(predicate)
 
 
 # Check if arg1 in !sendconfig command is correct
@@ -51,6 +60,7 @@ class Utils(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @precursor_restricted()
     @commands.command(name='reload', hidden=True)
     async def reload_cog(self, ctx, *, cog: str):
         try:
