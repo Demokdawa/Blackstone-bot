@@ -133,4 +133,3 @@ def setup(bot):
     bot.add_cog(CensorWord(bot))
 
 # For the censor_word COG : ##
-# Need a command to be able to config this

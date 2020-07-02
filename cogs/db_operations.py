@@ -67,7 +67,7 @@ def db_get_conf_server_all(guild_id):
     cursor = connection.cursor()
 
     cursor.execute('''SELECT nsfw_mode, short_reddit_timer, long_reddit_timer, censor_log_channel, welcome_channel, 
-    welcome_role, approb_role, goulag_channel, warn_to_goulag, pm_on_join_user, pm_on_join_emoji 
+    welcome_role, approb_role, goulag_channel, warn_to_goulag, pmoji_user, pmoji_emoji, pmoji_message 
     from servers_settings_global WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchone()  # Result is a [tuple]
 
@@ -212,8 +212,12 @@ def db_insup_value(target_param, val_tuple):
     ##
     elif target_param == "short_reddit_timer":
         guild_id, short_reddit_timer = val_tuple
-        cursor.execute('''UPDATE servers_settings_global SET short_reddit_timer = %s 
-                                  WHERE guild_id = %s''', (short_reddit_timer, guild_id,))
+        if short_reddit_timer == "reset":
+            cursor.execute('''UPDATE servers_settings_global SET short_reddit_timer = DEFAULT
+                                        WHERE guild_id = %s''', (guild_id,))
+        else:
+            cursor.execute('''UPDATE servers_settings_global SET short_reddit_timer = %s 
+                                        WHERE guild_id = %s''', (int(short_reddit_timer), guild_id,))
     ##
     elif target_param == "long_reddit_timer":
         guild_id, long_reddit_timer = val_tuple

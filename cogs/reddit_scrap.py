@@ -240,7 +240,7 @@ def check_cog_redditscrap_config():
             else:
                 raise commands.UserInputError("Ce serveur n\'est pas configuré pour utiliser cette commande.\n"
                                               "Configurations erronées/manquantes : {}\n"
-                                              "Utilise la commande configuration pour voir ce qui ne va pas."
+                                              "Utilise la commande !shodconfig pour voir ce qui ne va pas."
                                               .format(error_nbr))
 
     return commands.check(predicate)
@@ -255,8 +255,6 @@ class RedditScrap(commands.Cog):
     ##################################################################################################
 
     async def check_react(self, ctx, embed, file, isgif):
-        log.debug('React check started...')  # DEBUG
-
         await ctx.message.clear_reactions()
 
         # Change the timer depending if the content is heavy or not

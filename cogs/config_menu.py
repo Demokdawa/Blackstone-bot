@@ -51,17 +51,12 @@ class ConfigMenu(commands.Cog):
                     .format(arg2))
         ##
         elif arg1 == 'short_reddit_timer':  # GOOD
-            if arg2.isdigit() and arg2 is not None:
-                if not 4 <= int(arg2) <= 30:
-                    await ctx.channel.send(
-                        "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 4 et 30 requis)"
-                        .format(arg2))
-                else:
-                    db_insup_value(arg1, (ctx.guild.id, int(arg2)))
-            else:
+            if arg2 is None or arg2 != "reset" and not arg2.isdigit or arg2.isdigit() and not 4 < int(arg2) < 30:
                 await ctx.channel.send(
-                    "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 4 et 30 requis)"
+                    "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 4 et 30 requis, ou 'reset')"
                     .format(arg2))
+            else:
+                db_insup_value(arg1, (ctx.guild.id, arg2))
         ##
         elif arg1 == 'long_reddit_timer':  # GOOD
             if arg2.isdigit() and arg2 is not None:
@@ -178,14 +173,14 @@ class ConfigMenu(commands.Cog):
             # Change field depending on NSFW mode
             if conf_server_all[0] == 0:
                 embed.add_field(name="nsfw_mode",
-                                value=str(conf_server_all[0]) + ' : NSFW disabled on the server', inline=False)
+                                value=' 0\u20e3 : NSFW disabled on the server', inline=False)
             elif conf_server_all[0] == 1:
                 embed.add_field(name="nsfw_mode",
-                                value=str(conf_server_all[0]) + ' : NSFW allowed on the server, on a per-channel rule',
+                                value=' 1\u20e3 : NSFW allowed on the server, on a per-channel rule',
                                 inline=False)
             elif conf_server_all[0] == 2:
                 embed.add_field(name="nsfw_mode",
-                                value=str(conf_server_all[0]) + ' : NSFW allowed on the server without any restriction',
+                                value=' 2\u20e3 : NSFW allowed on the server without any restriction',
                                 inline=False)
             # Embed
             embed.add_field(name="short_reddit_timer", value=conf_server_all[1], inline=False)
@@ -293,6 +288,71 @@ class ConfigMenu(commands.Cog):
             embed.add_field(name="censor_excluded", value="Channels exclus de la censure textuelle.", inline=False)
             embed.add_field(name="emoji_roles", value="Reactions d'emoji donnant accés à certains rôles.", inline=False)
             embed.add_field(name="nsfw_channels", value="Channels ou les commandes NSFW sont autorisées.", inline=False)
+            await ctx.channel.send(embed=embed)
+
+    @sendconfig.error
+    async def sendconfig_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
+            embed.add_field(name="__**Syntaxe : **__",
+                            value="!sendconfig [paramètre] [valeur1] [valeur2] [valeur3]",
+                            inline=False)
+            embed.add_field(name="__**Liste des paramètres obligatoires**__",
+                            value="\n\u200b",
+                            inline=False)
+            embed.add_field(name="nsfw_mode",
+                            value="1 = Désactive le NSFW, 2 = Activé par channel, 3 = Activé sur tout le serveur",
+                            inline=False)
+            embed.add_field(name="short_reddit_timer",
+                            value="Timer court avant la disparition des contenus reddit [4-30s]",
+                            inline=False)
+            embed.add_field(name="long_reddit_timer",
+                            value="Timer long avant la disparition des contenus reddit [10-90s]",
+                            inline=False)
+            embed.add_field(name="censor_log_channel",
+                            value="Nom du channel ou apparaissent les warns",
+                            inline=False)
+            embed.add_field(name="welcome_channel",
+                            value="Nom du channel ou les messages de bienvenue apparaissent",
+                            inline=False)
+            embed.add_field(name="welcome_role",
+                            value="Nom du rôle attribué aux personnes ayant passé la probation",
+                            inline=False)
+            embed.add_field(name="approb_role",
+                            value="Nom du rôle attribué aux personnes n'ayant pas passé la probation [Mee6]",
+                            inline=False)
+            embed.add_field(name="__**Liste des paramètres facultatifs**__",
+                            value="\u200b",
+                            inline=False)
+            embed.add_field(name="add_nsfw_channel",
+                            value="Nom du nouveau channel ou les commandes NSFW seront autorisées",
+                            inline=False)
+            embed.add_field(name="add_banned_word",
+                            value="Ajoute un mot banni, avec possiblité de choisir un remplacant en seconde valeur \n"
+                                  "Syntaxe : [mot banni] [mot remplacant *facultatif*]",
+                            inline=False)
+            embed.add_field(name="del_banned_word",
+                            value="Supprime un mot banni du serveur \n"
+                                  "Syntaxe : [mot banni]",
+                            inline=False)
+            embed.add_field(name="add_censor_excluded_channel",
+                            value="Nom du channel a exclure de la censure textuelle",
+                            inline=False)
+            embed.add_field(name="add_emoji_role",
+                            value="Ajoute un rôle a la personne qui ajoute/supprime un emoji au message "
+                                  "ciblé \n"
+                                  "Syntaxe : [id message suivi] [id emoji] [nom du rôle]",
+                            inline=False)
+            embed.add_field(name="add_uwu_admin",
+                            value="Ajoute un admin UwU sur le serveur \n"
+                                  "Syntaxe : [id de l'utilisateur] [privilege] \n"
+                                  "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
+                            inline=False)
+            embed.add_field(name="del_uwu_admin",
+                            value="Supprime un admin UwU sur le serveur \n"
+                                  "Syntaxe : [id de l'utilisateur] [privilege] \n"
+                                  "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
+                            inline=False)
             await ctx.channel.send(embed=embed)
 
 

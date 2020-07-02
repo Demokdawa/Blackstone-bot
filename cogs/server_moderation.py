@@ -10,9 +10,9 @@ log = logging.getLogger("BlackBot_log")
 
 log.info('[COGS] Moderation COG loaded')
 
-
 # DECORATORS #####################################################################################
 ##################################################################################################
+
 
 # Decorator to check if server_moderation is configured on this server
 def check_cog_mod_config():
@@ -66,21 +66,32 @@ class ServerModeration(commands.Cog):
         new_member = get(guild.roles, id=conf_server_all[6])  # Get "new member" role object
         welcome_channel = self.bot.get_channel(conf_server_all[4])  # Get "welcome" channel object
         list_of_user_roles = [e.id for e in member.roles]  # Get all roles of the user
+        moji_member = None
 
         if emoji_roles_list_dict is None:  # Check if server have emoji-roles
-            return False, None, None, None, None, None, None, None
+            return False, None, None, None, None, None, None, None, None
+
         else:
             if action == 'add':
-                if emoji_roles_list_dict is None:  # Check if server have emoji/roles
-                    return False, None, None, None, None, None, None, None
-                else:
-                    if payload.emoji.id in emoji_roles_list_dict:  # Check if the emoji is linked to a role
-                        if conf_server_all[6] in list_of_user_roles:  # Check if user is a "new member"
-                            return True, "case1", member, guild, linked_role, silencieux, new_member, welcome_channel
-                        else:  # If user does not have "new member" role
-                            return True, "case2", member, guild, linked_role, silencieux, new_member, welcome_channel
+                # Check if the message and the emoji are the right ones for pmoji
+                if conf_server_all[9] is not None and int(conf_server_all[11]) == payload.message_id \
+                        and int(conf_server_all[10]) == payload.emoji.id:
+                    moji_member = get(guild.members, id=int(conf_server_all[9]))
+                    if moji_member is not None:
+                        return True, "case_moji_clan", member, guild, linked_role, silencieux, new_member, welcome_channel, \
+                               moji_member
                     else:
-                        return False, None, None, None, None, None, None, None
+                        pass
+
+                if payload.emoji.id in emoji_roles_list_dict:  # Check if the emoji is linked to a role
+                    if conf_server_all[6] in list_of_user_roles:  # Check if user is a "new member"
+                        return True, "case_new_member", member, guild, linked_role, silencieux, new_member, welcome_channel, \
+                               moji_member
+                    else:  # If user does not have "new member" role
+                        return True, "case_member", member, guild, linked_role, silencieux, new_member, welcome_channel, \
+                               moji_member
+                else:
+                    return False, None, None, None, None, None, None, None, None
 
             if action == 'remove':
                 if payload.emoji.id in emoji_roles_list_dict:
@@ -94,17 +105,21 @@ class ServerModeration(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
 
-        res, case, member, guild, linked_role, silencieux, new_member, welcome_channel = self.moderation_react_process(payload, action="add")
+        res, case, member, guild, linked_role, silencieux, new_member, welcome_channel, moji_member \
+            = self.moderation_react_process(payload, action="add")
 
         if res is False:  # Check if server have emoji-roles
-            print("Emoji ne correspond a rien, aucune action !")
+            pass
         if res is True:
-            if case == "case1":
+            if case == "case_new_member":
                 await member.add_roles(get(guild.roles, id=linked_role), silencieux, reason=None, atomic=True)
                 await member.remove_roles(new_member, reason=None, atomic=True)
                 await welcome_channel.send('Ey les amis, souhaitez tous la bienvenue a ' + member.name + ' parmis nous !')
-            elif case == "case2":
+            elif case == "case_member":
                 await member.add_roles(get(guild.roles, id=linked_role), reason=None, atomic=True)
+            elif case == "case_moji_clan":
+                await moji_member.send("Cet utilisateur a demandé a rejoindre le clan Warframe : **{}**"
+                                       .format(member.name))
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):

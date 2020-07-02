@@ -75,77 +75,7 @@ async def on_guild_join(guild):
 # Redirect errors and helper menus
 @bot.event
 async def on_command_error(ctx, message):
-    if isinstance(message, commands.MissingRequiredArgument):
-        if ctx.command.name == "sendconfig":
-            embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
-            embed.add_field(name="__**Syntaxe : **__",
-                            value="!sendconfig [paramètre] [valeur1] [valeur2] [valeur3]",
-                            inline=False)
-            embed.add_field(name="__**Liste des paramètres obligatoires**__",
-                            value="\n\u200b",
-                            inline=False)
-            embed.add_field(name="nsfw_mode",
-                            value="1 = Désactive le NSFW, 2 = Activé par channel, 3 = Activé sur tout le serveur",
-                            inline=False)
-            embed.add_field(name="short_reddit_timer",
-                            value="Timer court avant la disparition des contenus reddit [4-30s]",
-                            inline=False)
-            embed.add_field(name="long_reddit_timer",
-                            value="Timer long avant la disparition des contenus reddit [10-90s]",
-                            inline=False)
-            embed.add_field(name="censor_log_channel",
-                            value="Nom du channel ou apparaissent les warns",
-                            inline=False)
-            embed.add_field(name="welcome_channel",
-                            value="Nom du channel ou les messages de bienvenue apparaissent",
-                            inline=False)
-            embed.add_field(name="welcome_role",
-                            value="Nom du rôle attribué aux personnes ayant passé la probation",
-                            inline=False)
-            embed.add_field(name="approb_role",
-                            value="Nom du rôle attribué aux personnes n'ayant pas passé la probation [Mee6]",
-                            inline=False)
-            embed.add_field(name="__**Liste des paramètres facultatifs**__",
-                            value="\u200b",
-                            inline=False)
-            embed.add_field(name="add_nsfw_channel",
-                            value="Nom du nouveau channel ou les commandes NSFW seront autorisées",
-                            inline=False)
-            embed.add_field(name="add_banned_word",
-                            value="Ajoute un mot banni, avec possiblité de choisir un remplacant en seconde valeur \n"
-                            "Syntaxe : [mot banni] [mot remplacant *facultatif*]",
-                            inline=False)
-            embed.add_field(name="del_banned_word",
-                            value="Supprime un mot banni du serveur \n"
-                                  "Syntaxe : [mot banni]",
-                            inline=False)
-            embed.add_field(name="add_censor_excluded_channel",
-                            value="Nom du channel a exclure de la censure textuelle",
-                            inline=False)
-            embed.add_field(name="add_emoji_role",
-                            value="Ajoute un rôle a la personne qui ajoute/supprime un emoji au message "
-                                  "ciblé \n"
-                            "Syntaxe : [id message suivi] [id emoji] [nom du rôle]",
-                            inline=False)
-            embed.add_field(name="add_uwu_admin",
-                            value="Ajoute un admin UwU sur le serveur \n"
-                            "Syntaxe : [id de l'utilisateur] [privilege] \n"
-                            "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
-                            inline=False)
-            embed.add_field(name="del_uwu_admin",
-                            value="Supprime un admin UwU sur le serveur \n"
-                            "Syntaxe : [id de l'utilisateur] [privilege] \n"
-                            "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
-                            inline=False)
-            await ctx.channel.send(embed=embed)
-
-        if ctx.command.name == "sendwarn":
-            pass
-
-    elif isinstance(message, commands.UserInputError):
-        await ctx.channel.send(message)
-    else:
-        log.info(message)
+    log.info(message)
 
 
 if __name__ == '__main__':
