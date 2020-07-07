@@ -205,10 +205,15 @@ def db_get_admins(guild_id):
 def db_insup_value(target_param, val_tuple):
     cursor = connection.cursor()
     connection.commit()
+    ##
     if target_param == "nsfw_mode":
         guild_id, nsfw_mode = val_tuple
-        cursor.execute('''UPDATE servers_settings_global SET nsfw_mode = %s
-                          WHERE guild_id = %s''', (nsfw_mode, guild_id,))
+        if nsfw_mode == "reset":
+            cursor.execute('''UPDATE servers_settings_global SET nsfw_mode = DEFAULT
+                                        WHERE guild_id = %s''', (guild_id,))
+        else:
+            cursor.execute('''UPDATE servers_settings_global SET nsfw_mode = %s
+                                        WHERE guild_id = %s''', (int(nsfw_mode), guild_id,))
     ##
     elif target_param == "short_reddit_timer":
         guild_id, short_reddit_timer = val_tuple
@@ -221,28 +226,48 @@ def db_insup_value(target_param, val_tuple):
     ##
     elif target_param == "long_reddit_timer":
         guild_id, long_reddit_timer = val_tuple
-        cursor.execute('''UPDATE servers_settings_global SET long_reddit_timer = %s 
-                                  WHERE guild_id = %s''', (long_reddit_timer, guild_id,))
+        if long_reddit_timer == "reset":
+            cursor.execute('''UPDATE servers_settings_global SET long_reddit_timer = DEFAULT 
+                                        WHERE guild_id = %s''', (guild_id,))
+        else:
+            cursor.execute('''UPDATE servers_settings_global SET long_reddit_timer = %s 
+                                        WHERE guild_id = %s''', (int(long_reddit_timer), guild_id,))
     ##
     elif target_param == "censor_log_channel":
         guild_id, censor_log_channel = val_tuple
-        cursor.execute('''UPDATE servers_settings_global SET censor_log_channel = %s 
-                                          WHERE guild_id = %s''', (censor_log_channel, guild_id,))
+        if censor_log_channel == "reset":
+            cursor.execute('''UPDATE servers_settings_global SET censor_log_channel = DEFAULT 
+                                        WHERE guild_id = %s''', (guild_id,))
+        else:
+            cursor.execute('''UPDATE servers_settings_global SET censor_log_channel = %s 
+                                        WHERE guild_id = %s''', (censor_log_channel, guild_id,))
     ##
     elif target_param == "welcome_channel":
         guild_id, welcome_channel = val_tuple
-        cursor.execute('''UPDATE servers_settings_global SET welcome_channel = %s 
-                                          WHERE guild_id = %s''', (welcome_channel, guild_id,))
+        if welcome_channel == "reset":
+            cursor.execute('''UPDATE servers_settings_global SET welcome_channel = DEFAULT
+                                        WHERE guild_id = %s''', (guild_id,))
+        else:
+            cursor.execute('''UPDATE servers_settings_global SET welcome_channel = %s 
+                                        WHERE guild_id = %s''', (welcome_channel, guild_id,))
     ##
     elif target_param == "welcome_role":
         guild_id, welcome_role = val_tuple
-        cursor.execute('''UPDATE servers_settings_global SET welcome_role = %s 
-                                          WHERE guild_id = %s''', (welcome_role, guild_id,))
+        if welcome_role == "reset":
+            cursor.execute('''UPDATE servers_settings_global SET welcome_role = DEFAULT
+                                        WHERE guild_id = %s''', (guild_id,))
+        else:
+            cursor.execute('''UPDATE servers_settings_global SET welcome_role = %s 
+                                        WHERE guild_id = %s''', (welcome_role, guild_id,))
     ##
     elif target_param == "approb_role":
         guild_id, approb_role = val_tuple
-        cursor.execute('''UPDATE servers_settings_global SET approb_role = %s 
-                                          WHERE guild_id = %s''', (approb_role, guild_id,))
+        if approb_role == "reset":
+            cursor.execute('''UPDATE servers_settings_global SET approb_role = DEFAULT
+                                        WHERE guild_id = %s''', (guild_id,))
+        else:
+            cursor.execute('''UPDATE servers_settings_global SET approb_role = %s 
+                                        WHERE guild_id = %s''', (approb_role, guild_id,))
     ##
     elif target_param == "add_nsfw_channel":
         guild_id, guild_name, channel_id, channel_name = val_tuple
@@ -250,7 +275,7 @@ def db_insup_value(target_param, val_tuple):
                        (guild_id, channel_id,))
         result = cursor.fetchone()
         if result:
-            pass
+            return False
         else:
             cursor.execute('''INSERT INTO servers_nsfw_channel (guild_id, guild_name, channel_id, channel_name) 
                                       VALUES (%s, %s, %s, %s)''', (guild_id, guild_name, channel_id, channel_name,))
@@ -261,7 +286,7 @@ def db_insup_value(target_param, val_tuple):
                         and channel_id = %s''', (guild_id, channel_id,))
         result = cursor.fetchone()
         if result:
-            pass
+            return False
         else:
             cursor.execute('''INSERT INTO servers_censor_excluded_channel (guild_id, guild_name, channel_id, 
                             channel_name) VALUES (%s, %s, %s, %s)''', (guild_id, guild_name, channel_id, channel_name,))
