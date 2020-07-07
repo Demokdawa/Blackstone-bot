@@ -40,68 +40,87 @@ class ConfigMenu(commands.Cog):
         if arg1 == 'nsfw_mode':  # GOOD
             if arg2 is None or arg2 != "reset" and not arg2.isdigit() or arg2.isdigit() and not 0 <= int(arg2) <= 2:
                 await ctx.channel.send(
-                    "`Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 0 et 2 requis ou 'reset')`"
+                    "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 0 et 2 requis ou 'reset')"
                     .format(arg2))
             else:
                 db_insup_value(arg1, (ctx.guild.id, arg2))
-                await ctx.channel.send("`Mode changé avec succès : **{}**`".format(arg2))
+                if arg2 == "reset":
+                    await ctx.channel.send("Remise a zéro du mode NSFW effectuée !")
+                else:
+                    await ctx.channel.send("Mode NSFW modifé avec succès : **{}**".format(arg2))
         ##
         elif arg1 == 'short_reddit_timer':  # GOOD
             if arg2 is None or arg2 != "reset" and not arg2.isdigit or arg2.isdigit() and not 4 <= int(arg2) <= 30:
                 await ctx.channel.send(
-                    "`Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 4 et 30 requis, ou 'reset')`"
+                    "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 4 et 30 requis, ou 'reset')"
                     .format(arg2))
             else:
                 db_insup_value(arg1, (ctx.guild.id, arg2))
-                await ctx.channel.send("`Timer changé avec succès : **{}**`".format(arg2))
+                if arg2 == "reset":
+                    await ctx.channel.send("Remise a zéro du timer effectuée !")
+                else:
+                    await ctx.channel.send("Timer modifié avec succès : **{}**".format(arg2))
         ##
         elif arg1 == 'long_reddit_timer':  # GOOD
             if arg2 is None or arg2 != "reset" and not arg2.isdigit or arg2.isdigit() and not 10 <= int(arg2) <= 90:
                 await ctx.channel.send(
-                    "`Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 10 et 90 requis ou 'reset')`"
+                    "Paramètre manquant / incorrect : **{}** [Arg 2] (nombre entre 10 et 90 requis ou 'reset')"
                     .format(arg2))
             else:
                 db_insup_value(arg1, (ctx.guild.id, arg2))
-                await ctx.channel.send("`Timer changé avec succès : **{}**`".format(arg2))
+                if arg2 == "reset":
+                    await ctx.channel.send("Remise a zéro du timer effectuée !")
+                else:
+                    await ctx.channel.send("Timer modifié avec succès : **{}**".format(arg2))
         ##
         elif arg1 in ['censor_log_channel', 'welcome_channel']:  # GOOD
             channel_obj = get(ctx.guild.channels, name=arg2)
             if channel_obj is None and arg2 != "reset":
                 await ctx.channel.send(
-                    "`Ce channel n'existe pas (vous pouvez aussi entrer 'reset') : **{}** [Arg 2]`"
+                    "Ce channel n'existe pas (vous pouvez aussi entrer 'reset') : **{}** [Arg 2]"
                     .format(arg2))
             elif arg2 == "reset":
                 db_insup_value(arg1, (ctx.guild.id, "reset"))
+                await ctx.channel.send("Remise a zéro du channel effectuée ! : **{}** [Arg 2]".format(arg2))
             else:
                 db_insup_value(arg1, (ctx.guild.id, channel_obj.id))
+                await ctx.channel.send("Channel ajouté avec succés ! : **{}** [Arg 2]".format(arg2))
         ##
         elif arg1 in ['add_nsfw_channel', 'add_censor_excluded_channel']:  # GOOD
             channel_obj = get(ctx.guild.channels, name=arg2)
             if channel_obj is None:
                 await ctx.channel.send(
-                    "`Ce channel n'existe pas (vous pouvez aussi entrer 'reset') : **{}** [Arg 2]`"
+                    "Ce channel n'existe pas (vous pouvez aussi entrer 'reset') : **{}** [Arg 2]"
                     .format(arg2))
             else:
                 res = db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, channel_obj.id, channel_obj.name))
                 if res is False:
-                    await ctx.channel.send("`Ce channel est déja configuré pour cela : **{}** [Arg 2]`".format(arg2))
+                    await ctx.channel.send("Ce channel est déja configuré pour cela : **{}** [Arg 2]".format(arg2))
                 else:
-                    await ctx.channel.send("`Channel correctement ajouté ! : **{}** [Arg 2]`".format(arg2))
+                    await ctx.channel.send("Channel correctement ajouté ! : **{}** [Arg 2]".format(arg2))
         ##
         elif arg1 in ['del_nsfw_channel', 'del_censor_excluded_channel']:  # GOOD
             channel_obj = get(ctx.guild.channels, name=arg2)
-            db_del_value(arg1, (ctx.guild.id, channel_obj.id))
+            if channel_obj is None:
+                await ctx.channel.send(
+                    "Ce channel n'existe pas : **{}** [Arg 2]"
+                    .format(arg2))
+            else:
+                db_del_value(arg1, (ctx.guild.id, channel_obj.id))
+                await ctx.channel.send("Channel correctement supprimé ! : **{}** [Arg 2]".format(arg2))
         ##
         elif arg1 == 'welcome_role' or arg1 == 'approb_role':  # GOOD
             role_obj = get(ctx.guild.roles, name=arg2)
             if role_obj is None and arg2 != "reset":
                 await ctx.channel.send(
-                    "Ce rôle n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 2]"
+                    "Ce rôle n'existe pas : **{}** [Arg 2]"
                     .format(arg2))
             elif arg2 == "reset":
                 db_insup_value(arg1, (ctx.guild.id, "reset"))
+                await ctx.channel.send("Remise a zéro du role effectuée !")
             else:
                 db_insup_value(arg1, (ctx.guild.id, role_obj.id))
+                await ctx.channel.send("Role modifié avec succès ! : **{}** [Arg 2]".format(arg2))
         ##
         elif arg1 == 'add_banned_word':  # GOOD
             db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg2, arg3))
