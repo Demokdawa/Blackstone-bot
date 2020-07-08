@@ -16,12 +16,12 @@ log.info('[COGS] Moderation COG loaded')
 
 
 # Decorator to check if server_moderation is configured on this server
-def check_cog_mod_config():
-    def predicate(ctx):
+def check_cog_mod():
+    async def predicate(ctx):
         conf_server_all = db_get_conf_server_all(ctx.guild.id)
         error_nbr = 0
         if conf_server_all is None:
-            raise commands.UserInputError("Ce serveur n\'est pas configuré pour utiliser cette commande !")
+            await ctx.channel.send("Ce serveur n\'est pas configuré pour utiliser cette commande !")
         else:
             if conf_server_all[4] is None:
                 error_nbr += 1
@@ -33,10 +33,9 @@ def check_cog_mod_config():
             if error_nbr == 0:
                 return True
             else:
-                raise commands.UserInputError("Ce serveur n\'est pas configuré pour utiliser cette commande !/n"
-                                              "Configurations erronées/manquantes : {}/n"
-                                              "Utilise la commande configuration pour voir ce qui ne va pas !"
-                                              .format(error_nbr))
+                await ctx.channel.send("Ce serveur n\'est pas configuré pour utiliser cette commande !/n"
+                                       "Configurations erronées/manquantes : {}/n"
+                                       .format(error_nbr))
     return commands.check(predicate)
 
 
@@ -68,18 +67,18 @@ class ServerModeration(commands.Cog):
                         and int(conf_server_all[10]) == payload.emoji.id:
                     moji_member = get(guild.members, id=int(conf_server_all[9]))
                     if moji_member is not None:
-                        return True, "case_moji_clan", member, guild, linked_role, silencieux, new_member, welcome_channel, \
-                               moji_member
+                        return True, "case_moji_clan", member, guild, linked_role, silencieux, new_member, \
+                               welcome_channel, moji_member
                     else:
                         pass
 
                 if payload.emoji.id in emoji_roles_list_dict:  # Check if the emoji is linked to a role
                     if conf_server_all[6] in list_of_user_roles:  # Check if user is a "new member"
-                        return True, "case_new_member", member, guild, linked_role, silencieux, new_member, welcome_channel, \
-                               moji_member
+                        return True, "case_new_member", member, guild, linked_role, silencieux, new_member, \
+                               welcome_channel, moji_member
                     else:  # If user does not have "new member" role
-                        return True, "case_member", member, guild, linked_role, silencieux, new_member, welcome_channel, \
-                               moji_member
+                        return True, "case_member", member, guild, linked_role, silencieux, new_member, \
+                               welcome_channel, moji_member
                 else:
                     return False, None, None, None, None, None, None, None, None
 

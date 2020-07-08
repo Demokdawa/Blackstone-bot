@@ -1,6 +1,5 @@
 from discord.ext import tasks, commands
 from itertools import zip_longest
-from cogs.utils import admin_restricted
 from cogs.db_operations import db_get_reddit_command_dict, db_get_reddit_sub_dict, db_get_conf_server_all, \
     db_get_nsfw_channels
 import ffmpy
@@ -224,8 +223,8 @@ def nsfw_check():
 
 
 # Sanity-check decorator to see if everything config related to this cog is fine
-def check_cog_redditscrap_config():
-    def predicate(ctx):
+def check_cog_redditscrap():
+    async def predicate(ctx):
         conf_server_all = db_get_conf_server_all(ctx.guild.id)
         error_nbr = 0
         if conf_server_all is None:
@@ -241,10 +240,9 @@ def check_cog_redditscrap_config():
             if error_nbr == 0:
                 return True
             else:
-                raise commands.UserInputError("Ce serveur n\'est pas configuré pour utiliser cette commande.\n"
-                                              "Configurations erronées/manquantes : {}\n"
-                                              "Utilise la commande !shodconfig pour voir ce qui ne va pas."
-                                              .format(error_nbr))
+                await ctx.channel.send("Ce serveur n\'est pas configuré pour utiliser cette commande.\n"
+                                       "Configurations erronées/manquantes : {}"
+                                       .format(error_nbr))
 
     return commands.check(predicate)
 
@@ -296,8 +294,8 @@ class RedditScrap(commands.Cog):
     ##################################################################################################
 
     @check_if_bot_rdy()
+    @check_cog_redditscrap()
     @nsfw_check()
-    @check_cog_redditscrap_config()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
         sub = c_dict.get(ctx.invoked_with)[0]
@@ -309,17 +307,16 @@ class RedditScrap(commands.Cog):
         await self.check_react(ctx, embed, file, isgif)
 
     # !rcheck to get status of the image-serving service
-    @check_cog_redditscrap_config()
-    @admin_restricted()
+    @check_cog_redditscrap()
     @commands.command()
     async def rcheck(self, ctx):
         if rdy == 0:
             await ctx.channel.send("Je démarre gros, 2 sec 😎 ({} / {})".format(progress, len(sub_dict)))
         elif rdy == 1:
-            await ctx.channel.send("Je suis la pour toi mon chou !")
+            await ctx.channel.send("Je suis la pour toi mon chou ❤")
 
     # !rhelp command for help
-    @check_cog_redditscrap_config()
+    @check_cog_redditscrap()
     @commands.command()
     async def rhelp(self, ctx):
 

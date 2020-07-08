@@ -16,6 +16,10 @@ LONG_REDDIT_TIMER. A value between 10 and 90 in seconds
 3 | Gros warn, lorsqu'une faute grave est commise
 4 | Warn qui peux précéder un ban ou en dernier recours
 
+### Fonctionnement des roles_emojis
+Limitation a une mention d'emoji correspondant a un seul rôle
+
 
 X ajouté avec succès
 Suppresion du X effectuée
+

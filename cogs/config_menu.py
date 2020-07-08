@@ -65,8 +65,7 @@ class ConfigMenu(commands.Cog):
             channel_obj = get(ctx.guild.channels, name=arg2)
             if channel_obj is None and arg2 != "reset":
                 await ctx.channel.send(
-                    "Ce channel n'existe pas (vous pouvez aussi entrer 'reset') : **{}** [Arg 2]"
-                    .format(arg2))
+                    "Ce channel n'existe pas (vous pouvez aussi entrer 'reset') : **{}** [Arg 2]".format(arg2))
             elif arg2 == "reset":
                 db_insup_value(arg1, (ctx.guild.id, "reset"))
                 await ctx.channel.send("Remise a zéro du channel effectuée ! : **{}** [Arg 2]".format(arg2))
@@ -78,21 +77,18 @@ class ConfigMenu(commands.Cog):
             channel_obj = get(ctx.guild.channels, name=arg2)
             if channel_obj is None:
                 await ctx.channel.send(
-                    "Ce channel n'existe pas (vous pouvez aussi entrer 'reset') : **{}** [Arg 2]"
-                    .format(arg2))
+                    "Ce channel n'existe pas (vous pouvez aussi entrer 'reset') : **{}** [Arg 2]".format(arg2))
             else:
                 res = db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, channel_obj.id, channel_obj.name))
                 if res is False:
-                    await ctx.channel.send("Ce channel est déja configuré pour cela : **{}** [Arg 2]".format(arg2))
+                    await ctx.channel.send("Ce channel est déja configuré : **{}** [Arg 2]".format(arg2))
                 else:
                     await ctx.channel.send("Channel correctement ajouté ! : **{}** [Arg 2]".format(arg2))
         ##
         elif arg1 in ['del_nsfw_channel', 'del_censor_excluded_channel']:  # GOOD
             channel_obj = get(ctx.guild.channels, name=arg2)
             if channel_obj is None:
-                await ctx.channel.send(
-                    "Ce channel n'existe pas : **{}** [Arg 2]"
-                    .format(arg2))
+                await ctx.channel.send("Ce channel n'existe pas : **{}** [Arg 2]".format(arg2))
             else:
                 db_del_value(arg1, (ctx.guild.id, channel_obj.id))
                 await ctx.channel.send("Channel correctement supprimé ! : **{}** [Arg 2]".format(arg2))
@@ -100,9 +96,7 @@ class ConfigMenu(commands.Cog):
         elif arg1 == 'welcome_role' or arg1 == 'approb_role':  # GOOD
             role_obj = get(ctx.guild.roles, name=arg2)
             if role_obj is None and arg2 != "reset":
-                await ctx.channel.send(
-                    "Ce rôle n'existe pas : **{}** [Arg 2]"
-                    .format(arg2))
+                await ctx.channel.send("Ce rôle n'existe pas : **{}** [Arg 2]".format(arg2))
             elif arg2 == "reset":
                 db_insup_value(arg1, (ctx.guild.id, "reset"))
                 await ctx.channel.send("Remise a zéro du role effectuée !")
@@ -112,9 +106,11 @@ class ConfigMenu(commands.Cog):
         ##
         elif arg1 == 'add_banned_word':  # GOOD
             db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg2, arg3))
+            await ctx.channel.send("Mot ajouté / modifié avec succés !")
         ##
-        elif arg1 == 'del_banned_word':  # GOOD
+        elif arg1 == 'del_banned_word':  # NEED FIX
             db_del_value(arg1, (ctx.guild.id, arg2))
+            await ctx.channel.send("Mot supprimé avec succés !")
         ##
         elif arg1 == 'add_emoji_role':
             if not arg2.isdigit() or arg2 is None:
@@ -126,12 +122,16 @@ class ConfigMenu(commands.Cog):
                     role_obj = get(ctx.guild.roles, name=arg4)
                     if role_obj is None:
                         await ctx.channel.send(
-                            "Ce rôle n'existe pas ou n'est pas correctement renseigné : **{}** [Arg 4]"
+                            "Ce rôle n'existe pas : **{}** [Arg 4]"
                             .format(arg4))
                     else:
-                        db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg4, int(arg2), int(arg3), role_obj.id))
+                        res = db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg4, int(arg2), int(arg3), role_obj.id))
+                        if res is False:
+                            await ctx.channel.send("Cet emoji est déja configuré : **{}** [Arg 3] !")
+                        else:
+                            await ctx.channel.send("Emoji configuré avec succés : **{}** [Arg 3] !")
         ##
-        elif arg1 == 'del_emoji_role':
+        elif arg1 == 'del_emoji_role':  # NEED FIX
             if not arg2.isdigit() or arg2 is None:
                 await ctx.channel.send("Paramètre manquant / incorrect : **{}** [Arg 2]".format(arg2))
             else:
@@ -140,8 +140,9 @@ class ConfigMenu(commands.Cog):
                 else:
                     role_obj = get(ctx.guild.roles, name=arg4)
                     db_del_value(arg1, (ctx.guild.id, int(arg2), int(arg3), int(arg4)))
+                    await ctx.channel.send("")
         ##
-        elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:
+        elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:  # NEED FIX
             res = db_check_privilege(ctx.guild.id, ctx.author.id)
             if res is False:  # Check if user is an uwu admin
                 await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
@@ -299,7 +300,7 @@ class ConfigMenu(commands.Cog):
             await ctx.channel.send(embed=embed)
 
     @sendconfig.error
-    async def sendconfig_error(self, ctx, error):
+    async def sendconfig_error(self, ctx, error):  # NEED FIX
         if isinstance(error, commands.MissingRequiredArgument):
             embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
             embed.add_field(name="__**Syntaxe : **__",

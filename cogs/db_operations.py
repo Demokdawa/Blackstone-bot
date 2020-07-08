@@ -303,11 +303,17 @@ def db_insup_value(target_param, val_tuple):
             cursor.execute('''INSERT INTO servers_banned_word (guild_id, guild_name, word, word_replacement) 
                               VALUES (%s, %s, %s, %s)''', (guild_id, guild_name, word, word_replacement,))
     ##
-    elif target_param == "add_emoji_role":  # ADD_SELECT CHECK
+    elif target_param == "add_emoji_role":
         guild_id, guild_name, role_name, tracked_message, emoji_id, role_id = val_tuple
-        cursor.execute('''INSERT INTO servers_emoji_roles 
-                                    (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id) 
-        VALUES (%s, %s, %s, %s, %s, %s)''', (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id,))
+        cursor.execute('''SELECT emoji_id from servers_emoji_roles WHERE guild_id = %s and emoji_id = %s''',
+                       (guild_id, emoji_id,))
+        result = cursor.fetchone()
+        if result:
+            return False
+        else:
+            cursor.execute('''INSERT INTO servers_emoji_roles 
+                          (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id) 
+            VALUES (%s, %s, %s, %s, %s, %s)''', (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id,))
 
     connection.commit()
     cursor.close()
@@ -334,8 +340,14 @@ def db_del_value(target_param, val_tuple):
     ##
     elif target_param == 'del_emoji_role':
         guild_id, tracked_message, emoji_id, role_id = val_tuple
-        cursor.execute('''DELETE FROM servers_emoji_roles WHERE guild_id = %s and tracked_message =%s 
-        and emoji_id = %s and  role_id = %s''', (guild_id, tracked_message, emoji_id, role_id,))
+        cursor.execute('''SELECT emoji_id from servers_emoji_roles WHERE guild_id = %s and emoji_id = %s''',
+                       (guild_id, emoji_id,))
+        result = cursor.fetchone()
+        if result:
+            return False
+        else:
+            cursor.execute('''DELETE FROM servers_emoji_roles WHERE guild_id = %s and tracked_message =%s 
+                              and emoji_id = %s and  role_id = %s''', (guild_id, tracked_message, emoji_id, role_id,))
 
     connection.commit()
     cursor.close()

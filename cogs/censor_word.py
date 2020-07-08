@@ -78,18 +78,21 @@ def check_message_context(message):
 ##################################################################################################
 
 
+# !! UNUSED FOR NOW !! ###############
 # Decorator to check if CensorWord is configured on this server
-def check_cog_censor_config():
-    def predicate(ctx):
+def check_cog_censor():
+    async def predicate(ctx):
         conf_server_all = db_get_conf_server_all(ctx.guild.id)
         if conf_server_all is None:
-            raise commands.UserInputError("Ce serveur n\'est pas configuré pour utiliser cette commande !")
+            await ctx.channel.send("Ce serveur n\'est pas configuré pour utiliser cette commande !")
         else:
             if conf_server_all[3] is None:
-                raise commands.UserInputError("Ce serveur n\'est pas configuré pour utiliser cette commande !/n"
-                                              "Utilise la commande configuration pour voir ce qui ne va pas !")
+                await ctx.channel.send("Ce serveur n\'est pas configuré pour utiliser cette commande !/n"
+                                       "Utilise la commande configuration pour voir ce qui ne va pas !")
 
     return commands.check(predicate)
+
+# !! UNUSED FOR NOW !! ###############
 
 
 class CensorWord(commands.Cog):
