@@ -1,6 +1,7 @@
 from discord.ext import tasks, commands
 from itertools import zip_longest
-from cogs.db_operations import db_get_reddit_command_dict, db_get_reddit_sub_dict, db_get_conf_server_all,\
+from cogs.utils import admin_restricted
+from cogs.db_operations import db_get_reddit_command_dict, db_get_reddit_sub_dict, db_get_conf_server_all, \
     db_get_nsfw_channels
 import ffmpy
 import os
@@ -29,15 +30,16 @@ rdy = 0
 # Store the progress of the initial cache sync
 progress = 0
 
-c_dict = db_get_reddit_command_dict()                                   # [dict] of commands (dict key is command)
-c_dict_sfw = {k: v for k, v in c_dict.items() if v[1] == 0}             # [dict] of SFW commands
-c_list_sfw = [(k, v) for k, v in c_dict_sfw.items()]                    # [list] of SFW commands
-c_dict_nsfw = {k: v for k, v in c_dict.items() if v[1] == 1}            # [dict] of NSFW commands
-c_list_nsfw = [(k, v) for k, v in c_dict_nsfw.items()]                  # [list] of NSFW commands
-c_list = [k for k in c_dict]                                            # [list] with only commands
-sub_dict = db_get_reddit_sub_dict()                                     # [dict] with subs (dict key is sub)
+c_dict = db_get_reddit_command_dict()  # [dict] of commands (dict key is command)
+c_dict_sfw = {k: v for k, v in c_dict.items() if v[1] == 0}  # [dict] of SFW commands
+c_list_sfw = [(k, v) for k, v in c_dict_sfw.items()]  # [list] of SFW commands
+c_dict_nsfw = {k: v for k, v in c_dict.items() if v[1] == 1}  # [dict] of NSFW commands
+c_list_nsfw = [(k, v) for k, v in c_dict_nsfw.items()]  # [list] of NSFW commands
+c_list = [k for k in c_dict]  # [list] with only commands
+sub_dict = db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
 
 log.info('[COGS] RedditScrap COG loaded')
+
 
 # FUNCTIONS ######################################################################################
 ##################################################################################################
@@ -185,17 +187,17 @@ def prepare_embed(data):
         embed.set_image(url=data)
     return embed, file
 
+
 # DECORATORS #####################################################################################
 ##################################################################################################
 
 
 # Decorator to check if reddit bot is ready to serve
 def check_if_bot_rdy():
-    def predicate(ctx):
+    async def predicate(ctx):
         if rdy == 0:
-            raise commands.UserInputError(
-                "Je suis encore en train de fouiller le web, patiente quelques minutes 😎 ({} / {}) ".format(
-                    progress, len(sub_dict)))
+            await ctx.channel.send("Je suis encore en train de fouiller le web, patiente quelques minutes 😎 ({} / {}) "
+                                   .format(progress, len(sub_dict)))
         elif rdy == 1:
             return True
 
@@ -204,19 +206,20 @@ def check_if_bot_rdy():
 
 # Decorator to check for NSFW commands
 def nsfw_check():
-    def predicate(ctx):
+    async def predicate(ctx):
         if c_dict.get(ctx.invoked_with)[1] == 1:  # Check if NSFW command
             if db_get_conf_server_all(ctx.guild.id)[0] == 0:  # Checking current nsfw_mode (disabled)
-                raise commands.UserInputError("Ey non, pas ici petit coquin ! Ce discord n'est pas NSFW !")
+                await ctx.channel.send("Ey non, pas ici petit coquin ! Ce discord n'est pas NSFW !")
             elif db_get_conf_server_all(ctx.guild.id)[0] == 1:  # Checking current nsfw_mode (semi-enabled)
                 if ctx.channel.id in db_get_nsfw_channels(ctx.guild.id):  # If channel is an authorized nsfw channel
                     return True
                 else:
-                    raise commands.UserInputError("Ey non, pas ici petit coquin ! Réessaie dans un channel NSFW !")
+                    await ctx.channel.send("Ey non, pas ici petit coquin ! Réessaie dans un channel NSFW !")
             elif db_get_conf_server_all(ctx.guild.id)[0] == 2:  # Checking current nsfw_mode (enable)
                 return True
         else:
             return True
+
     return commands.check(predicate)
 
 
@@ -305,19 +308,20 @@ class RedditScrap(commands.Cog):
         embed, file = prepare_embed(data)
         await self.check_react(ctx, embed, file, isgif)
 
-    # !sup to get status of the image-serving service
+    # !rcheck to get status of the image-serving service
     @check_cog_redditscrap_config()
+    @admin_restricted()
     @commands.command()
-    async def sup(self, ctx):
+    async def rcheck(self, ctx):
         if rdy == 0:
             await ctx.channel.send("Je démarre gros, 2 sec 😎 ({} / {})".format(progress, len(sub_dict)))
         elif rdy == 1:
             await ctx.channel.send("Je suis la pour toi mon chou !")
 
-    # !halp command for help
+    # !rhelp command for help
     @check_cog_redditscrap_config()
     @commands.command()
-    async def sendhelp(self, ctx):
+    async def rhelp(self, ctx):
 
         embed = discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !",
                               description="Je suis la pour vous aider 😄", color=0xd5d500)

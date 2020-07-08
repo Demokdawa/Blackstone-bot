@@ -18,4 +18,4 @@ LONG_REDDIT_TIMER. A value between 10 and 90 in seconds
 
 
 X ajouté avec succès
-Suppresion du X effec
+Suppresion du X effectuée

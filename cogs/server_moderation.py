@@ -2,6 +2,7 @@ import logging
 import discord
 from discord.ext import commands
 from discord.utils import get
+from cogs.utils import mod_restricted
 from cogs.db_operations import db_get_emoji_roles, db_get_conf_server_all, db_check_privilege, db_add_warn, \
     db_get_admins
 
@@ -36,17 +37,6 @@ def check_cog_mod_config():
                                               "Configurations erronées/manquantes : {}/n"
                                               "Utilise la commande configuration pour voir ce qui ne va pas !"
                                               .format(error_nbr))
-    return commands.check(predicate)
-
-
-# Decorator to check for moderation-only commands
-def mod_restricted():
-    def predicate(ctx):
-        res = db_check_privilege(ctx.guild.id, ctx.author.id)
-        if res is False:
-            raise commands.UserInputError("Vous n'êtes pas qualifié pour executer cette commande !")
-        else:
-            return True
     return commands.check(predicate)
 
 

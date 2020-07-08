@@ -2,8 +2,7 @@ import discord
 from discord.ext import tasks, commands
 from discord.utils import get
 import logging
-from itertools import zip_longest
-from cogs.utils import chk_arg1_sndcfg, chk_arg1_shcfg, check_if_owner
+from cogs.utils import chk_arg1_sndcfg, chk_arg1_shcfg, check_if_owner, admin_restricted
 from cogs.db_operations import db_insup_value, db_check_privilege, db_insupdel_admin, db_get_conf_server_all, \
     db_get_censor_words, db_get_excl_channels, db_get_server_emoji_roles, db_get_nsfw_channels, db_del_value
 
@@ -15,17 +14,6 @@ log.info('[COGS] ConfigMenu COG loaded')
 
 # DECORATORS #####################################################################################
 ##################################################################################################
-
-# Decorator to check for admin-only commands
-def admin_restricted():
-    def predicate(ctx):
-        res = db_check_privilege(ctx.guild.id, ctx.author.id)
-        if res is False or res not in [1, 2]:
-            raise commands.UserInputError("Vous n'êtes pas qualifié pour executer cette commande !")
-        else:
-            return True
-    return commands.check(predicate)
-
 
 class ConfigMenu(commands.Cog):
     def __init__(self, bot):

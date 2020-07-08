@@ -13,10 +13,32 @@ log.info('[COGS] Utils COG loaded')
 
 # Decorator to check for precursor-only commands
 def precursor_restricted():
-    def predicate(ctx):
+    async def predicate(ctx):
         res = db_check_privilege(ctx.guild.id, ctx.author.id)
         if res is False or res != 1:
-            raise commands.UserInputError("Vous n'êtes pas qualifié pour executer cette commande !")
+            await ctx.channel.send("Vous n'êtes pas qualifié pour executer cette commande !")
+        else:
+            return True
+    return commands.check(predicate)
+
+
+# Decorator to check for admin-only commands
+def admin_restricted():
+    async def predicate(ctx):
+        res = db_check_privilege(ctx.guild.id, ctx.author.id)
+        if res is False or res not in [1, 2]:
+            await ctx.channel.send("Vous n'êtes pas qualifié pour executer cette commande !")
+        else:
+            return True
+    return commands.check(predicate)
+
+
+# Decorator to check for moderation-only commands
+def mod_restricted():
+    async def predicate(ctx):
+        res = db_check_privilege(ctx.guild.id, ctx.author.id)
+        if res is False:
+            await ctx.channel.send("Vous n'êtes pas qualifié pour executer cette commande !")
         else:
             return True
     return commands.check(predicate)
