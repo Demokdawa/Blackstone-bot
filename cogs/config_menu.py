@@ -108,9 +108,12 @@ class ConfigMenu(commands.Cog):
             db_insup_value(arg1, (ctx.guild.id, ctx.guild.name, arg2, arg3))
             await ctx.channel.send("Mot ajouté / modifié avec succés !")
         ##
-        elif arg1 == 'del_banned_word':  # NEED FIX
-            db_del_value(arg1, (ctx.guild.id, arg2))
-            await ctx.channel.send("Mot supprimé avec succés !")
+        elif arg1 == 'del_banned_word':
+            res = db_del_value(arg1, (ctx.guild.id, arg2))
+            if res is False:
+                await ctx.channel.send("Ce mot n'est pas configuré !")
+            else:
+                await ctx.channel.send("Mot supprimé avec succés !")
         ##
         elif arg1 == 'add_emoji_role':
             if not arg2.isdigit() or arg2 is None:
@@ -139,23 +142,67 @@ class ConfigMenu(commands.Cog):
                     await ctx.channel.send("Paramètre manquant / incorrect : **{}** [Arg 3]".format(arg3))
                 else:
                     role_obj = get(ctx.guild.roles, name=arg4)
-                    db_del_value(arg1, (ctx.guild.id, int(arg2), int(arg3), int(arg4)))
-                    await ctx.channel.send("")
+                    res = db_del_value(arg1, (ctx.guild.id, int(arg2), int(arg3), int(arg4)))
+                    if res is False:
+                        await ctx.channel.send("Cet emoji n'est pas configuré !")
+                    else:
+                        await ctx.channel.send("Emoji supprimé avec succés")
         ##
-        elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:  # NEED FIX
+        elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:
             res = db_check_privilege(ctx.guild.id, ctx.author.id)
             if res is False:  # Check if user is an uwu admin
                 await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
             else:
                 member_obj = get(ctx.guild.members, id=int(arg2))
                 if member_obj is not None:  # Check if user_id exist
-                    if not check_if_owner(ctx.guild, int(arg2)):  # Check if the target is owner
-                        if arg3.isdigit() and arg3 is not None and int(arg3) in [2, 3]:  # Arg3 data validation
-                            db_insupdel_admin(arg1, ctx.guild.name, ctx.guild.id, member_obj.name, member_obj.id, int(arg3))
-                        else:
-                            await ctx.channel.send(
-                                "Paramètre manquant / incorrect : **{}** [Arg 3] (nombre entier entre 2 et 3 requis)"
-                                .format(arg3))
+                    if not check_if_owner(ctx.guild, int(arg2)):  # To be sure the target is not the owner
+                        res = db_insupdel_admin(arg1, ctx.guild.name, ctx.guild.id, member_obj.name, member_obj.id)
+                        if arg1 == "add_uwu_admin":
+                            if res is False:
+                                await ctx.channel.send("Cet utilisateur est déja admin !")
+                            elif res is True:
+                                await ctx.channel.send("Vous ne pouvez pas modifier les droits du précurseur !")
+                            else:
+                                await ctx.channel.send("L'utilisateur **{}** est maintenant un admin !".format(arg2))
+                        if arg1 == "del_uwu_admin":
+                            if res is False:
+                                await ctx.channel.send("Cet utilisateur n'est pas admin !")
+                            elif res is True:
+                                await ctx.channel.send("Vous ne pouvez pas modifier les droits du précurseur !")
+                            else:
+                                await ctx.channel.send("L'utilisateur **{}** n'est plus un admin !".format(arg2))
+                    else:
+                        await ctx.channel.send(
+                            "Vous ne pouvez pas modifier le status du propriétaire du serveur ! : **{}** [Arg 2]"
+                            .format(arg2))
+                else:
+                    await ctx.channel.send(
+                        "Aucun utilisateur n'a été trouvé sur cet ID : **{}** [Arg 2]"
+                        .format(arg2))
+        ##
+        elif arg1 in ['add_uwu_mod', 'del_uwu_mod']:
+            res = db_check_privilege(ctx.guild.id, ctx.author.id)
+            if res is False:  # Check if user is an uwu admin
+                await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
+            else:
+                member_obj = get(ctx.guild.members, id=int(arg2))
+                if member_obj is not None:  # Check if user_id exist
+                    if not check_if_owner(ctx.guild, int(arg2)):  # To be sure the target is not the owner
+                        res = db_insupdel_admin(arg1, ctx.guild.name, ctx.guild.id, member_obj.name, member_obj.id)
+                        if arg1 == "add_uwu_admin":
+                            if res is False:
+                                await ctx.channel.send("Cet utilisateur est déja admin !")
+                            elif res is True:
+                                await ctx.channel.send("Vous ne pouvez pas modifier les droits du précurseur !")
+                            else:
+                                await ctx.channel.send("L'utilisateur **{}** est maintenant un admin !".format(arg2))
+                        if arg1 == "del_uwu_admin":
+                            if res is False:
+                                await ctx.channel.send("Cet utilisateur n'est pas admin !")
+                            elif res is True:
+                                await ctx.channel.send("Vous ne pouvez pas modifier les droits du précurseur !")
+                            else:
+                                await ctx.channel.send("L'utilisateur **{}** n'est plus un admin !".format(arg2))
                     else:
                         await ctx.channel.send(
                             "Vous ne pouvez pas modifier le status du propriétaire du serveur ! : **{}** [Arg 2]"
@@ -354,13 +401,19 @@ class ConfigMenu(commands.Cog):
                             inline=False)
             embed.add_field(name="add_uwu_admin",
                             value="Ajoute un admin UwU sur le serveur \n"
-                                  "Syntaxe : [id de l'utilisateur] [privilege] \n"
-                                  "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
+                                  "Syntaxe : [id de l'utilisateur]",
                             inline=False)
             embed.add_field(name="del_uwu_admin",
                             value="Supprime un admin UwU sur le serveur \n"
-                                  "Syntaxe : [id de l'utilisateur] [privilege] \n"
-                                  "Privilège de niveau 2 (Administrateur) ou 3 (Modérateur)",
+                                  "Syntaxe : [id de l'utilisateur]",
+                            inline=False)
+            embed.add_field(name="add_uwu_mod",
+                            value="Ajoute un mod UwU sur le serveur \n"
+                                  "Syntaxe : [id de l'utilisateur]",
+                            inline=False)
+            embed.add_field(name="del_uwu_mod",
+                            value="Supprime un mod UwU sur le serveur \n"
+                                  "Syntaxe : [id de l'utilisateur]",
                             inline=False)
             await ctx.channel.send(embed=embed)
 

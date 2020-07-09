@@ -336,7 +336,13 @@ def db_del_value(target_param, val_tuple):
     ##
     elif target_param == 'del_banned_word':
         guild_id, word = val_tuple
-        cursor.execute('''DELETE FROM servers_banned_word WHERE guild_id = %s and word = %s''', (guild_id, word,))
+        cursor.execute('''SELECT word from servers_banned_word WHERE guild_id = %s and word = %s''',
+                       (guild_id, word,))
+        result = cursor.fetchone()
+        if result:
+            cursor.execute('''DELETE FROM servers_banned_word WHERE guild_id = %s and word = %s''', (guild_id, word,))
+        else:
+            return False
     ##
     elif target_param == 'del_emoji_role':
         guild_id, tracked_message, emoji_id, role_id = val_tuple
@@ -344,10 +350,10 @@ def db_del_value(target_param, val_tuple):
                        (guild_id, emoji_id,))
         result = cursor.fetchone()
         if result:
-            return False
-        else:
             cursor.execute('''DELETE FROM servers_emoji_roles WHERE guild_id = %s and tracked_message =%s 
                               and emoji_id = %s and  role_id = %s''', (guild_id, tracked_message, emoji_id, role_id,))
+        else:
+            return False
 
     connection.commit()
     cursor.close()
@@ -370,29 +376,77 @@ def db_inspass_admin(guild_name, guild_id, user_name, user_id):
 
 
 # Insert / Update / Delete an admin from the DB
-def db_insupdel_admin(target_param, guild_name, guild_id, user_name, user_id, privilege_level):
+def db_insupdel_admin(target_param, guild_name, guild_id, user_name, user_id):
     cursor = connection.cursor()
     connection.commit()
-    cursor.execute('''SELECT user_id FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''',
+    cursor.execute('''SELECT privilege_level FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''',
                    (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
 
     if target_param == 'add_uwu_admin':
-        if result:
-            cursor.execute('''UPDATE servers_global_privileges SET privilege_level =%s 
-                            WHERE guild_id = %s and user_id = %s''', (privilege_level, guild_id, user_id,))
+        if result[0] == 1:
+            return True
+        if result[0] == 2:
+            return False
+        elif result[0] == 3:
+            cursor.execute('''UPDATE servers_global_privileges SET privilege_level = %s 
+                            WHERE guild_id = %s and user_id = %s''', (2, guild_id, user_id,))
         else:
-            cursor.execute('''INSERT INTO servers_global_privileges (guild_name, guild_id, user_name, user_id, privilege_level)
-                            VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, privilege_level,))
+            cursor.execute('''INSERT INTO servers_global_privileges (guild_name, guild_id, user_name, user_id, 
+            privilege_level) VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, 2,))
+
     elif target_param == 'del_uwu_admin':
-        cursor.execute('''DELETE FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''', (guild_id, user_id,))
+        if result[0] == 1:
+            return True
+        if result[0] == 2:
+            cursor.execute('''DELETE FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''',
+                           (guild_id, user_id,))
+        elif result[0] == 3:
+            return False
+        else:
+            return False
 
     connection.commit()
     cursor.close()
 
 
-# Add the developper to level-1 on the server
-def db_inspass_developper(guild_name, guild_id, dev_name, dev_id):
+# Insert / Update / Delete an admin from the DB
+def db_insupdel_mod(target_param, guild_name, guild_id, user_name, user_id):
+    cursor = connection.cursor()
+    connection.commit()
+    cursor.execute('''SELECT privilege_level FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''',
+                   (guild_id, user_id,))
+    result = cursor.fetchone()  # Result is a [tuple]
+
+    if target_param == 'add_uwu_admin':
+        if result[0] == 1:
+            return True
+        if result[0] == 2:
+            return False
+        elif result[0] == 3:
+            cursor.execute('''UPDATE servers_global_privileges SET privilege_level = %s 
+                            WHERE guild_id = %s and user_id = %s''', (2, guild_id, user_id,))
+        else:
+            cursor.execute('''INSERT INTO servers_global_privileges (guild_name, guild_id, user_name, user_id, 
+            privilege_level) VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, 2,))
+
+    elif target_param == 'del_uwu_admin':
+        if result[0] == 1:
+            return True
+        if result[0] == 2:
+            cursor.execute('''DELETE FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''',
+                           (guild_id, user_id,))
+        elif result[0] == 3:
+            return False
+        else:
+            return False
+
+    connection.commit()
+    cursor.close()
+
+
+# Add the precusor as level-1 on the server
+def db_inspass_precursor(guild_name, guild_id, dev_name, dev_id):
     cursor = connection.cursor()
     connection.commit()
     cursor.execute('''SELECT user_id from servers_global_privileges WHERE guild_id = %s and user_id = %s 

@@ -10,6 +10,11 @@ LONG_REDDIT_TIMER. A value between 10 and 90 in seconds
 2 | Administrateur(s) du serveur spécifique | Peut configurer son serveur
 3 | Modérateur(s) du serveur spécifique     | Peut utiliser certaines commandes de modération sur son serveur
 
+Le 1 peux editer tout les autres niveaux
+Le 2 peux editer les niveaux 3
+Le 3 ne peux rien editer
+L'owner (niveau 2) peux editer les niveaux 2 et 3 mais pas le 1
+
 ### Les niveau de warns ###
 1 | Petit warn pour avertir
 2 | Moyen warn, pour marquer un plus gros avertissement

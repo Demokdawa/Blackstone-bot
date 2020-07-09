@@ -15,6 +15,7 @@ log.info('[COGS] Moderation COG loaded')
 ##################################################################################################
 
 
+# !! UNUSED FOR NOW !! ###############
 # Decorator to check if server_moderation is configured on this server
 def check_cog_mod():
     async def predicate(ctx):
@@ -37,6 +38,7 @@ def check_cog_mod():
                                        "Configurations erronées/manquantes : {}/n"
                                        .format(error_nbr))
     return commands.check(predicate)
+# !! UNUSED FOR NOW !! ###############
 
 
 class ServerModeration(commands.Cog):
@@ -62,7 +64,7 @@ class ServerModeration(commands.Cog):
 
         else:
             if action == 'add':
-                # Check if the message and the emoji are the right ones for pmoji
+                # Check if the message and the emoji are the right ones for pmoji and if pmoji is configured
                 if conf_server_all[9] is not None and int(conf_server_all[11]) == payload.message_id \
                         and int(conf_server_all[10]) == payload.emoji.id:
                     moji_member = get(guild.members, id=int(conf_server_all[9]))
