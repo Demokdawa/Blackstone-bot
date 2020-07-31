@@ -75,9 +75,9 @@ async def on_guild_join(guild):
 # Redirect errors and helper menus
 @bot.event
 async def on_command_error(ctx, message):
-    #if isinstance(message, commands.UserInputError):
+    # if isinstance(message, commands.UserInputError):
     #    await ctx.channel.send(message)
-    #else:
+    # else:
     #    log.info(message)
     log.info(message)
 
