@@ -5,7 +5,7 @@ import sys
 import logging
 from cogs.db_operations import db_uwu_check, db_create_serv_data, db_check_serv_data, db_inspass_admin, \
     db_inspass_precursor
-from loadconfig import is_dev, bot_token_prod, bot_token_dev, precursor_id, precusor_name
+from loadconfig import is_dev, bot_token_prod, bot_token_dev, precursor_id, precursor_name
 
 # Initialize ##################################################################################
 ###############################################################################################
@@ -62,7 +62,7 @@ async def on_guild_join(guild):
     else:
         db_create_serv_data(guild.name, guild.id)
 
-    if guild.owner.name == precusor_name:  # Check if the dev already own the server
+    if guild.owner.name == precursor_name:  # Check if the dev already own the server
         pass
     else:
         # Add the owner of the server as admin
