@@ -378,4 +378,3 @@ def setup(bot):
 # Fix progress counter value being wrong
 # Get reddit post values dynamically to DB
 # Adds logs to know user statistics
-# Need a command to be able to config this

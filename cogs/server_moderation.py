@@ -188,4 +188,3 @@ def setup(bot):
 
 
 # For the server_moderation COG : ##
-# Need a command to be able to config this

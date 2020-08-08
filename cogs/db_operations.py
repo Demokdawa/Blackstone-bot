@@ -410,7 +410,7 @@ def db_insupdel_admin(target_param, guild_name, guild_id, user_name, user_id):
     cursor.close()
 
 
-# Insert / Update / Delete an admin from the DB
+# Insert / Update / Delete an mod from the DB
 def db_insupdel_mod(target_param, guild_name, guild_id, user_name, user_id):
     cursor = connection.cursor()
     connection.commit()
@@ -418,25 +418,25 @@ def db_insupdel_mod(target_param, guild_name, guild_id, user_name, user_id):
                    (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
 
-    if target_param == 'add_uwu_admin':
+    if target_param == 'add_uwu_mod':
         if result[0] == 1:
             return True
-        if result[0] == 2:
+        if result[0] == 3:
             return False
-        elif result[0] == 3:
+        elif result[0] == 2:
             cursor.execute('''UPDATE servers_global_privileges SET privilege_level = %s 
-                            WHERE guild_id = %s and user_id = %s''', (2, guild_id, user_id,))
+                            WHERE guild_id = %s and user_id = %s''', (3, guild_id, user_id,))
         else:
             cursor.execute('''INSERT INTO servers_global_privileges (guild_name, guild_id, user_name, user_id, 
-            privilege_level) VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, 2,))
+            privilege_level) VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, 3,))
 
-    elif target_param == 'del_uwu_admin':
+    elif target_param == 'del_uwu_mod':
         if result[0] == 1:
             return True
-        if result[0] == 2:
+        if result[0] == 3:
             cursor.execute('''DELETE FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''',
                            (guild_id, user_id,))
-        elif result[0] == 3:
+        elif result[0] == 2:
             return False
         else:
             return False

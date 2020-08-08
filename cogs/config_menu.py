@@ -182,27 +182,27 @@ class ConfigMenu(commands.Cog):
         ##
         elif arg1 in ['add_uwu_mod', 'del_uwu_mod']:
             res = db_check_privilege(ctx.guild.id, ctx.author.id)
-            if res is False:  # Check if user is an uwu admin
+            if res is False:  # Check if sender is an uwu admin
                 await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")
             else:
                 member_obj = get(ctx.guild.members, id=int(arg2))
                 if member_obj is not None:  # Check if user_id exist
                     if not check_if_owner(ctx.guild, int(arg2)):  # To be sure the target is not the owner
                         res = db_insupdel_admin(arg1, ctx.guild.name, ctx.guild.id, member_obj.name, member_obj.id)
-                        if arg1 == "add_uwu_admin":
+                        if arg1 == "add_uwu_mod":
                             if res is False:
-                                await ctx.channel.send("Cet utilisateur est déja admin !")
+                                await ctx.channel.send("Cet utilisateur est déja modérateur !")
                             elif res is True:
                                 await ctx.channel.send("Vous ne pouvez pas modifier les droits du précurseur !")
                             else:
-                                await ctx.channel.send("L'utilisateur **{}** est maintenant un admin !".format(arg2))
-                        if arg1 == "del_uwu_admin":
+                                await ctx.channel.send("L'utilisateur **{}** est maintenant un modérateur !".format(arg2))
+                        if arg1 == "del_uwu_mod":
                             if res is False:
-                                await ctx.channel.send("Cet utilisateur n'est pas admin !")
+                                await ctx.channel.send("Cet utilisateur n'est pas modo !")
                             elif res is True:
                                 await ctx.channel.send("Vous ne pouvez pas modifier les droits du précurseur !")
                             else:
-                                await ctx.channel.send("L'utilisateur **{}** n'est plus un admin !".format(arg2))
+                                await ctx.channel.send("L'utilisateur **{}** n'est plus un modo !".format(arg2))
                     else:
                         await ctx.channel.send(
                             "Vous ne pouvez pas modifier le status du propriétaire du serveur ! : **{}** [Arg 2]"
