@@ -133,8 +133,8 @@ class ConfigMenu(commands.Cog):
                             await ctx.channel.send("Cet emoji est déja configuré : **{}** [Arg 3] !")
                         else:
                             await ctx.channel.send("Emoji configuré avec succés : **{}** [Arg 3] !")
-        ##
-        elif arg1 == 'del_emoji_role':  # NEED FIX
+        ##s
+        elif arg1 == 'del_emoji_role':  # NEED CHECK
             if not arg2.isdigit() or arg2 is None:
                 await ctx.channel.send("Paramètre manquant / incorrect : **{}** [Arg 2]".format(arg2))
             else:
