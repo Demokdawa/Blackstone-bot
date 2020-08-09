@@ -133,7 +133,7 @@ class ConfigMenu(commands.Cog):
                             await ctx.channel.send("Cet emoji est déja configuré : **{}** [Arg 3] !")
                         else:
                             await ctx.channel.send("Emoji configuré avec succés : **{}** [Arg 3] !")
-        ##s
+        ##
         elif arg1 == 'del_emoji_role':  # NEED CHECK
             if not arg2.isdigit() or arg2 is None:
                 await ctx.channel.send("Paramètre manquant / incorrect : **{}** [Arg 2]".format(arg2))
@@ -357,7 +357,7 @@ class ConfigMenu(commands.Cog):
                             value="\n\u200b",
                             inline=False)
             embed.add_field(name="nsfw_mode",
-                            value="1 = Désactive le NSFW, 2 = Activé par channel, 3 = Activé sur tout le serveur",
+                            value="0 = Désactive le NSFW, 1 = Activé par channel, 2 = Activé sur tout le serveur",
                             inline=False)
             embed.add_field(name="short_reddit_timer",
                             value="Timer court avant la disparition des contenus reddit [4-30s]",
