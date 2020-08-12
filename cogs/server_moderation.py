@@ -45,7 +45,7 @@ class ServerModeration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def moderation_react_process(self, payload, action):
+    def moderation_react_process(self, payload, action):  # NEED FIX
 
         # Variables needed to operate
         emoji_roles_list_dict = db_get_emoji_roles(payload.guild_id, payload.message_id)  # Get emoji/roles links from DB

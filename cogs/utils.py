@@ -100,7 +100,7 @@ class Utils(commands.Cog):
 
     @precursor_restricted()
     @commands.command(name='change_bot', hidden=True)
-    async def rename(self, ctx, name: str):
+    async def rename(self, ctx):
         with open('leo.png', 'rb') as f:
             await self.bot.user.edit(avatar=f.read())
 
