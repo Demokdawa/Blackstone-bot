@@ -45,24 +45,25 @@ class ServerModeration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def moderation_react_process(self, payload, action):  # NEED FIX
+    def moderation_react_process(self, payload, action):  # SHOULD BE FIXED, NEED APPROVAL
 
         # Variables needed to operate
         emoji_roles_list_dict = db_get_emoji_roles(payload.guild_id, payload.message_id)  # Get emoji/roles links from DB
-        linked_role = emoji_roles_list_dict.get(payload.emoji.id)  # Get the role linked to the trigger emoji
-        guild = self.bot.get_guild(payload.guild_id)  # Get guild object from the payload
-        member = guild.get_member(payload.user_id)  # Get member object from the payload
-        conf_server_all = db_get_conf_server_all(payload.guild_id)  # Get global conf values for the server from DB
-        silencieux = get(guild.roles, id=conf_server_all[5])  # Get "silencieux" role object
-        new_member = get(guild.roles, id=conf_server_all[6])  # Get "new member" role object
-        welcome_channel = self.bot.get_channel(conf_server_all[4])  # Get "welcome" channel object
-        list_of_user_roles = [e.id for e in member.roles]  # Get all roles of the user
-        moji_member = None
 
         if emoji_roles_list_dict is None:  # Check if server have emoji-roles
             return False, None, None, None, None, None, None, None, None
 
         else:
+            linked_role = emoji_roles_list_dict.get(payload.emoji.id)  # Get the role linked to the trigger emoji
+            guild = self.bot.get_guild(payload.guild_id)  # Get guild object from the payload
+            member = guild.get_member(payload.user_id)  # Get member object from the payload
+            conf_server_all = db_get_conf_server_all(payload.guild_id)  # Get global conf values for the server from DB
+            silencieux = get(guild.roles, id=conf_server_all[5])  # Get "silencieux" role object
+            new_member = get(guild.roles, id=conf_server_all[6])  # Get "new member" role object
+            welcome_channel = self.bot.get_channel(conf_server_all[4])  # Get "welcome" channel object
+            list_of_user_roles = [e.id for e in member.roles]  # Get all roles of the user
+            moji_member = None
+
             if action == 'add':
                 # Check if the message and the emoji are the right ones for pmoji and if pmoji is configured
                 if conf_server_all[9] is not None and int(conf_server_all[11]) == payload.message_id \
