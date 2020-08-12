@@ -49,7 +49,8 @@ def chk_arg1_sndcfg(param):
     parameters_list = ["nsfw_mode", "short_reddit_timer", "long_reddit_timer", "censor_log_channel",
                        "welcome_channel", "welcome_role", "approb_role", "add_nsfw_channel", "add_banned_word",
                        "del_nsfw_channel", "del_censor_excluded_channel", "del_banned_word",
-                       "add_censor_excluded_channel", "add_emoji_role", "add_uwu_admin", "del_uwu_admin"]
+                       "add_censor_excluded_channel", "add_emoji_role", "del_emoji_role", "add_uwu_admin",
+                       "del_uwu_admin", "add_uwu_mod", "del_uwu_mod"]
 
     if param in parameters_list:
         return param
