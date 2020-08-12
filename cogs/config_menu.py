@@ -134,7 +134,7 @@ class ConfigMenu(commands.Cog):
                         else:
                             await ctx.channel.send("Emoji configuré avec succés : **{}** [Arg 3] !")
         ##
-        elif arg1 == 'del_emoji_role':  # NEED CHECK
+        elif arg1 == 'del_emoji_role':  # NEED FIX, CURRENTLY BROKEN
             if not arg2.isdigit() or arg2 is None:
                 await ctx.channel.send("Paramètre manquant / incorrect : **{}** [Arg 2]".format(arg2))
             else:
@@ -148,7 +148,7 @@ class ConfigMenu(commands.Cog):
                     else:
                         await ctx.channel.send("Emoji supprimé avec succés")
         ##
-        elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:
+        elif arg1 in ['add_uwu_admin', 'del_uwu_admin']:  # NEED FIX; CURRENTLY BROKEN
             res = db_check_privilege(ctx.guild.id, ctx.author.id)
             if res is False:  # Check if user is an uwu admin
                 await ctx.channel.send("Vous n'avez pas les privilèges nécéssaires pour executer cette commande")

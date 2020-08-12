@@ -96,6 +96,8 @@ class ServerModeration(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
 
+        print('Reaction_add got triggered !')
+
         res, case, member, guild, linked_role, silencieux, new_member, welcome_channel, moji_member \
             = self.moderation_react_process(payload, action="add")
 
@@ -115,6 +117,8 @@ class ServerModeration(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
 
+        print('Reaction_add got triggered !')
+        
         # True/False, member, guild, role_id
         res, member, guild, linked_role = self.moderation_react_process(payload, action="remove")
 
