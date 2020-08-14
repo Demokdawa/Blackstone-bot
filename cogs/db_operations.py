@@ -3,10 +3,12 @@ import logging
 import mysql.connector
 from discord.ext import commands
 from mysql.connector import Error
+from mysql.connector.pooling import MySQLConnectionPool
 from loadconfig import db_host, db_name, db_user, db_pass
 
 # Variable de connection a la DB
-connection = mysql.connector.connect(host=db_host, database=db_name, user=db_user, password=db_pass)
+con_pool = MySQLConnectionPool(host=db_host, database=db_name, user=db_user, password=db_pass,
+                                pool_name='my_pool', pool_size=5)
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
@@ -19,11 +21,12 @@ log.info('[COGS] DBOperations COG loaded')
 
 def db_uwu_check():
     testing_cursor = None
+    db = con_pool.get_connection()
     try:
-        if connection.is_connected():
-            db_info = connection.get_server_info()
+        if db.is_connected():
+            db_info = db.get_server_info()
             log.info("Connecté a MYSQL server version " + str(db_info))
-            testing_cursor = connection.cursor()
+            testing_cursor = db.cursor()
             testing_cursor.execute("select database();")
             record = testing_cursor.fetchone()
             log.info("Connecté a la base de donnée: " + str(record))
@@ -33,18 +36,21 @@ def db_uwu_check():
         sys.exit()
 
     finally:
-        if connection.is_connected():
+        if db.is_connected():
             testing_cursor.close()
+            db.close()
             log.info("Fin du test de connection MYSQL")
 
 
 # Check if server data already exist
 def db_check_serv_data(guild_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT guild_id from servers_settings_global WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchone()  # Result is a [tuple]
     cursor.close()
+    db.close()
     if result:
         return True
     else:
@@ -53,18 +59,21 @@ def db_check_serv_data(guild_id):
 
 # Create server initial data (with their default values)
 def db_create_serv_data(guild_name, guild_id):
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    cursor = db.cursor()
     cursor.execute('''INSERT INTO servers_settings_global (guild_name, guild_id) VALUES (%s, %s)''', (guild_name, guild_id))
-    connection.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 # GET GLOBAL CONFS #############################################################################################
 ################################################################################################################
 
 def db_get_conf_server_all(guild_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
 
     cursor.execute('''SELECT nsfw_mode, short_reddit_timer, long_reddit_timer, censor_log_channel, welcome_channel, 
     welcome_role, approb_role, goulag_channel, warn_to_goulag, pmoji_user, pmoji_emoji, pmoji_message 
@@ -72,6 +81,7 @@ def db_get_conf_server_all(guild_id):
     result = cursor.fetchone()  # Result is a [tuple]
 
     cursor.close()
+    db.close()
     if result:
         return result
     else:
@@ -82,12 +92,14 @@ def db_get_conf_server_all(guild_id):
 ################################################################################################################
 
 def db_get_reddit_command_dict():
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT command_name, sub_name, is_nsfw, submission_nb, sub_group from uwu_reddit_scrap WHERE 
     sub_group = '' ''')
     result = cursor.fetchall()  # Result is a [list] of [tuple]
     cursor.close()
+    db.close()
     res = {}
     for i, j, k, l, m in result:
         res[i] = [j, k, l, m]
@@ -95,11 +107,13 @@ def db_get_reddit_command_dict():
 
 
 def db_get_reddit_sub_dict():
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT sub_name, is_nsfw, submission_nb, sub_group from uwu_reddit_scrap''')
     result = cursor.fetchall()  # Result is a [list] of [tuple]
     cursor.close()
+    db.close()
     res = {}
     for i, j, k, l in result:
         res[i] = [j, k, l]
@@ -107,34 +121,40 @@ def db_get_reddit_sub_dict():
 
 
 def db_get_nsfw_channels(guild_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT channel_id from servers_nsfw_channel WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchall()  # Result is a [list of tuples]
     cursor.close()
+    db.close()
     query_list = [a_tuple[0] for a_tuple in result]  # Convert [list of tuples] to a [list]
     return query_list
 
 
 def db_get_censor_words(guild_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT word, word_replacement from servers_banned_word WHERE guild_id = %s''',
                    (guild_id,))
     result = cursor.fetchall()  # # Result is a [list of tuples]
     cursor.close()
+    db.close()
     query_dict = dict(result)
     return query_dict
 
 
 # Get all excluded channels that does not get censored on the server
 def db_get_excl_channels(guild_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT channel_id from servers_censor_excluded_channel WHERE guild_id = %s''',
                    (guild_id,))
     result = cursor.fetchall()  # Result is a [list of tuples]
     cursor.close()
+    db.close()
     if result:
         query_list = [a_tuple[0] for a_tuple in result]  # Convert [list of tuples] to a [list]
         return query_list
@@ -144,12 +164,14 @@ def db_get_excl_channels(guild_id):
 
 # Get all the emoji-roles on the server matching a specific message
 def db_get_emoji_roles(guild_id, message_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT emoji_id, role_id from servers_emoji_roles WHERE guild_id = %s AND tracked_message = %s''',
                    (guild_id, message_id,))
     result = cursor.fetchall()  # Result is a [list of tuples]
     cursor.close()
+    db.close()
     if result:
         query_dict = dict(result)
         return query_dict
@@ -159,11 +181,13 @@ def db_get_emoji_roles(guild_id, message_id):
 
 # Get all the emoji-roles on the server
 def db_get_server_emoji_roles(guild_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT emoji_id, role_id, tracked_message from servers_emoji_roles WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchall()  # Result is a [list of tuples]
     cursor.close()
+    db.close()
     if result:
         return result
     else:
@@ -172,12 +196,14 @@ def db_get_server_emoji_roles(guild_id):
 
 # Check the privilege of a user that try to input admin commands
 def db_check_privilege(guild_id, user_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT privilege_level from servers_global_privileges WHERE guild_id = %s and user_id = %s''',
                    (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
     cursor.close()
+    db.close()
     if result:
         return result[0]
     else:
@@ -185,13 +211,14 @@ def db_check_privilege(guild_id, user_id):
 
 
 def db_get_admins(guild_id):
-    pass
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT user_id, privilege_level from servers_global_privileges WHERE guild_id = %s''',
                    (guild_id,))
     result = cursor.fetchall()  # Result is a [list] of [tuples]
     cursor.close()
+    db.close()
     if result:
         return result
     else:
@@ -203,8 +230,9 @@ def db_get_admins(guild_id):
 
 # Insert val_tuple values into DB depending on invoked usage
 def db_insup_value(target_param, val_tuple):
-    cursor = connection.cursor()
-    connection.commit()
+    db = con_pool.get_connection()
+    cursor = db.cursor()
+    db.commit()
     ##
     if target_param == "nsfw_mode":
         guild_id, nsfw_mode = val_tuple
@@ -315,14 +343,16 @@ def db_insup_value(target_param, val_tuple):
                           (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id) 
             VALUES (%s, %s, %s, %s, %s, %s)''', (guild_id, guild_name, role_name, tracked_message, emoji_id, role_id,))
 
-    connection.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 # Delete val_tuple values from DB depending on invoked usage
 def db_del_value(target_param, val_tuple):
-    cursor = connection.cursor()
-    connection.commit()
+    db = con_pool.get_connection()
+    cursor = db.cursor()
+    db.commit()
     ##
     if target_param == 'del_nsfw_channel':
         guild_id, channel_id = val_tuple
@@ -355,14 +385,16 @@ def db_del_value(target_param, val_tuple):
         else:
             return False
 
-    connection.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 # Check if owner-admin exist, and if not, create it
 def db_inspass_admin(guild_name, guild_id, user_name, user_id):
-    connection.commit()
-    cursor = connection.cursor()
+    db = con_pool.get_connection()
+    db.commit()
+    cursor = db.cursor()
     cursor.execute('''SELECT user_id from servers_global_privileges WHERE guild_id = %s and user_id = %s 
                     and privilege_level = 2''', (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
@@ -371,14 +403,16 @@ def db_inspass_admin(guild_name, guild_id, user_name, user_id):
     else:
         cursor.execute('''INSERT INTO servers_global_privileges (guild_name, guild_id, user_name, user_id, privilege_level)
                         VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, 2,))
-    connection.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 # Insert / Update / Delete an admin from the DB
 def db_insupdel_admin(target_param, guild_name, guild_id, user_name, user_id):
-    cursor = connection.cursor()
-    connection.commit()
+    db = con_pool.get_connection()
+    cursor = db.cursor()
+    db.commit()
     cursor.execute('''SELECT privilege_level FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''',
                    (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
@@ -406,14 +440,16 @@ def db_insupdel_admin(target_param, guild_name, guild_id, user_name, user_id):
         else:
             return False
 
-    connection.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 # Insert / Update / Delete an mod from the DB
 def db_insupdel_mod(target_param, guild_name, guild_id, user_name, user_id):
-    cursor = connection.cursor()
-    connection.commit()
+    db = con_pool.get_connection()
+    cursor = db.cursor()
+    db.commit()
     cursor.execute('''SELECT privilege_level FROM servers_global_privileges WHERE guild_id = %s and user_id = %s''',
                    (guild_id, user_id,))
     result = cursor.fetchone()  # Result is a [tuple]
@@ -441,14 +477,16 @@ def db_insupdel_mod(target_param, guild_name, guild_id, user_name, user_id):
         else:
             return False
 
-    connection.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 # Add the precusor as level-1 on the server
 def db_inspass_precursor(guild_name, guild_id, dev_name, dev_id):
-    cursor = connection.cursor()
-    connection.commit()
+    db = con_pool.get_connection()
+    cursor = db.cursor()
+    db.commit()
     cursor.execute('''SELECT user_id from servers_global_privileges WHERE guild_id = %s and user_id = %s 
                         and privilege_level = 1''', (guild_id, dev_id,))
     result = cursor.fetchone()  # Result is a [tuple]
@@ -457,14 +495,16 @@ def db_inspass_precursor(guild_name, guild_id, dev_name, dev_id):
     else:
         cursor.execute('''INSERT INTO servers_global_privileges (guild_name, guild_id, user_name, user_id, privilege_level)
                         VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, dev_name, dev_id, 1,))
-    connection.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 # Add a warn to a user, create it if not already in DB
 def db_add_warn(guild_name, guild_id, user_name, user_id, warn_level):
-    cursor = connection.cursor()
-    connection.commit()
+    db = con_pool.get_connection()
+    cursor = db.cursor()
+    db.commit()
     cursor.execute('''SELECT user_id FROM servers_moderation_data WHERE guild_id = %s and user_id = %s''',
                    (guild_id, user_id,))
     result = cursor.fetchone()  # Return is a [tuple]
@@ -476,8 +516,9 @@ def db_add_warn(guild_name, guild_id, user_name, user_id, warn_level):
         cursor.execute('''INSERT INTO servers_moderation_data (guild_name, guild_id, user_name, user_id, warn_level)
                         VALUES (%s, %s, %s, %s, %s)''', (guild_name, guild_id, user_name, user_id, warn_level,))
 
-    connection.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 class DBOperations(commands.Cog):
