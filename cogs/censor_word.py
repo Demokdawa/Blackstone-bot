@@ -127,7 +127,7 @@ class CensorWord(commands.Cog):
                 # Get censor log configured channel for the guild from DB
                 channel = self.bot.get_channel(db_get_conf_server_all(message.guild.id)[3])
 
-                print(channel.permission_for(ctx.me))
+                print(channel.permissions_for(ctx.me))
 
                 await channel.send(embed=embed)
                 await message.delete()
