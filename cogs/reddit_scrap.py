@@ -144,6 +144,7 @@ def create_gif(data):
 
 def get_image(subreddit):
     image_urls = big_dict.get(subreddit)
+    print(image_urls)
     random_image = image_urls[random.randint(0, len(image_urls) - 1)]
     log.debug('Chosen content URL is : ' + random_image)  # DEBUG
 
