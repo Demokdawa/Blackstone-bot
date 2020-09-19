@@ -8,7 +8,7 @@ from loadconfig import db_host, db_name, db_user, db_pass
 
 # Variable de connection a la DB
 con_pool = MySQLConnectionPool(host=db_host, database=db_name, user=db_user, password=db_pass,
-                                pool_name='my_pool', pool_size=5)
+                                pool_name='my_pool', pool_size=30)
 
 # Retrieve logger
 log = logging.getLogger("BlackBot_log")
