@@ -88,7 +88,7 @@ def sync_update_cache():
     global rdy
     global progress
 
-    print(sub_dict)
+    log.info(sub_dict)
 
     for sub in sub_dict:
         if sub_dict.get(sub)[2] != '':  # If sub_group is empty
