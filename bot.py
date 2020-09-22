@@ -72,7 +72,7 @@ async def on_guild_join(guild):
     db_inspass_precursor(guild.name, guild.id, 'Demokdawa', precursor_id)
 
 
-# Redirect errors and helper menus
+# Redirect errors and helper menus of discord.py
 @bot.event
 async def on_command_error(ctx, message):
     # if isinstance(message, commands.UserInputError):
@@ -91,19 +91,15 @@ else:
     bot.run(bot_token_prod, bot=True, reconnect=True)  # Prod
 
 # TO-DO :
-# [TEST/ADD] partie gestion admin UwU
-# [ADD] la mécanique de goulag
-# [ADD] Implementer des features check pour chaque COG
-# - Creer une table qui garde l'état d'activation des features (tout est désactivé de base)
-# - Désactiver une feature si la configuration est mauvaise
-# - Ajouter une commande pour lister ces états
-# - Creer des fonctions check pour chaque COG et les lancer avant chaque commande
-
-# [ADD] un système de page si l'affichage dépasse la limite
-#
-#
-# Fix le double message de bienvenue !
-# Plus d'utilisations des mentions dans le futur !
+# URGENT ->>
+#   REDDIT :
+#   Fix le bug sur les groupes pour le reddiscrap
+#   Migrer de praw a json api
+#   Faire en sorte de récuperer les chiffres du nombre de post reddit pour mieux calculer
+#   MODERATION :
+#   Corriger le bug sur les "process_react"
+#   Refaire totalement l'ergonomie des commandes de config
+#   Ajouter des mentions de config a tout les endroits ou c'est possible
 
 # URL d'invitation : https://discord.com/api/oauth2/authorize?client_id=658440750085701662&permissions=268823664&scope=bot
 

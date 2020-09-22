@@ -88,17 +88,18 @@ def sync_update_cache():
     global rdy
     global progress
 
+    log.info(c_dict)
     log.info(sub_dict)
 
     for sub in sub_dict:
-        if sub_dict.get(sub)[2] != '':  # If sub_group is empty
+        if sub_dict.get(sub)[2] != '':  # If sub_group is empty, it means that it's not a group-subreddit
             for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
                 if sub not in big_dict:
                     big_dict[sub_dict.get(sub)[2]] = []
                 else:
                     big_dict[sub].append(submission.url)
             progress += 1
-        else:
+        else:  # If sub_group NOT empty, it means that it's a grouped subreddit
             for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
                 if sub not in big_dict:
                     big_dict[sub] = []
@@ -200,7 +201,7 @@ def check_if_bot_rdy():
         if rdy == 0:
             await ctx.channel.send("Je suis encore en train de fouiller le web, patiente quelques minutes 😎 ({} / {}) "
                                    .format(progress, len(sub_dict)))
-            return 'Le bot est pas prêt'
+
         elif rdy == 1:
             return True
 
@@ -302,7 +303,7 @@ class RedditScrap(commands.Cog):
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
-        sub = c_dict.get(ctx.invoked_with)[0]
+        sub = c_dict.get(ctx.invoked_with)[0] # Get the dict key equal to the command name
         await ctx.message.add_reaction('\N{HOURGLASS}')
         data, isgif = get_image(sub)
         while data is False:
