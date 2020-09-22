@@ -98,7 +98,6 @@ else:
 # - Désactiver une feature si la configuration est mauvaise
 # - Ajouter une commande pour lister ces états
 # - Creer des fonctions check pour chaque COG et les lancer avant chaque commande
-# [ADD] Ajouter un check precurseur sur la commande de reload cog
 
 # [ADD] un système de page si l'affichage dépasse la limite
 #
