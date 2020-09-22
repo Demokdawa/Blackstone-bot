@@ -95,16 +95,16 @@ def sync_update_cache():
         if sub_dict.get(sub)[2] != '':  # If sub_group is empty, it means that it's not a group-subreddit
             for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
                 if sub not in big_dict:
-                    big_dict[sub_dict.get(sub)[2]] = []
+                    big_dict[sub] = []
                 else:
                     big_dict[sub].append(submission.url)
             progress += 1
         else:  # If sub_group NOT empty, it means that it's a grouped subreddit
             for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
-                if sub not in big_dict:
-                    big_dict[sub] = []
+                if sub.dict.get(sub)[2] not in big_dict:
+                    big_dict[sub.dict.get(sub)[2]] = []
                 else:
-                    big_dict[sub].append(submission.url)
+                    big_dict[sub.dict.get(sub)[2]].append(submission.url)
             progress += 1
     log.info('Cache update done !')  # INFO
     rdy = 1
@@ -303,7 +303,7 @@ class RedditScrap(commands.Cog):
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
-        sub = c_dict.get(ctx.invoked_with)[0] # Get the dict key equal to the command name
+        sub = c_dict.get(ctx.invoked_with)[0]  # Get the dict key equal to the command name. Ex : sendmeme -> meme
         await ctx.message.add_reaction('\N{HOURGLASS}')
         data, isgif = get_image(sub)
         while data is False:
