@@ -136,7 +136,7 @@ def db_get_censor_words(guild_id):
     db = con_pool.get_connection()
     db.commit()
     cursor = db.cursor()
-    cursor.execute('''SELECT word, word_replacement from servers_banned_word WHERE guild_id = %s''',
+    cursor.execute('''SELECT word, word_replacement from servers_banned_word WHERE guild_id = %s collate utf8mb4_bin''',
                    (guild_id,))
     result = cursor.fetchall()  # # Result is a [list of tuples]
     cursor.close()
