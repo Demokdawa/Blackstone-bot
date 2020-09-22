@@ -88,12 +88,6 @@ def sync_update_cache():
     global rdy
     global progress
 
-    log.info(c_dict)
-    log.info('')
-    log.info(sub_dict)
-    log.info('')
-    log.info(c_list)
-
     for sub in sub_dict:
         if sub_dict.get(sub)[2] != '':  # If sub_group is empty, it means that it's not a group-subreddit
             for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
