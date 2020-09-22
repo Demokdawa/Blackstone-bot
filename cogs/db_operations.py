@@ -366,11 +366,11 @@ def db_del_value(target_param, val_tuple):
     ##
     elif target_param == 'del_banned_word':
         guild_id, word = val_tuple
-        cursor.execute('''SELECT word from servers_banned_word WHERE guild_id = %s and word = %s''',
+        cursor.execute('''SELECT word from servers_banned_word WHERE guild_id = %s and word = %s collate utf8mb4_bin''',
                        (guild_id, word,))
         result = cursor.fetchone()
         if result:
-            cursor.execute('''DELETE FROM servers_banned_word WHERE guild_id = %s and word = %s''', (guild_id, word,))
+            cursor.execute('''DELETE FROM servers_banned_word WHERE guild_id = %s and word = %s collate utf8mb4_bin''', (guild_id, word,))
         else:
             return False
     ##
