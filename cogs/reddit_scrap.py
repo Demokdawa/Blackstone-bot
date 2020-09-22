@@ -303,6 +303,7 @@ class RedditScrap(commands.Cog):
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
         sub = c_dict.get(ctx.invoked_with)[0]  # Get the dict key equal to the command name. Ex : sendmeme -> meme
+        print(sub)
         await ctx.message.add_reaction('\N{HOURGLASS}')
         data, isgif = get_image(sub)
         while data is False:
