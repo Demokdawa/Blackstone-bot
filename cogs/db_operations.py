@@ -321,7 +321,7 @@ def db_insup_value(target_param, val_tuple):
     ##
     elif target_param == "add_banned_word":
         guild_id, guild_name, word, word_replacement = val_tuple
-        cursor.execute('''SELECT word from servers_banned_word WHERE guild_id = %s and word = %s''',
+        cursor.execute('''SELECT word from servers_banned_word WHERE guild_id = %s and word = %s collate utf8mb4_bin''',
                        (guild_id, word,))
         result = cursor.fetchone()
         if result:
