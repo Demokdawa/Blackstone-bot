@@ -41,17 +41,18 @@ def check_cog_mod():
 # !! UNUSED FOR NOW !! ###############
 
 
+# NEED TO BE FIXED, NOT WORKING PROPERLY FOR NOW, AND POORLY IMPLEMENTED
 class ServerModeration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def moderation_react_process(self, payload, action):  # SHOULD BE FIXED, NEED APPROVAL
+    def moderation_react_process(self, payload, action):
 
         # Variables needed to operate
         emoji_roles_list_dict = db_get_emoji_roles(payload.guild_id, payload.message_id)  # Get emoji/roles links from DB
 
         if emoji_roles_list_dict is None:  # Check if server have emoji-roles
-            return False, None, None, None, None, None, None, None, None
+            return False, None, None, None, None, None, None, None, None  # PASSING NONE LIKE THAT IS REALLY REALLY BAD
 
         else:
             linked_role = emoji_roles_list_dict.get(payload.emoji.id)  # Get the role linked to the trigger emoji

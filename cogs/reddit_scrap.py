@@ -36,7 +36,6 @@ c_dict_nsfw = {k: v for k, v in c_dict.items() if v[1] == 1}  # [dict] of NSFW c
 c_list_nsfw = [(k, v) for k, v in c_dict_nsfw.items()]  # [list] of NSFW commands
 c_list = [k for k in c_dict]  # [list] with only commands
 sub_dict = db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
-print(sub_dict)
 
 log.info('[COGS] RedditScrap COG loaded')
 
@@ -88,6 +87,8 @@ def sync_update_cache():
     global big_dict
     global rdy
     global progress
+
+    print(sub_dict)
 
     for sub in sub_dict:
         if sub_dict.get(sub)[2] != '':  # If sub_group is empty
