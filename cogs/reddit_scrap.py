@@ -89,7 +89,7 @@ def sync_update_cache():
     global progress
 
     for sub in sub_dict:
-        if sub_dict.get(sub)[2] != '':  # If sub_group is empty, it means that it's not a group-subreddit
+        if sub_dict.get(sub)[2] == '':  # If sub_group is empty, it means that it's not a group-subreddit
             for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
                 if sub not in big_dict:
                     big_dict[sub] = []
