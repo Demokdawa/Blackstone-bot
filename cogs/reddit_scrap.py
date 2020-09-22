@@ -89,7 +89,10 @@ def sync_update_cache():
     global progress
 
     log.info(c_dict)
+    log.info('')
     log.info(sub_dict)
+    log.info('')
+    log.info(c_list)
 
     for sub in sub_dict:
         if sub_dict.get(sub)[2] != '':  # If sub_group is empty, it means that it's not a group-subreddit
@@ -99,6 +102,8 @@ def sync_update_cache():
                 else:
                     big_dict[sub].append(submission.url)
             progress += 1
+        elif sub_dict.get(sub)[1] == 0:
+            pass
         else:  # If sub_group NOT empty, it means that it's a grouped subreddit
             for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
                 if sub.dict.get(sub)[2] not in big_dict:
