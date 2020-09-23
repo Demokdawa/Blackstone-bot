@@ -7,6 +7,7 @@ import aiohttp
 import asyncio
 import pprint
 import json
+import cProfile
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -14,7 +15,7 @@ pp = pprint.PrettyPrinter(indent=4)
 def get_subreddit(subreddit, limit):
     api = PushshiftAPI()
 
-    print(list(api.search_submissions(subreddit=subreddit, limit=limit)))
+    # print(list(api.search_submissions(subreddit=subreddit, limit=limit)))
 
 
 ################################################################################
@@ -22,21 +23,19 @@ def get_subreddit(subreddit, limit):
 
 empty_list = []
 
+async def lol(params):
+    return 'bonjour'
 
 async def get_a_page(params):
     global empty_list
     async with aiohttp.ClientSession() as session:
         async with session.get('https://www.reddit.com/r/dankmemes/top.json', params=params) as resp:
             response = await resp.json()
-
-            # print(response['data']['after'])
             for i in response['data']['children']:
                 url = i['data']['url']
                 empty_list.append(url)
-            # print(response['data']['children'][0]['data']['url'])
 
     return response['data']['after']
-
 
 async def get_subs(number):
     after = None
@@ -56,7 +55,7 @@ async def get_subs(number):
                 params = {'limit': number}
             else:
                 params = {'limit': number, 'after': after}
-            await get_a_page({'limit': number})
+            await get_a_page(params)
             number = 0
 
 
@@ -65,18 +64,16 @@ async def get_subs(number):
 #loop = asyncio.get_event_loop()
 #loop.run_until_complete(faire_toutes_les_requetes_sans_bloquer())
 
-t1_start = perf_counter()
-get_subreddit('dankmemes', 602)
-t1_stop = perf_counter()
+#t1_start = perf_counter()
+#get_subreddit('dankmemes', 100)
+#t1_stop = perf_counter()
 
-t2_start = perf_counter()
-asyncio.run(get_subs(602))
-t2_stop = perf_counter()
+#t2_start = perf_counter()
+asyncio.run(get_subs(705))
+#t2_stop = perf_counter()
 
-
-print(len(empty_list))
-print("Elapsed time during the whole program in seconds:", t1_stop-t1_start)
-print("Elapsed time during the whole program in seconds:", t2_stop-t2_start)
+# print("Elapsed time during the whole program in seconds:", t1_stop-t1_start)
+#print("Elapsed time during the whole program in seconds:", t2_stop-t2_start)
 
 
 
