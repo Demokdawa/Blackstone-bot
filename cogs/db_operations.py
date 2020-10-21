@@ -525,7 +525,7 @@ def reddit_poller_insert(name, subreddit, content_type, url):
     db = con_pool.get_connection()
     cursor = db.cursor()
     db.commit()
-    cursor.execute('''INSERT INTO uwu_reddit_data (name, subreddit, content_type, url) VALUES (%s, %s, %s, %s, %s)''',
+    cursor.execute('''INSERT INTO uwu_reddit_data (name, subreddit, content_type, url) VALUES (%s, %s, %s, %s)''',
                    (name, subreddit, content_type, url,))
     db.commit()
     cursor.close()
