@@ -120,7 +120,7 @@ class ServerModeration(commands.Cog):
     async def on_raw_reaction_remove(self, payload):
 
         # BUGFIX LINE
-        print(self.moderation_react_process(payload, action="remove"))
+        # print(self.moderation_react_process(payload, action="remove"))
 
         # True/False, member, guild, role_id
         res, member, guild, linked_role = self.moderation_react_process(payload, action="remove")
