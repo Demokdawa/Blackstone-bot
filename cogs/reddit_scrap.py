@@ -10,8 +10,7 @@ import discord
 import random
 import asyncio
 import functools
-# import praw
-from psaw import PushshiftAPI
+import praw
 import logging
 from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent, gfycat_client_id, gfycat_client_secret
 
