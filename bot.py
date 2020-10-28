@@ -10,6 +10,12 @@ from loadconfig import is_dev, bot_token_prod, bot_token_dev, precursor_id, prec
 # Initialize ##################################################################################
 ###############################################################################################
 
+
+# Intents
+intents = discord.Intents.default()
+intents.members = True
+
+
 # Enable logger
 log = logging.getLogger("BlackBot_log")
 log.setLevel(logging.DEBUG)
@@ -35,7 +41,7 @@ initial_extensions = ['cogs.reddit_scrap', 'cogs.utils', 'cogs.db_operations', '
 
 # Set the prefix and init the bot
 prefix = "!"
-bot = commands.Bot(command_prefix=prefix)
+bot = commands.Bot(command_prefix=prefix, intents=intents)
 bot.rdy = 0
 bot.progress = 0
 
