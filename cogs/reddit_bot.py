@@ -29,7 +29,7 @@ rdy = 0
 # Store the progress of the initial cache sync
 progress = 0
 
-c_dict = await db_get_reddit_command_dict()  # [dict] of commands (dict key is command)
+c_dict = db_get_reddit_command_dict()  # [dict] of commands (dict key is command)
 c_dict_sfw = {k: v for k, v in c_dict.items() if v[1] == 0}  # [dict] of SFW commands
 c_list_sfw = [(k, v) for k, v in c_dict_sfw.items()]  # [list] of SFW commands
 c_dict_nsfw = {k: v for k, v in c_dict.items() if v[1] == 1}  # [dict] of NSFW commands
