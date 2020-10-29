@@ -49,7 +49,7 @@ class ServerModeration(commands.Cog):
     def moderation_react_process(self, payload, action):
 
         # Variables needed to operate
-        emoji_roles_list_dict = db_get_emoji_roles(payload.guild_id, payload.message_id)  # Get emoji/roles links from DB
+        emoji_roles_list_dict = await db_get_emoji_roles(payload.guild_id, payload.message_id)  # Get emoji/roles links from DB
 
         if emoji_roles_list_dict is None:  # Check if server have emoji-roles
             return False, None, None, None, None, None, None, None, None  # PASSING NONE LIKE THAT IS REALLY REALLY BAD
@@ -58,7 +58,7 @@ class ServerModeration(commands.Cog):
             linked_role = emoji_roles_list_dict.get(payload.emoji.id)  # Get the role linked to the trigger emoji
             guild = self.bot.get_guild(payload.guild_id)  # Get guild object from the payload
             member = guild.get_member(payload.user_id)  # Get member object from the payload
-            conf_server_all = db_get_conf_server_all(payload.guild_id)  # Get global conf values for the server from DB
+            conf_server_all = await db_get_conf_server_all(payload.guild_id)  # Get global conf values for the server from DB
             silencieux = get(guild.roles, id=conf_server_all[5])  # Get "silencieux" role object
             new_member = get(guild.roles, id=conf_server_all[6])  # Get "new member" role object
             welcome_channel = self.bot.get_channel(conf_server_all[4])  # Get "welcome" channel object
@@ -137,7 +137,7 @@ class ServerModeration(commands.Cog):
     @commands.command()
     async def sendwarn(self, ctx, user: discord.User, arg2: int, arg3='X'):
         if 1 <= int(arg2) <= 4:
-            db_add_warn(ctx.guild.name, ctx.guild.id, user.name, user.id, arg2)
+            await db_add_warn(ctx.guild.name, ctx.guild.id, user.name, user.id, arg2)
 
             embed = discord.Embed()
             embed.set_author(name="[WARN] " + str(user.display_name), icon_url=user.avatar_url)
@@ -147,7 +147,7 @@ class ServerModeration(commands.Cog):
             embed.add_field(name="Warn-Level", value=str(arg2), inline=False)
 
             # Get censor log configured channel for the guild from DB
-            channel = self.bot.get_channel(db_get_conf_server_all(ctx.guild.id)[3])
+            channel = self.bot.get_channel(await db_get_conf_server_all(ctx.guild.id)[3])
             await channel.send(embed=embed)
 
         else:
@@ -159,7 +159,7 @@ class ServerModeration(commands.Cog):
     @commands.command()
     async def shodadmin(self, ctx):
         # Get infos from DB
-        admin_list = db_get_admins(ctx.guild.id)
+        admin_list = await db_get_admins(ctx.guild.id)
         # Create embed
         embed = discord.Embed(title="Configuration du Bot 🤖", description="", color=0xd5d500)
         embed.add_field(name="__**Liste des droits : **__", value="\u200b", inline=False)

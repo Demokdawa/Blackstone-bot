@@ -98,10 +98,10 @@ async def on_ready():
 # On guild_join, check server data in DB
 @bot.event
 async def on_guild_join(guild):
-    if db_check_serv_data(guild.id) is True:
+    if await db_check_serv_data(guild.id) is True:
         pass
     else:
-        db_create_serv_data(guild.name, guild.id)
+        await db_create_serv_data(guild.name, guild.id)
 
     if guild.owner.name == precursor_name:  # Check if the dev already own the server
         pass
