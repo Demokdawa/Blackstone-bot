@@ -71,7 +71,7 @@ moderation_logs.addHandler(fh)
 db_uwu_check()
 
 # Cogs variable
-initial_extensions = ['cogs.reddit_scrap', 'cogs.utils', 'cogs.db_operations', 'cogs.censor_word',
+initial_extensions = ['cogs.reddit_bot', 'cogs.utils', 'cogs.db_operations', 'cogs.censor_word',
                       'cogs.server_moderation', 'cogs.config_menu', 'cogs.reddit_poller']
 
 # Set the prefix and init the bot
