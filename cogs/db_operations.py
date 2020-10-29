@@ -11,7 +11,7 @@ con_pool = MySQLConnectionPool(host=db_host, database=db_name, user=db_user, pas
                                 pool_name='my_pool', pool_size=30)
 
 # Retrieve logger
-log = logging.getLogger("BlackBot_log")
+log = logging.getLogger("General_logs")
 
 log.info('[COGS] DBOperations COG loaded')
 
@@ -60,14 +60,14 @@ def db_uwu_check():
 
 
 # Check if server data already exist
-def db_check_serv_data(guild_id):
-    db = con_pool.get_connection()
-    db.commit()
-    cursor = db.cursor()
+async def db_check_serv_data(guild_id):
+    db, cursor = await init_db_con()  # Init DB session
+
     cursor.execute('''SELECT guild_id from servers_settings_global WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchone()  # Result is a [tuple]
-    cursor.close()
-    db.close()
+
+    await close_db_con(db, cursor)  # Close DB session
+
     if result:
         return True
     else:
@@ -75,13 +75,12 @@ def db_check_serv_data(guild_id):
 
 
 # Create server initial data (with their default values)
-def db_create_serv_data(guild_name, guild_id):
-    db = con_pool.get_connection()
-    cursor = db.cursor()
+async def db_create_serv_data(guild_name, guild_id):
+    db, cursor = await init_db_con()  # Init DB session
+
     cursor.execute('''INSERT INTO servers_settings_global (guild_name, guild_id) VALUES (%s, %s)''', (guild_name, guild_id))
-    db.commit()
-    cursor.close()
-    db.close()
+
+    await close_db_con(db, cursor, commit=True)  # Close DB session
 
 
 # GET GLOBAL CONFS #############################################################################################

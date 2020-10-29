@@ -29,84 +29,19 @@ rdy = 0
 # Store the progress of the initial cache sync
 progress = 0
 
-c_dict = db_get_reddit_command_dict()  # [dict] of commands (dict key is command)
+c_dict = await db_get_reddit_command_dict()  # [dict] of commands (dict key is command)
 c_dict_sfw = {k: v for k, v in c_dict.items() if v[1] == 0}  # [dict] of SFW commands
 c_list_sfw = [(k, v) for k, v in c_dict_sfw.items()]  # [list] of SFW commands
 c_dict_nsfw = {k: v for k, v in c_dict.items() if v[1] == 1}  # [dict] of NSFW commands
 c_list_nsfw = [(k, v) for k, v in c_dict_nsfw.items()]  # [list] of NSFW commands
 c_list = [k for k in c_dict]  # [list] with only commands
-sub_dict = db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
+sub_dict = await db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
 
 log.info('[COGS] RedditScrap COG loaded')
 
 
 # FUNCTIONS ######################################################################################
 ##################################################################################################
-
-
-def get_sub_size(sub_size):
-    if sub_size >= 10000:
-        best = sub_size / 10  # 10%
-        return best
-    elif sub_size >= 8000:
-        best = sub_size / 9  # 11%
-        return best
-    elif sub_size >= 6000:
-        best = sub_size / 9  # 11%
-        return best
-    elif sub_size >= 4000:
-        best = sub_size / 5  # 20%
-        return best
-    elif sub_size >= 2000:
-        best = sub_size / 3  # 33%
-        return best
-    elif sub_size >= 1000:
-        best = sub_size / 1.5  # 66%
-        return best
-    elif sub_size >= 800:
-        best = sub_size / 1.4  # 71%
-        return best
-    elif sub_size >= 600:
-        best = sub_size / 1.4  # 71%
-        return best
-    elif sub_size >= 400:
-        best = sub_size / 1.6  # 62.5%
-        return best
-    elif sub_size >= 200:
-        best = sub_size / 1.35  # 74%
-        return best
-    elif sub_size >= 100:
-        best = sub_size / 1.30  # 76%
-        return best
-    elif sub_size < 100:
-        best = sub_size / 1  # 100%
-        return best
-
-
-def sync_update_cache():
-    global big_dict
-    global rdy
-    global progress
-
-    for sub in sub_dict:
-        if sub_dict.get(sub)[2] == '':  # If sub_group is empty, it means that it's not a group-subreddit
-            for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
-                if sub not in big_dict:
-                    big_dict[sub] = []
-                else:
-                    big_dict[sub].append(submission.url)
-            progress += 1
-        elif sub_dict.get(sub)[1] == 0:
-            pass
-        else:  # If sub_group NOT empty, it means that it's a grouped subreddit
-            for submission in reddit.subreddit(sub).top(limit=get_sub_size(sub_dict.get(sub)[1])):
-                if sub_dict.get(sub)[2] not in big_dict:
-                    big_dict[sub_dict.get(sub)[2]] = []
-                else:
-                    big_dict[sub_dict.get(sub)[2]].append(submission.url)
-            progress += 1
-    log.info('Cache update done !')  # INFO
-    rdy = 1
 
 
 def create_gif(data):
@@ -254,7 +189,6 @@ def check_cog_redditscrap():
 class RedditScrap(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.update_cache.start()
 
     # CLASS FUNCTIONS ################################################################################
     ##################################################################################################
@@ -302,7 +236,7 @@ class RedditScrap(commands.Cog):
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
-        sub = c_dict.get(ctx.invoked_with)[0]  # Get the dict key equal to the command name. Ex : sendmeme -> meme
+        sub = await c_dict.get(ctx.invoked_with)[0]  # Get the dict key equal to the command name. Ex : sendmeme -> meme
         await ctx.message.add_reaction('\N{HOURGLASS}')
         data, isgif = get_image(sub)
         while data is False:
@@ -334,14 +268,14 @@ class RedditScrap(commands.Cog):
                  "l'image "
                  "directement. ")
 
-        if db_get_conf_server_all(ctx.guild.id)[0] == 0:  # Checking current nsfw_mode (disabled)
+        if await db_get_conf_server_all(ctx.guild.id)[0] == 0:  # Checking current nsfw_mode (disabled)
             for a, b in zip_longest(c_list_sfw[::2], c_list_sfw[1::2]):  # List format to get 1/2 pairs
                 if b is not None:
                     embed.add_field(name=a[0], value=b[0], inline=True)
                 else:
                     embed.add_field(name=a[0], value='.', inline=True)
 
-        elif db_get_conf_server_all(ctx.guild.id)[0] == 1:  # Checking current nsfw_mode (semi-enabled)
+        elif await db_get_conf_server_all(ctx.guild.id)[0] == 1:  # Checking current nsfw_mode (semi-enabled)
             if ctx.channel.id in db_get_nsfw_channels(ctx.guild.id):  # If channel is an authorized nsfw channel
                 for a, b in zip_longest(c_list_nsfw[::2], c_list_nsfw[1::2]):  # # List format to get 1/2 pairs
                     if b is not None:
@@ -355,7 +289,7 @@ class RedditScrap(commands.Cog):
                     else:
                         embed.add_field(name=a[0], value='.', inline=True)
 
-        elif db_get_conf_server_all(ctx.guild.id)[0] == 2:  # Checking current nsfw_mode (enable)
+        elif await db_get_conf_server_all(ctx.guild.id)[0] == 2:  # Checking current nsfw_mode (enable)
             for a, b in zip_longest(c_list_nsfw[::2], c_list_nsfw[1::2]):  # # List format to get 1/2 pairs
                 if b is not None:
                     embed.add_field(name=a[0], value=b[0], inline=True)
@@ -363,14 +297,6 @@ class RedditScrap(commands.Cog):
                     embed.add_field(name=a[0], value='.', inline=True)
 
         await ctx.channel.send(embed=embed)
-
-    # TASKS ##########################################################################################
-    ##################################################################################################
-
-    @tasks.loop(seconds=3600)
-    async def update_cache(self):
-        thing = functools.partial(sync_update_cache)
-        await self.bot.loop.run_in_executor(None, thing)
 
 
 def setup(bot):
@@ -382,3 +308,11 @@ def setup(bot):
 # Fix progress counter value being wrong
 # Get reddit post values dynamically to DB
 # Adds logs to know user statistics
+
+# SELECT
+#     customerNumber,
+#     customerName
+# FROM
+#     customers
+# ORDER BY RAND()
+# LIMIT 5;
