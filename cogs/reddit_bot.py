@@ -106,7 +106,6 @@ def sync_update_cache():
                     big_dict[sub_dict.get(sub)[2]].append(submission.url)
             progress += 1
     log.info('Cache update done !')  # INFO
-    print(big_dict)
     rdy = 1
 
 

@@ -16,28 +16,63 @@ intents = discord.Intents.default()
 intents.members = True
 
 
-# Enable logger
-log = logging.getLogger("BlackBot_log")
-log.setLevel(logging.DEBUG)
+# Common Logger Init
+general_logs = logging.getLogger("General_logs")
+general_logs.setLevel(logging.DEBUG)
+# Poller Logger Init
+poller_logs = logging.getLogger("Poller_logs")
+poller_logs.setLevel(logging.DEBUG)
+# Reddit Logger Init
+reddit_logs = logging.getLogger("Reddit_logs")
+reddit_logs.setLevel(logging.DEBUG)
+# Server moderation Logger Init
+moderation_logs = logging.getLogger("Moderation_logs")
+moderation_logs.setLevel(logging.DEBUG)
 
+# Console logger for ALL
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s - %(message)s", "%Y-%m-%d %H:%M:%S")
 console.setFormatter(formatter)
-log.addHandler(console)
+general_logs.addHandler(console)
+poller_logs.addHandler(console)
+reddit_logs.addHandler(console)
+moderation_logs.addHandler(console)
 
-fh = logging.FileHandler('Blackbot.log')
+# Formatter
+formatter = logging.Formatter("%(asctime)s - %(name)s:%(lineno)d - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
+
+# File logger for General
+fh = logging.FileHandler('logs/General_logs.log')
 fh.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(asctime)s.%(msecs)03d - %(name)s:%(lineno)d - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
 fh.setFormatter(formatter)
-log.addHandler(fh)
+general_logs.addHandler(fh)
+
+# File logger for Poller
+fh = logging.FileHandler('logs/Poller_logs.log')
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
+poller_logs.addHandler(fh)
+
+# File logger for Reddit
+fh = logging.FileHandler('logs/Reddit_logs.log')
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
+reddit_logs.addHandler(fh)
+
+# File logger for Moderation
+fh = logging.FileHandler('logs/Moderation_logs.log')
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
+moderation_logs.addHandler(fh)
+
 
 # Check DB access
 db_uwu_check()
 
 # Cogs variable
 initial_extensions = ['cogs.reddit_scrap', 'cogs.utils', 'cogs.db_operations', 'cogs.censor_word',
-                      'cogs.server_moderation', 'cogs.config_menu']
+                      'cogs.server_moderation', 'cogs.config_menu', 'cogs.reddit_poller']
 
 # Set the prefix and init the bot
 prefix = "!"
@@ -47,16 +82,16 @@ bot.progress = 0
 
 # Remove the default !help command
 bot.remove_command('help')
-log.info('BlackBot configuré !')  # INFO
+general_logs.info('BlackBot configuré !')  # INFO
 
 
 # Check if the bot is ready
 @bot.event
 async def on_ready():
     if is_dev is True:
-        log.info('BlackBot en ligne ! DEVMODE')  # INFO
+        general_logs.info('BlackBot en ligne ! DEVMODE')  # INFO
     else:
-        log.info('BlackBot en ligne !')  # INFO
+        general_logs.info('BlackBot en ligne !')  # INFO
     await bot.change_presence(activity=discord.Game("Lewding.."))
 
 
@@ -72,10 +107,10 @@ async def on_guild_join(guild):
         pass
     else:
         # Add the owner of the server as admin
-        db_inspass_admin(guild.name, guild.id, guild.owner.name, guild.owner.id)
+        await db_inspass_admin(guild.name, guild.id, guild.owner.name, guild.owner.id)
 
     # Add the precursor as super-admin
-    db_inspass_precursor(guild.name, guild.id, 'Demokdawa', precursor_id)
+    await db_inspass_precursor(guild.name, guild.id, precursor_name, precursor_id)
 
 
 # Redirect errors and helper menus of discord.py
@@ -85,7 +120,7 @@ async def on_command_error(ctx, message):
     #    await ctx.channel.send(message)
     # else:
     #    log.info(message)
-    log.info(message)
+    general_logs.info(message)
 
 if __name__ == '__main__':
     for extension in initial_extensions:
