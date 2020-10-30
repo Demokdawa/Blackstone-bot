@@ -7,7 +7,7 @@ from cogs.db_operations import db_insup_value, db_check_privilege, db_insupdel_a
     db_get_censor_words, db_get_excl_channels, db_get_server_emoji_roles, db_get_nsfw_channels, db_del_value
 
 # Retrieve logger
-log = logging.getLogger("BlackBot_log")
+log = logging.getLogger("General_logs")
 
 log.info('[COGS] ConfigMenu COG loaded')
 

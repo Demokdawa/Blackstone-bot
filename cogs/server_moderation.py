@@ -7,7 +7,7 @@ from cogs.db_operations import db_get_emoji_roles, db_get_conf_server_all, db_ch
     db_get_admins
 
 # Retrieve logger
-log = logging.getLogger("BlackBot_log")
+log = logging.getLogger("General_logs")
 
 log.info('[COGS] Moderation COG loaded')
 

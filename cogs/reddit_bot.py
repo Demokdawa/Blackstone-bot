@@ -18,7 +18,7 @@ from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent
 reddit = praw.Reddit(client_id=reddit_client_id, client_secret=reddit_client_secret, user_agent=reddit_user_agent)
 
 # Retrieve logger
-log = logging.getLogger("BlackBot_log")
+log = logging.getLogger("General_logs")
 
 # Dict to store all submissions
 big_dict = {}

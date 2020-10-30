@@ -4,7 +4,7 @@ from discord.ext import commands
 from cogs.db_operations import db_get_censor_words, db_get_excl_channels, db_get_conf_server_all
 
 # Retrieve logger
-log = logging.getLogger("BlackBot_log")
+log = logging.getLogger("General_logs")
 
 log.info('[COGS] CensorWord COG loaded')
 
