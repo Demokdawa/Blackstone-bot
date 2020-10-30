@@ -98,7 +98,7 @@ class ServerModeration(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
 
-        print('Reaction_add got triggered !')
+        log.debug('Reaction_add got triggered !')
 
         res, case, member, guild, linked_role, silencieux, new_member, welcome_channel, moji_member \
             = self.moderation_react_process(payload, action="add")
@@ -128,7 +128,7 @@ class ServerModeration(commands.Cog):
         if res is True:
             await member.remove_roles(get(guild.roles, id=linked_role), reason=None, atomic=True)
         else:
-            print("Emoji ne correspond a rien, aucune action !")
+            log.debug('Emoji ne correspond a rien, aucune action !')
 
     # MODERATION COMMANDS ############################################################################
     ##################################################################################################

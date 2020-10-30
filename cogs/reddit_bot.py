@@ -182,7 +182,7 @@ class RedditScrap(commands.Cog):
     # COMMANDS #######################################################################################
     ##################################################################################################
 
-    @check_cog_redditscrap()
+    #@check_cog_redditscrap()
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
