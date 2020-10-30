@@ -58,7 +58,7 @@ class ServerModeration(commands.Cog):
             linked_role = emoji_roles_list_dict.get(payload.emoji.id)  # Get the role linked to the trigger emoji
             guild = self.bot.get_guild(payload.guild_id)  # Get guild object from the payload
             member = guild.get_member(payload.user_id)  # Get member object from the payload
-            conf_server_all = await db_get_conf_server_all(payload.guild_id)  # Get global conf values for the server from DB
+            conf_server_all = db_get_conf_server_all(payload.guild_id)  # Get global conf values for the server from DB
             silencieux = get(guild.roles, id=conf_server_all[5])  # Get "silencieux" role object
             new_member = get(guild.roles, id=conf_server_all[6])  # Get "new member" role object
             welcome_channel = self.bot.get_channel(conf_server_all[4])  # Get "welcome" channel object
