@@ -1,7 +1,7 @@
 from discord.ext import tasks, commands
 from itertools import zip_longest
-from cogs.db_operations import db_get_reddit_command_dict, db_get_reddit_sub_dict, db_get_conf_server_all, \
-    db_get_nsfw_channels, reddit_get_random_content
+from cogs.db_operations import db_get_reddit_command_dict, db_get_conf_server_all, db_get_nsfw_channels, \
+    reddit_get_random_content
 import ffmpy
 import os
 import urllib.request as req
@@ -20,22 +20,13 @@ reddit = praw.Reddit(client_id=reddit_client_id, client_secret=reddit_client_sec
 # Retrieve logger
 log = logging.getLogger("General_logs")
 
-# Dict to store all submissions
-big_dict = {}
-
-# Store the state of the bot (can operate only at 1)
-rdy = 0
-
-# Store the progress of the initial cache sync
-progress = 0
-
 c_dict = db_get_reddit_command_dict()  # [dict] of commands (dict key is command)
 c_dict_sfw = {k: v for k, v in c_dict.items() if v[1] == 0}  # [dict] of SFW commands
 c_list_sfw = [(k, v) for k, v in c_dict_sfw.items()]  # [list] of SFW commands
 c_dict_nsfw = {k: v for k, v in c_dict.items() if v[1] == 1}  # [dict] of NSFW commands
 c_list_nsfw = [(k, v) for k, v in c_dict_nsfw.items()]  # [list] of NSFW commands
 c_list = [k for k in c_dict]  # [list] with only commands
-sub_dict = db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
+
 
 log.info('[COGS] RedditScrap COG loaded')
 
@@ -79,68 +70,24 @@ def create_gif(data):
                     ff5.run()
 
 
-def get_image(subreddit):
-    image_urls = big_dict.get(subreddit)
-    print(image_urls)
-    random_image = image_urls[random.randint(0, len(image_urls) - 1)]
-    log.debug('Chosen content URL is : ' + random_image)  # DEBUG
-
-    if random_image.endswith('.jpg') or random_image.endswith('.png'):
-        return random_image, False
-
-    elif random_image.endswith('.gifv'):
-        gifed = os.path.splitext(random_image)[0] + '.gif'
-        return gifed, True
-
-    elif random_image.endswith('.gif'):
-        return random_image, True
-
-    elif 'gfycat' in random_image:
-        gyfcat_name = random_image.split(".com/")[1]
-        client = GfycatClient(gfycat_client_id, gfycat_client_secret)
-        resp = client.query_gfy(gyfcat_name)
-        mp4s = resp['gfyItem']['mp4Size']
-        mp4f = resp['gfyItem']['mobileUrl']
-        mp4nm = resp['gfyItem']['numFrames']
-        mp4fr = resp['gfyItem']['frameRate']
-        mp4l = mp4nm / mp4fr
-        return (mp4s, mp4f, mp4l), True
-    else:
-        return False, False
-
-
-def prepare_embed(data):
-    if isinstance(data, tuple):
-        log.debug('Prepare embed started / ' + data[1] + ' / GFYCAT')  # DEBUG
-        req.urlretrieve(data[1], 'tempDL.mp4')
-        create_gif(data)
+def prepare_embed(content_url, content_type):
+    if isinstance(content_url, tuple):
+        log.debug('Prepare embed started / ' + content_url[1] + ' / GFYCAT')  # DEBUG
+        req.urlretrieve(content_url[1], 'tempDL.mp4')
+        create_gif(content_url)
         file = discord.File(os.path.join(os.getcwd(), "tempDiscord.gif"), filename='tempDiscord.gif')
         embed = discord.Embed()
         embed.set_image(url="attachment://tempDiscord.gif")
     else:
-        log.debug('Prepare embed started / ' + data + ' / NOT GFYCAT')  # DEBUG
+        log.debug('Prepare embed started / ' + content_url + ' / NOT GFYCAT')  # DEBUG
         file = None
         embed = discord.Embed()
-        embed.set_image(url=data)
+        embed.set_image(url=content_url)
     return embed, file
 
 
 # DECORATORS #####################################################################################
 ##################################################################################################
-
-
-# Decorator to check if reddit bot is ready to serve
-def check_if_bot_rdy():
-    async def predicate(ctx):
-        if rdy == 0:
-            await ctx.channel.send("Je suis encore en train de fouiller le web, patiente quelques minutes 😎 ({} / {}) "
-                                   .format(progress, len(sub_dict)))
-
-        elif rdy == 1:
-            return True
-
-    return commands.check(predicate)
-
 
 # Decorator to check for NSFW commands
 def nsfw_check():
@@ -193,11 +140,11 @@ class RedditScrap(commands.Cog):
     # CLASS FUNCTIONS ################################################################################
     ##################################################################################################
 
-    async def check_react(self, ctx, embed, file, isgif):
+    async def check_react(self, ctx, embed, file, isheavy):
         await ctx.message.clear_reactions()
 
         # Change the timer depending if the content is heavy or not
-        if isgif is True:
+        if isheavy is True:
             timer = db_get_conf_server_all(ctx.guild.id)[2]  # Get server specific long-timer reddit value
         else:
             timer = db_get_conf_server_all(ctx.guild.id)[1]  # Get server specific short-timer reddit value
@@ -231,34 +178,27 @@ class RedditScrap(commands.Cog):
     # COMMANDS #######################################################################################
     ##################################################################################################
 
-    @check_if_bot_rdy()
     @check_cog_redditscrap()
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
         sub = await c_dict.get(ctx.invoked_with)[0]  # Get the dict key equal to the command name. Ex : sendmeme -> meme
         await ctx.message.add_reaction('\N{HOURGLASS}')
-        data, isgif = get_image(sub)
-        while data is False:
-            data, isgif = get_image(sub)
-        embed, file = prepare_embed(data)
-        await self.check_react(ctx, embed, file, isgif)
+        content_url, content_type = reddit_get_random_content(sub)
+        log.debug('Chosen content URL is : ' + content_url + ' of type ' + content_type)  # DEBUG
 
-    # !rcheck to get status of the image-serving service
-    @check_cog_redditscrap()
-    @commands.command()
-    async def rcheck(self, ctx):
-        if rdy == 0:
-            await ctx.channel.send("Je démarre gros, 2 sec 😎 ({} / {})".format(progress, len(sub_dict)))
-        elif rdy == 1:
-            await ctx.channel.send("Je suis la pour toi mon chou ❤")
+        if content_type in ['gifv', 'gif']:
+            isheavy = True
+        else:
+            isheavy = False
+
+        embed, file = prepare_embed(content_url, content_type)
+        await self.check_react(ctx, embed, file, isheavy)
 
     # !rhelp command for help
     @check_cog_redditscrap()
     @commands.command()
     async def rhelp(self, ctx):
-
-        reddit_get_random_content('dankmemes')
 
         embed = discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !",
                               description="Je suis la pour vous aider 😄", color=0xd5d500)
@@ -307,6 +247,5 @@ def setup(bot):
 # For the reddit_scrapping COG : ##
 # Improve Gif-conversion system to handle all cases and be flexible
 # Get the script async to avoid huge lagtime
-# Fix progress counter value being wrong
 # Get reddit post values dynamically to DB
 # Adds logs to know user statistics

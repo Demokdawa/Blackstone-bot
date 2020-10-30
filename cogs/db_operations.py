@@ -120,20 +120,6 @@ def db_get_reddit_command_dict():
     return res
 
 
-def db_get_reddit_sub_dict():
-    db, cursor = init_db_con()  # Init DB session
-
-    cursor.execute('''SELECT sub_name, is_nsfw, submission_nb, sub_group from uwu_reddit_scrap''')
-    result = cursor.fetchall()  # Result is a [list] of [tuple]
-
-    close_db_con(db, cursor)  # Close DB session
-
-    res = {}
-    for i, j, k, l in result:
-        res[i] = [j, k, l]
-    return res
-
-
 def db_get_nsfw_channels(guild_id):
     db, cursor = init_db_con()  # Init DB session
 
@@ -576,9 +562,9 @@ def reddit_get_random_content(subreddit):
                       LIMIT 1''', (subreddit,))
     result = cursor.fetchone()  # Return is a [tuple]
 
-    print(result)
-
     close_db_con(db, cursor)  # Close DB session
+
+    return result
 
 
 class DBOperations(commands.Cog):
