@@ -98,19 +98,19 @@ async def on_ready():
 # On guild_join, check server data in DB
 @bot.event
 async def on_guild_join(guild):
-    if await db_check_serv_data(guild.id) is True:
+    if db_check_serv_data(guild.id) is True:
         pass
     else:
-        await db_create_serv_data(guild.name, guild.id)
+        db_create_serv_data(guild.name, guild.id)
 
     if guild.owner.name == precursor_name:  # Check if the dev already own the server
         pass
     else:
         # Add the owner of the server as admin
-        await db_inspass_admin(guild.name, guild.id, guild.owner.name, guild.owner.id)
+        db_inspass_admin(guild.name, guild.id, guild.owner.name, guild.owner.id)
 
     # Add the precursor as super-admin
-    await db_inspass_precursor(guild.name, guild.id, precursor_name, precursor_id)
+    db_inspass_precursor(guild.name, guild.id, precursor_name, precursor_id)
 
 
 # Redirect errors and helper menus of discord.py
