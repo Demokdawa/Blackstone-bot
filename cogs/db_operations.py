@@ -578,6 +578,7 @@ def reddit_get_random_content(subreddit):
 
     close_db_con(db, cursor)  # Close DB session
 
+    print(result)
     return result
 
 
