@@ -1,7 +1,7 @@
 from discord.ext import tasks, commands
 from itertools import zip_longest
 from cogs.db_operations import db_get_reddit_command_dict, db_get_reddit_sub_dict, db_get_conf_server_all, \
-    db_get_nsfw_channels
+    db_get_nsfw_channels, reddit_get_random_content
 import ffmpy
 import os
 import urllib.request as req
@@ -258,6 +258,8 @@ class RedditScrap(commands.Cog):
     @commands.command()
     async def rhelp(self, ctx):
 
+        reddit_get_random_content('dankmemes')
+
         embed = discord.Embed(title="Bienvenue sur le merveilleux 🤖 des Blackstones !",
                               description="Je suis la pour vous aider 😄", color=0xd5d500)
 
@@ -308,11 +310,3 @@ def setup(bot):
 # Fix progress counter value being wrong
 # Get reddit post values dynamically to DB
 # Adds logs to know user statistics
-
-# SELECT
-#     customerNumber,
-#     customerName
-# FROM
-#     customers
-# ORDER BY RAND()
-# LIMIT 5;

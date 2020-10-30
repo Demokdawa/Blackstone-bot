@@ -121,7 +121,6 @@ def db_get_reddit_command_dict():
 
 
 def db_get_reddit_sub_dict():
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT sub_name, is_nsfw, submission_nb, sub_group from uwu_reddit_scrap''')
@@ -136,7 +135,6 @@ def db_get_reddit_sub_dict():
 
 
 def db_get_nsfw_channels(guild_id):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT channel_id from servers_nsfw_channel WHERE guild_id = %s''', (guild_id,))
@@ -149,7 +147,6 @@ def db_get_nsfw_channels(guild_id):
 
 
 def db_get_censor_words(guild_id):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT word, word_replacement from servers_banned_word WHERE guild_id = %s''',
@@ -164,7 +161,6 @@ def db_get_censor_words(guild_id):
 
 # Get all excluded channels that does not get censored on the server
 def db_get_excl_channels(guild_id):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT channel_id from servers_censor_excluded_channel WHERE guild_id = %s''',
@@ -182,7 +178,6 @@ def db_get_excl_channels(guild_id):
 
 # Get all the emoji-roles on the server matching a specific message
 def db_get_emoji_roles(guild_id, message_id):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT emoji_id, role_id from servers_emoji_roles WHERE guild_id = %s AND tracked_message = %s''',
@@ -200,7 +195,6 @@ def db_get_emoji_roles(guild_id, message_id):
 
 # Get all the emoji-roles on the server
 def db_get_server_emoji_roles(guild_id):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT emoji_id, role_id, tracked_message from servers_emoji_roles WHERE guild_id = %s''', (guild_id,))
@@ -216,7 +210,6 @@ def db_get_server_emoji_roles(guild_id):
 
 # Check the privilege of a user that try to input admin commands
 def db_check_privilege(guild_id, user_id):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT privilege_level from servers_global_privileges WHERE guild_id = %s and user_id = %s''',
@@ -232,7 +225,6 @@ def db_check_privilege(guild_id, user_id):
 
 
 def db_get_admins(guild_id):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT user_id, privilege_level from servers_global_privileges WHERE guild_id = %s''',
@@ -252,7 +244,6 @@ def db_get_admins(guild_id):
 
 # Insert val_tuple values into DB depending on invoked usage
 def db_insup_value(target_param, val_tuple):
-
     db, cursor = init_db_con()  # Init DB session
 
     ##
@@ -388,11 +379,8 @@ def db_insup_value(target_param, val_tuple):
             close_db_con(db, cursor, commit=True)  # Close DB session
 
 
-
-
 # Delete val_tuple values from DB depending on invoked usage
 def db_del_value(target_param, val_tuple):
-
     db, cursor = init_db_con()  # Init DB session
 
     ##
@@ -432,8 +420,6 @@ def db_del_value(target_param, val_tuple):
         else:
             close_db_con(db, cursor, commit=True)  # Close DB session
             return False
-
-
 
 
 # Check if owner-admin exist, and if not, create it
@@ -532,9 +518,9 @@ def db_insupdel_mod(target_param, guild_name, guild_id, user_name, user_id):
             close_db_con(db, cursor, commit=True)  # Close DB session
             return False
 
+
 # Add the precusor as level-1 on the server
 def db_inspass_precursor(guild_name, guild_id, dev_name, dev_id):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT user_id from servers_global_privileges WHERE guild_id = %s and user_id = %s 
@@ -569,7 +555,6 @@ def db_add_warn(guild_name, guild_id, user_name, user_id, warn_level):
 
 
 def reddit_poller_insert(u_name, subreddit, content_type, url):
-
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT name FROM uwu_reddit_data WHERE name = %s''', (u_name,))
@@ -582,6 +567,18 @@ def reddit_poller_insert(u_name, subreddit, content_type, url):
                        (u_name, subreddit, content_type, url,))
 
     close_db_con(db, cursor, commit=True)  # Close DB session
+
+
+def reddit_get_random_content(subreddit):
+    db, cursor = init_db_con()  # Init DB session
+
+    cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit = %s ORDER BY RAND() 
+                      LIMIT 1''', (subreddit,))
+    result = cursor.fetchone()  # Return is a [tuple]
+
+    print(result)
+
+    close_db_con(db, cursor)  # Close DB session
 
 
 class DBOperations(commands.Cog):
