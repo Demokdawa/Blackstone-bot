@@ -62,7 +62,7 @@ async def get_sub_size(subreddit):
                 async with session.get('https://api.pushshift.io/reddit/search/submission', params=params) as resp:
                     response = await resp.json(content_type=None)
         except ValueError as e:
-            print(e)
+            log.debug(e)
             pass
 
     data_size = await get_sub_volume(response['metadata']['total_results'])
@@ -102,7 +102,6 @@ async def get_subreddit(number, subreddit):
     params = None
     number = number
     while number != 0:
-        print(number)
         if number > 100:
             if after is None:
                 params = {'limit': 100}
@@ -127,9 +126,9 @@ async def get_reddit_data():
     sub_dict = db_get_reddit_sub_dict()
     for sub in sub_dict:
         if sub_dict.get(sub)[1] != 0:
-            print('Trying sub ' + sub + ' ...')
+            log.debug('Parsing "' + sub + '" ...')
             await get_subreddit(await get_sub_size(sub), sub)
-            print('Finished the sub' + sub + ' !')
+            log.debug('Parsing "' + sub + '" Done !')
 
 
 class RedditPoller(commands.Cog):
