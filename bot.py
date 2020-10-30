@@ -134,9 +134,8 @@ else:
 # TO-DO :
 # URGENT ->>
 #   REDDIT :
-#   Fix le bug sur les groupes pour le reddiscrap
-#   Migrer de praw a json api
-#   Faire en sorte de récuperer les chiffres du nombre de post reddit pour mieux calculer
+#   Fix le fait que tout les posts ne soient pas récupérés (reddit_poller)
+#   Fix le lag de ouf a la demande d'une image (reddit_bot)
 #   MODERATION :
 #   Corriger le bug sur les "process_react"
 #   Refaire totalement l'ergonomie des commandes de config

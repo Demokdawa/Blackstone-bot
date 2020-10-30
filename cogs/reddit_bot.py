@@ -182,7 +182,7 @@ class RedditScrap(commands.Cog):
     # COMMANDS #######################################################################################
     ##################################################################################################
 
-    #z@check_cog_redditscrap()
+    @check_cog_redditscrap()
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
@@ -253,5 +253,4 @@ def setup(bot):
 # For the reddit_scrapping COG : ##
 # Improve Gif-conversion system to handle all cases and be flexible
 # Get the script async to avoid huge lagtime
-# Get reddit post values dynamically to DB
 # Adds logs to know user statistics
