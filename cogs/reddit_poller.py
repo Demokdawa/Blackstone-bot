@@ -134,14 +134,14 @@ async def get_reddit_data():
 class RedditPoller(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        # self.update_cache.start()
+        self.update_cache.start()
 
     # TASKS ##########################################################################################
     ##################################################################################################
 
     @tasks.loop(seconds=43200)
     async def update_cache(self):
-        asyncio.run(get_reddit_data())
+        await get_reddit_data()
 
 
 def setup(bot):
