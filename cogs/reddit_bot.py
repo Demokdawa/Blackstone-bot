@@ -12,6 +12,7 @@ import asyncio
 import functools
 import praw
 import logging
+import shortuuid
 from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent, gfycat_client_id, gfycat_client_secret
 
 # Reddit API infos
@@ -71,18 +72,21 @@ def create_gif(data):
 
 
 def prepare_embed(content_url, content_type):
-    if isinstance(content_url, tuple):
-        log.debug('Prepare embed started / ' + content_url[1] + ' / GFYCAT')  # DEBUG
-        req.urlretrieve(content_url[1], 'tempDL.mp4')
-        create_gif(content_url)
-        file = discord.File(os.path.join(os.getcwd(), "tempDiscord.gif"), filename='tempDiscord.gif')
-        embed = discord.Embed()
-        embed.set_image(url="attachment://tempDiscord.gif")
-    else:
-        log.debug('Prepare embed started / ' + content_url + ' / NOT GFYCAT')  # DEBUG
-        file = None
-        embed = discord.Embed()
-        embed.set_image(url=content_url)
+    # Generate UUID
+    data_uid = shortuuid.uuid()
+
+    #if isinstance(content_url, tuple):
+    #    log.debug('Prepare embed started / ' + content_url[1] + ' / GFYCAT')  # DEBUG
+    #    req.urlretrieve(content_url[1], 'tempDL.mp4')
+    #    create_gif(content_url)
+    #    file = discord.File(os.path.join(os.getcwd(), "tempDiscord.gif"), filename='tempDiscord.gif')
+    #    embed = discord.Embed()
+    #    embed.set_image(url="attachment://tempDiscord.gif")
+
+    log.debug('Creating embed for url "' + content_url + '" of type "' + content_type)  # DEBUG
+    file = None
+    embed = discord.Embed()
+    embed.set_image(url=content_url)
     return embed, file
 
 
