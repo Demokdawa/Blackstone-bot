@@ -35,7 +35,7 @@ c_list_sfw = [(k, v) for k, v in c_dict_sfw.items()]  # [list] of SFW commands
 c_dict_nsfw = {k: v for k, v in c_dict.items() if v[1] == 1}  # [dict] of NSFW commands
 c_list_nsfw = [(k, v) for k, v in c_dict_nsfw.items()]  # [list] of NSFW commands
 c_list = [k for k in c_dict]  # [list] with only commands
-sub_dict = await db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
+sub_dict = db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
 
 log.info('[COGS] RedditScrap COG loaded')
 
