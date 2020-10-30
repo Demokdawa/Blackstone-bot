@@ -3,6 +3,7 @@ import time
 import asyncio
 import os
 import logging
+import functools
 from discord.ext import tasks, commands
 from cogs.db_operations import reddit_poller_insert, db_get_reddit_sub_dict
 
@@ -80,15 +81,15 @@ async def get_a_page(params, subreddit):
                 if url_raw.endswith('.jpg') or url_raw.endswith('.png'):
                     content_type = "image"
                     url = url_raw
-                    await reddit_poller_insert(u_name, subreddit, content_type, url)
+                    reddit_poller_insert(u_name, subreddit, content_type, url)
                 elif url_raw.endswith('.gifv'):
                     content_type = "gifv"
                     url = os.path.splitext(url_raw)[0] + '.gif'
-                    await reddit_poller_insert(u_name, subreddit, content_type, url)
+                    reddit_poller_insert(u_name, subreddit, content_type, url)
                 elif url_raw.endswith('.gif'):
                     content_type = "gif"
                     url = url_raw
-                    await reddit_poller_insert(u_name, subreddit, content_type, url)
+                    reddit_poller_insert(u_name, subreddit, content_type, url)
                 else:
                     pass
 
@@ -123,7 +124,7 @@ async def get_subreddit(number, subreddit):
 
 # Get all reddit data for the bot
 async def get_reddit_data():
-    sub_dict = await db_get_reddit_sub_dict()
+    sub_dict = db_get_reddit_sub_dict()
     for sub in sub_dict:
         if sub_dict.get(sub)[1] != 0:
             print('Trying sub ' + sub + ' ...')
@@ -141,6 +142,8 @@ class RedditPoller(commands.Cog):
 
     @tasks.loop(seconds=43200)
     async def update_cache(self):
+        #thing = functools.partial(get_reddit_data)
+        #await self.bot.loop.run_in_executor(None, thing)
         await get_reddit_data()
 
 
