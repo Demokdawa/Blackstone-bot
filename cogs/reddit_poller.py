@@ -134,7 +134,7 @@ async def get_reddit_data():
 class RedditPoller(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.update_cache.start()
+        # self.update_cache.start()
 
     # TASKS ##########################################################################################
     ##################################################################################################
