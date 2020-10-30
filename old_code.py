@@ -22,15 +22,3 @@ def check_if_bot_rdy():
 
 sub_dict = db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
 
-def db_get_reddit_sub_dict():
-    db, cursor = init_db_con()  # Init DB session
-
-    cursor.execute('''SELECT sub_name, is_nsfw, submission_nb, sub_group from uwu_reddit_scrap''')
-    result = cursor.fetchall()  # Result is a [list] of [tuple]
-
-    close_db_con(db, cursor)  # Close DB session
-
-    res = {}
-    for i, j, k, l in result:
-        res[i] = [j, k, l]
-    return res
