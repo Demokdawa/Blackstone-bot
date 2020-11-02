@@ -118,7 +118,7 @@ async def get_subreddit(number, subreddit):
             await get_a_page(params, subreddit)
             number = 0
         # To respect reddit timer request
-        time.sleep(2)
+        await asyncio.sleep(2)
 
 
 # Get all reddit data for the bot
