@@ -135,7 +135,6 @@ else:
 # URGENT ->>
 #   REDDIT :
 #   Fix le fait que tout les posts ne soient pas récupérés (reddit_poller)
-#   Fix le lag de ouf a la demande d'une image (reddit_bot)
 #   MODERATION :
 #   Corriger le bug sur les "process_react"
 #   Refaire totalement l'ergonomie des commandes de config

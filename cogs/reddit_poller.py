@@ -91,7 +91,9 @@ async def get_a_page(params, subreddit):
                     url = url_raw
                     reddit_poller_insert(u_name, subreddit, content_type, url)
                 else:
-                    pass
+                    content_type = "unknow"
+                    url = url_raw
+                    reddit_poller_insert(u_name, subreddit, content_type, url)
 
     return response['data']['after']
 
