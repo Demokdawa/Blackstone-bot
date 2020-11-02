@@ -141,9 +141,9 @@ class RedditPoller(commands.Cog):
 
     @tasks.loop(seconds=43200)
     async def update_cache(self):
-        thing = functools.partial(get_reddit_data)
-        await self.bot.loop.run_in_executor(None, thing)
-        # await get_reddit_data()
+        # thing = functools.partial(get_reddit_data)
+        # await self.bot.loop.run_in_executor(None, thing)
+        await get_reddit_data()
 
 
 def setup(bot):
