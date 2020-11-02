@@ -106,17 +106,17 @@ async def get_subreddit(number, subreddit):
     while number != 0:
         if number > 100:
             if after is None:
-                params = {'limit': 100, 't': all}
+                params = {'limit': 100, 't': 'all'}
             else:
-                params = {'limit': 100, 'after': after, 't': all}
+                params = {'limit': 100, 'after': after, 't': 'all'}
             after = await get_a_page(params, subreddit)
             number = number - 100
 
         else:
             if after is None:
-                params = {'limit': number, 't': all}
+                params = {'limit': number, 't': 'all'}
             else:
-                params = {'limit': number, 'after': after, 't': all}
+                params = {'limit': number, 'after': after, 't': 'all'}
             await get_a_page(params, subreddit)
             number = 0
         # To respect reddit timer request
