@@ -623,6 +623,20 @@ def db_get_reddit_command_data():
     return result
 
 
+def db_get_reddit_subreddit():
+
+    db, cursor = init_db_con()  # Init DB session
+
+    cursor.execute('''SELECT uwu_reddit_commands.command_name, uwu_reddit_subreddits.subreddit_name 
+                      FROM uwu_reddit_commands INNER JOIN uwu_reddit_subreddits 
+                      ON uwu_reddit_commands.subreddit_group = uwu_reddit_subreddits.subreddit_group''')
+    result = cursor.fetchall()  # Result is a [list] of [tuple]
+
+    close_db_con(db, cursor)  # Close DB session
+
+    return result
+
+
 class DBOperations(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
