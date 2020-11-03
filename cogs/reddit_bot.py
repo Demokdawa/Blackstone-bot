@@ -1,6 +1,6 @@
 from discord.ext import tasks, commands
 from itertools import zip_longest
-from cogs.db_operations import db_get_reddit_command_dict, db_get_conf_server_all, db_get_nsfw_channels, \
+from cogs.db_operations import db_get_reddit_command_data, db_get_conf_server_all, db_get_nsfw_channels, \
     reddit_get_random_content
 import ffmpy
 import os
@@ -16,12 +16,11 @@ import shortuuid
 # Retrieve logger
 log = logging.getLogger("General_logs")
 
-c_dict = db_get_reddit_command_dict()  # [dict] of commands (dict key is command)
-c_dict_sfw = {k: v for k, v in c_dict.items() if v[1] == 0}  # [dict] of SFW commands
-c_list_sfw = [(k, v) for k, v in c_dict_sfw.items()]  # [list] of SFW commands
-c_dict_nsfw = {k: v for k, v in c_dict.items() if v[1] == 1}  # [dict] of NSFW commands
-c_list_nsfw = [(k, v) for k, v in c_dict_nsfw.items()]  # [list] of NSFW commands
-c_list = [k for k in c_dict]  # [list] with only commands
+c_dict = {items[0]: items[1] for items in db_get_reddit_command_data()}  # [dict] of commands (dict key is command)
+c_list = [items[0] for items in db_get_reddit_command_data()]  # [list] of all commands
+c_list_sfw = [items[0] for items in db_get_reddit_command_data() if items[1] == 0]  # [list] of SFW commands
+c_list_nsfw = [items[0] for items in db_get_reddit_command_data() if items[1] == 1]  # [list] of NSFW commands
+
 
 
 log.info('[COGS] RedditScrap COG loaded')
@@ -91,7 +90,7 @@ def prepare_embed(content_url, content_type):
 # Decorator to check for NSFW commands
 def nsfw_check():
     async def predicate(ctx):
-        if c_dict.get(ctx.invoked_with)[1] == 1:  # Check if NSFW command
+        if c_dict.get(ctx.invoked_with) == 1:  # Check if NSFW command
             if db_get_conf_server_all(ctx.guild.id)[0] == 0:  # Checking current nsfw_mode (disabled)
                 await ctx.channel.send("Ey non, pas ici petit coquin ! Ce discord n'est pas NSFW !")
             elif db_get_conf_server_all(ctx.guild.id)[0] == 1:  # Checking current nsfw_mode (semi-enabled)
@@ -181,7 +180,9 @@ class RedditScrap(commands.Cog):
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
+        ##  LINE TO CORRECT FOR NEW SQL
         sub = c_dict.get(ctx.invoked_with)[0]  # Get the dict key equal to the command name. Ex : sendmeme -> meme
+        ##  LINE TO CORRECT FOR NEW SQL
         await ctx.message.add_reaction('\N{HOURGLASS}')
         content_url, content_type = reddit_get_random_content(sub)
         log.debug('Chosen content URL is : ' + content_url + ' of type ' + content_type)  # DEBUG

@@ -6,7 +6,8 @@ import os
 import logging
 import functools
 from discord.ext import tasks, commands
-from cogs.db_operations import reddit_poller_insert, reddit_poller_clean, db_get_reddit_sub_dict
+from cogs.db_operations import reddit_poller_insert, reddit_poller_clean, db_get_reddit_sub_dict, reddit_poller_subreddit
+from cogs.utils import precursor_restricted
 from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent, gfycat_client_id, gfycat_client_secret
 
 # Retrieve logger
@@ -121,13 +122,27 @@ class RedditPoller(commands.Cog):
         self.bot = bot
         self.update_cache.start()
 
+    # !rhelp command for help
+    @precursor_restricted()
+    @commands.command(hidden=True)
+    async def rsync(self, ctx):
+
+        content_list = reddit_poller_subreddit()
+        new_content_list = list(db_get_reddit_sub_dict().keys())
+        sub_to_sync = [item for item in new_content_list if item not in content_list]
+
+        try:
+            self.bot.reload_extension('reddit_bot')
+        except Exception as e:
+            await ctx.send(f'**`ERROR:`** {type(e).__name__} - {e}')
+        else:
+            await ctx.send('**`SUCCESS`**')
+
     # TASKS ##########################################################################################
     ##################################################################################################
 
     @tasks.loop(seconds=43200)
     async def update_cache(self):
-        # thing = functools.partial(get_reddit_data)
-        # await self.bot.loop.run_in_executor(None, thing)
         await get_reddit_data()
 
 
