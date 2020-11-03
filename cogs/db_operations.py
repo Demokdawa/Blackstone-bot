@@ -554,6 +554,9 @@ def db_add_warn(guild_name, guild_id, user_name, user_id, warn_level):
     close_db_con(db, cursor, commit=True)  # Close DB session
 
 
+# REDDIT-POLLER ################################################################################################
+################################################################################################################
+
 def reddit_poller_insert(u_name, subreddit, content_type, url):
     db, cursor = init_db_con()  # Init DB session
 
@@ -568,6 +571,17 @@ def reddit_poller_insert(u_name, subreddit, content_type, url):
 
     close_db_con(db, cursor, commit=True)  # Close DB session
 
+
+def reddit_poller_clean(subreddit):
+    db, cursor = init_db_con()  # Init DB session
+    cursor.execute('''DELETE FROM uwu_reddit_data WHERE 'curr_timestamp' < CURRENT_TIMESTAMP - INTERVAL 20 MINUTE 
+                                                    AND 'subreddit' = %s''', (subreddit,))
+
+    close_db_con(db, cursor, commit=True)  # Close DB session
+
+
+# REDDIT-BOT ###################################################################################################
+################################################################################################################
 
 def reddit_get_random_content(subreddit):
     db, cursor = init_db_con()  # Init DB session
