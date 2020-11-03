@@ -1,16 +1,21 @@
 import aiohttp
 import time
 import asyncio
+import asyncpraw
 import os
 import logging
 import functools
 from discord.ext import tasks, commands
 from cogs.db_operations import reddit_poller_insert, db_get_reddit_sub_dict
+from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent, gfycat_client_id, gfycat_client_secret
 
 # Retrieve logger
 log = logging.getLogger("Poller_logs")
 
 log.info('[COGS] RedditPoller COG loaded')
+
+# Reddit API infos
+reddit = asyncpraw.Reddit(client_id=reddit_client_id, client_secret=reddit_client_secret, user_agent=reddit_user_agent)
 
 
 async def get_sub_volume(sub_size):
@@ -69,8 +74,32 @@ async def get_sub_size(subreddit):
     return data_size
 
 
+# Test with asyncpraw
+async def get_subreddit(number, subreddit):
+    sub = await reddit.subreddit(subreddit)
+    async for submission in sub.top(limit=number):
+        u_name = submission.name
+        url_raw = submission.url
+
+        if url_raw.endswith('.jpg') or url_raw.endswith('.png'):
+            content_type = "image"
+            url = url_raw
+            reddit_poller_insert(u_name, subreddit, content_type, url)
+        elif url_raw.endswith('.gifv'):
+            content_type = "gifv"
+            url = os.path.splitext(url_raw)[0] + '.gif'
+            reddit_poller_insert(u_name, subreddit, content_type, url)
+        elif url_raw.endswith('.gif'):
+            content_type = "gif"
+            url = url_raw
+            reddit_poller_insert(u_name, subreddit, content_type, url)
+        else:
+            content_type = "unknow"
+            url = url_raw
+            reddit_poller_insert(u_name, subreddit, content_type, url)
+
 # Get a page of top submissions in a subreddit
-async def get_a_page(params, subreddit):
+async def get_a_page_old(params, subreddit):
     async with aiohttp.ClientSession() as session:
         async with session.get('https://www.reddit.com/r/{}/top.json'.format(subreddit), params=params) as resp:
             response = await resp.json()
@@ -99,7 +128,7 @@ async def get_a_page(params, subreddit):
 
 
 # Get a number of submissions from a subreddit (max 1000)
-async def get_subreddit(number, subreddit):
+async def get_subreddit_old(number, subreddit):
     after = None
     params = None
     number = number

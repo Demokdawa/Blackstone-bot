@@ -10,13 +10,8 @@ import discord
 import random
 import asyncio
 import functools
-import praw
 import logging
 import shortuuid
-from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent, gfycat_client_id, gfycat_client_secret
-
-# Reddit API infos
-reddit = praw.Reddit(client_id=reddit_client_id, client_secret=reddit_client_secret, user_agent=reddit_user_agent)
 
 # Retrieve logger
 log = logging.getLogger("General_logs")
