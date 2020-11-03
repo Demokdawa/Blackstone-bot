@@ -77,7 +77,7 @@ async def get_sub_size(subreddit):
 # Test with asyncpraw
 async def get_subreddit(number, subreddit):
     sub = await reddit.subreddit(subreddit)
-    async for submission in sub.top(limit=number):
+    async for submission in sub.top(limit=number, t='all'):
         u_name = submission.name
         url_raw = submission.url
 
