@@ -6,7 +6,7 @@ import os
 import logging
 import functools
 from discord.ext import tasks, commands
-from cogs.db_operations import reddit_poller_insert, reddit_poller_clean, db_get_reddit_sub_dict,
+from cogs.db_operations import reddit_poller_insert, reddit_poller_clean, db_get_reddit_sub_dict
 from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent, gfycat_client_id, gfycat_client_secret
 
 # Retrieve logger
