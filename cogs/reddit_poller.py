@@ -5,6 +5,7 @@ import asyncpraw
 import os
 import logging
 import functools
+from time import perf_counter
 from discord.ext import tasks, commands
 from cogs.db_operations import db_rdt_poller_insert, db_rdt_poller_clean, db_rdt_poller_sub_get, db_rdt_poller_subdata_get
 from cogs.utils import precursor_restricted
@@ -122,7 +123,7 @@ class RedditPoller(commands.Cog):
         self.bot = bot
         self.update_cache.start()
 
-    # !rhelp command for help
+    # !rsync command to refresh reddit commands and sync new subs
     @precursor_restricted()
     @commands.command(hidden=True)
     async def rsync(self, ctx):
@@ -143,12 +144,17 @@ class RedditPoller(commands.Cog):
 
         await ctx.send('**`RSYNC DONE (for subreddit/s "{}")`**'.format(sub_to_sync))
 
+        log.debug('Rsync done (for subreddit/s "{}")'.format(sub_to_sync))
+
     # TASKS ##########################################################################################
     ##################################################################################################
 
     @tasks.loop(seconds=43200)
     async def update_cache(self):
+        t1_start = perf_counter()
         await get_reddit_data()
+        t1_stop = perf_counter()
+        log.debug('The cache update took {} to execute'.format(t1_stop-t1_start))
 
 
 def setup(bot):
