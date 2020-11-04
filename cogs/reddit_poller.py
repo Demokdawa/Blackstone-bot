@@ -6,7 +6,7 @@ import os
 import logging
 import functools
 from discord.ext import tasks, commands
-from cogs.db_operations import reddit_poller_insert, reddit_poller_clean, db_get_reddit_sub_dict, reddit_poller_subreddit
+from cogs.db_operations import reddit_poller_insert, reddit_poller_clean, db_get_reddit_sub_list, reddit_poller_subreddit
 from cogs.utils import precursor_restricted
 from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent, gfycat_client_id, gfycat_client_secret
 
@@ -109,12 +109,11 @@ async def get_subreddit(number, subreddit):
 
 # Get all reddit data for the bot
 async def get_reddit_data():
-    sub_dict = db_get_reddit_sub_dict()
-    for sub in sub_dict:
-        if sub_dict.get(sub)[1] != 0:
-            log.debug('Parsing "' + sub + '" ...')
-            await get_subreddit(await get_sub_size(sub), sub)
-            log.debug('Parsing "' + sub + '" Done !')
+    sub_list = [items for items in db_get_reddit_sub_list()]
+    for sub in sub_list:
+        log.debug('Parsing "' + sub + '" ...')
+        await get_subreddit(await get_sub_size(sub), sub)
+        log.debug('Parsing "' + sub + '" Done !')
 
 
 class RedditPoller(commands.Cog):
