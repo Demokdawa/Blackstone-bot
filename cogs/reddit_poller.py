@@ -4,7 +4,6 @@ import asyncio
 import asyncpraw
 import os
 import logging
-import functools
 from time import perf_counter
 from discord.ext import tasks, commands
 from cogs.db_operations import db_rdt_poller_insert, db_rdt_poller_clean, db_rdt_poller_sub_get, db_rdt_poller_subdata_get
@@ -114,7 +113,6 @@ async def get_subreddit(number, subreddit):
 # Get all reddit data for the bot
 async def get_reddit_data():
     sub_list = [item for t in db_rdt_poller_sub_get() for item in t]
-    print(sub_list)
     for sub in sub_list:
         await get_subreddit(await get_sub_size(sub), sub)
 
