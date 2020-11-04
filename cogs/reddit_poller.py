@@ -78,7 +78,6 @@ async def get_sub_size(subreddit):
 
 # Test with asyncpraw
 async def get_subreddit(number, subreddit):
-    print(type(subreddit))
     log.debug('Parsing "{}" of size "{}" ... !'.format(subreddit, number))
     sub = await reddit.subreddit(str(subreddit))
     async for submission in sub.top("all", limit=number):
@@ -115,6 +114,7 @@ async def get_subreddit(number, subreddit):
 # Get all reddit data for the bot
 async def get_reddit_data():
     sub_list = [items for items in db_rdt_poller_sub_get()]
+    print(sub_list)
     for sub in sub_list:
         await get_subreddit(await get_sub_size(sub), sub)
 
