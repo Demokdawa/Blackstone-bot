@@ -113,7 +113,6 @@ async def get_subreddit(number, subreddit):
 
 # Get all reddit data for the bot
 async def get_reddit_data():
-    # sub_list = [items[0] for items in db_rdt_poller_sub_get()]
     sub_list = [item for t in db_rdt_poller_sub_get() for item in t]
     print(sub_list)
     for sub in sub_list:
@@ -137,8 +136,8 @@ class RedditPoller(commands.Cog):
         else:
             await ctx.send('**`SUCCESS`**')
 
-        curr_content_list = [items for items in db_rdt_poller_subdata_get()]
-        upd_content_list = [items for items in db_rdt_poller_sub_get()]
+        curr_content_list = [item for t in db_rdt_poller_subdata_get() for item in t]
+        upd_content_list = [item for t in db_rdt_poller_sub_get() for item in t]
         sub_to_sync = [item for item in upd_content_list if item not in curr_content_list]
 
         for sub in sub_to_sync:

@@ -90,3 +90,5 @@ c_list_nsfw = [(k, v) for k, v in c_dict_nsfw.items()]  # [list] of NSFW command
 c_list = [k for k in c_dict]  # [list] with only commands
 sub_dict = db_get_reddit_sub_dict()  # [dict] with subs (dict key is sub)
 
+[item for t in db_rdt_poller_sub_get() for item in t]
+

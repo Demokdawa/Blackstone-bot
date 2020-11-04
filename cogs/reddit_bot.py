@@ -21,10 +21,7 @@ c_list = [items[0] for items in db_rdt_cmd_data_get()]  # [list] of all commands
 c_list_sfw = [items[0] for items in db_rdt_cmd_data_get() if items[1] == 0]  # [list] of SFW commands
 c_list_nsfw = [items[0] for items in db_rdt_cmd_data_get() if items[1] == 1]  # [list] of NSFW commands
 
-
-
 log.info('[COGS] RedditScrap COG loaded')
-
 
 # FUNCTIONS ######################################################################################
 ##################################################################################################
@@ -180,7 +177,7 @@ class RedditScrap(commands.Cog):
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
-        sub_tuple = (items for items in db_rdt_sub_translt_get(ctx.invoked_with))  # List of subs concerned by command
+        sub_tuple = (item for t in db_rdt_sub_translt_get(ctx.invoked_with) for item in t)  # List of subs concerned by command
         await ctx.message.add_reaction('\N{HOURGLASS}')
         content_url, content_type = db_rdt_rand_content_get(sub_tuple)
         log.debug('Chosen content URL is : ' + content_url + ' of type ' + content_type)  # DEBUG
