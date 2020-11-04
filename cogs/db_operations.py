@@ -544,7 +544,7 @@ def db_add_warn(guild_name, guild_id, user_name, user_id, warn_level):
 ################################################################################################################
 
 # Return [list of tuples] of subreddits
-def db_get_reddit_sub_list():
+def db_rdt_poller_sub_get():
 
     db, cursor = init_db_con()  # Init DB session
 
@@ -556,7 +556,8 @@ def db_get_reddit_sub_list():
     return result
 
 
-def reddit_poller_insert(u_name, subreddit, content_type, url):
+# Insert data from subreddit submissions
+def db_rdt_poller_insert(u_name, subreddit, content_type, url):
 
     db, cursor = init_db_con()  # Init DB session
 
@@ -572,7 +573,8 @@ def reddit_poller_insert(u_name, subreddit, content_type, url):
     close_db_con(db, cursor, commit=True)  # Close DB session
 
 
-def reddit_poller_clean(subreddit):
+# Clean old subreddit submissions
+def db_rdt_poller_clean(subreddit):
 
     db, cursor = init_db_con()  # Init DB session
 
@@ -582,15 +584,16 @@ def reddit_poller_clean(subreddit):
     close_db_con(db, cursor, commit=True)  # Close DB session
 
 
-def reddit_poller_subreddit():
+# Get the current subreddits that have data in db
+def db_rdt_poller_subdata_get():
 
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''select DISTINCT subreddit from uwu_reddit_data''')
     result = cursor.fetchall()  # Result is a [list of tuples]
 
-    query_list = [a_tuple[0] for a_tuple in result]
-    return query_list
+    # query_list = [a_tuple[0] for a_tuple in result]
+    return result
 
 
 # REDDIT-BOT ###################################################################################################
@@ -598,7 +601,7 @@ def reddit_poller_subreddit():
 
 
 # Return random reddit content depending on command
-def reddit_get_random_content(sub_tuple):
+def db_rdt_rand_content_get(sub_tuple):
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit in %s ORDER BY RAND() 
@@ -611,7 +614,7 @@ def reddit_get_random_content(sub_tuple):
 
 
 # Return a [list of tuples] of reddit commands
-def db_get_reddit_command_data():
+def db_rdt_cmd_data_get():
 
     db, cursor = init_db_con()  # Init DB session
 
@@ -624,7 +627,7 @@ def db_get_reddit_command_data():
 
 
 # Return a [list of tuples] of subreddits corresponding to a command
-def db_get_reddit_subreddit(command):
+def db_rdt_sub_translt_get(command):
 
     db, cursor = init_db_con()  # Init DB session
 

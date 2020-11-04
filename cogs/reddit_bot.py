@@ -1,7 +1,7 @@
 from discord.ext import tasks, commands
 from itertools import zip_longest
-from cogs.db_operations import db_get_reddit_command_data, db_get_conf_server_all, db_get_nsfw_channels, \
-    reddit_get_random_content, db_get_reddit_subreddit
+from cogs.db_operations import db_rdt_cmd_data_get, db_get_conf_server_all, db_get_nsfw_channels, \
+    db_rdt_rand_content_get, db_rdt_sub_translt_get
 import ffmpy
 import os
 import urllib.request as req
@@ -16,10 +16,10 @@ import shortuuid
 # Retrieve logger
 log = logging.getLogger("General_logs")
 
-c_dict = {items[0]: items[1] for items in db_get_reddit_command_data()}  # [dict] of commands (dict key is command)
-c_list = [items[0] for items in db_get_reddit_command_data()]  # [list] of all commands
-c_list_sfw = [items[0] for items in db_get_reddit_command_data() if items[1] == 0]  # [list] of SFW commands
-c_list_nsfw = [items[0] for items in db_get_reddit_command_data() if items[1] == 1]  # [list] of NSFW commands
+c_dict = {items[0]: items[1] for items in db_rdt_cmd_data_get()}  # [dict] of commands (dict key is command)
+c_list = [items[0] for items in db_rdt_cmd_data_get()]  # [list] of all commands
+c_list_sfw = [items[0] for items in db_rdt_cmd_data_get() if items[1] == 0]  # [list] of SFW commands
+c_list_nsfw = [items[0] for items in db_rdt_cmd_data_get() if items[1] == 1]  # [list] of NSFW commands
 
 
 
@@ -180,9 +180,9 @@ class RedditScrap(commands.Cog):
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
-        sub_tuple = (items for items in db_get_reddit_subreddit(ctx.invoked_with))  # List of subs concerned by command
+        sub_tuple = (items for items in db_rdt_sub_translt_get(ctx.invoked_with))  # List of subs concerned by command
         await ctx.message.add_reaction('\N{HOURGLASS}')
-        content_url, content_type = reddit_get_random_content(sub_tuple)
+        content_url, content_type = db_rdt_rand_content_get(sub_tuple)
         log.debug('Chosen content URL is : ' + content_url + ' of type ' + content_type)  # DEBUG
         if content_type in ['gifv', 'gif']:
             isheavy = True

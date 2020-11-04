@@ -6,7 +6,7 @@ import os
 import logging
 import functools
 from discord.ext import tasks, commands
-from cogs.db_operations import reddit_poller_insert, reddit_poller_clean, db_get_reddit_sub_list, reddit_poller_subreddit
+from cogs.db_operations import db_rdt_poller_insert, db_rdt_poller_clean, db_rdt_poller_sub_get, db_rdt_poller_subdata_get
 from cogs.utils import precursor_restricted
 from loadconfig import reddit_client_id, reddit_client_secret, reddit_user_agent, gfycat_client_id, gfycat_client_secret
 
@@ -77,6 +77,7 @@ async def get_sub_size(subreddit):
 
 # Test with asyncpraw
 async def get_subreddit(number, subreddit):
+    log.debug('Parsing "{}" of size "{}" ... !'.format(subreddit, number))
     sub = await reddit.subreddit(subreddit)
     async for submission in sub.top("all", limit=number):
         u_name = submission.name
@@ -85,35 +86,35 @@ async def get_subreddit(number, subreddit):
         if url_raw.endswith('.jpg') or url_raw.endswith('.png'):
             content_type = "image"
             url = url_raw
-            reddit_poller_insert(u_name, subreddit, content_type, url)
-            reddit_poller_clean(subreddit)  # Clean old entries
+            db_rdt_poller_insert(u_name, subreddit, content_type, url)
+            db_rdt_poller_clean(subreddit)  # Clean old entries
 
         elif url_raw.endswith('.gifv'):
             content_type = "gifv"
             url = os.path.splitext(url_raw)[0] + '.gif'
-            reddit_poller_insert(u_name, subreddit, content_type, url)
-            reddit_poller_clean(subreddit)  # Clean old entries
+            db_rdt_poller_insert(u_name, subreddit, content_type, url)
+            db_rdt_poller_clean(subreddit)  # Clean old entries
 
         elif url_raw.endswith('.gif'):
             content_type = "gif"
             url = url_raw
-            reddit_poller_insert(u_name, subreddit, content_type, url)
-            reddit_poller_clean(subreddit)  # Clean old entries
+            db_rdt_poller_insert(u_name, subreddit, content_type, url)
+            db_rdt_poller_clean(subreddit)  # Clean old entries
 
         else:
             content_type = "unknow"
             url = url_raw
-            reddit_poller_insert(u_name, subreddit, content_type, url)
-            reddit_poller_clean(subreddit)  # Clean old entries
+            db_rdt_poller_insert(u_name, subreddit, content_type, url)
+            db_rdt_poller_clean(subreddit)  # Clean old entries
+
+    log.debug('Parsing "{}" of size "{}" Done !'.format(subreddit, number))
 
 
 # Get all reddit data for the bot
 async def get_reddit_data():
-    sub_list = [items for items in db_get_reddit_sub_list()]
+    sub_list = [items for items in db_rdt_poller_sub_get()]
     for sub in sub_list:
-        log.debug('Parsing "' + sub + '" ...')
         await get_subreddit(await get_sub_size(sub), sub)
-        log.debug('Parsing "' + sub + '" Done !')
 
 
 class RedditPoller(commands.Cog):
@@ -126,16 +127,21 @@ class RedditPoller(commands.Cog):
     @commands.command(hidden=True)
     async def rsync(self, ctx):
 
-        content_list = reddit_poller_subreddit()
-        new_content_list = list(db_get_reddit_sub_dict().keys())
-        sub_to_sync = [item for item in new_content_list if item not in content_list]
-
         try:
             self.bot.reload_extension('reddit_bot')
         except Exception as e:
             await ctx.send(f'**`ERROR:`** {type(e).__name__} - {e}')
         else:
             await ctx.send('**`SUCCESS`**')
+
+        curr_content_list = [items for items in db_rdt_poller_subdata_get()]
+        upd_content_list = [items for items in db_rdt_poller_sub_get()]
+        sub_to_sync = [item for item in upd_content_list if item not in curr_content_list]
+
+        for sub in sub_to_sync:
+            await get_subreddit(await get_sub_size(sub), sub)
+
+        await ctx.send('**`RSYNC DONE (for subreddit/s "{}")`**'.format(sub_to_sync))
 
     # TASKS ##########################################################################################
     ##################################################################################################
