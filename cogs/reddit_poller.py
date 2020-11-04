@@ -113,7 +113,7 @@ async def get_subreddit(number, subreddit):
 
 # Get all reddit data for the bot
 async def get_reddit_data():
-    sub_list = [items for items in db_rdt_poller_sub_get()]
+    sub_list = [items[0] for items in db_rdt_poller_sub_get()]
     print(sub_list)
     for sub in sub_list:
         await get_subreddit(await get_sub_size(sub), sub)
