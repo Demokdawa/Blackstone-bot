@@ -599,11 +599,13 @@ def reddit_poller_subreddit():
 # REDDIT-BOT ###################################################################################################
 ################################################################################################################
 
-def reddit_get_random_content(subreddit):
+
+# Return random reddit content depending on command
+def reddit_get_random_content(sub_tuple):
     db, cursor = init_db_con()  # Init DB session
 
-    cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit = %s ORDER BY RAND() 
-                      LIMIT 1''', (subreddit,))
+    cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit in %s ORDER BY RAND() 
+                      LIMIT 1''', (sub_tuple,))
     result = cursor.fetchone()  # Return is a [tuple]
 
     close_db_con(db, cursor)  # Close DB session
@@ -611,6 +613,7 @@ def reddit_get_random_content(subreddit):
     return result
 
 
+# Return a [list of tuples] of reddit commands
 def db_get_reddit_command_data():
 
     db, cursor = init_db_con()  # Init DB session
@@ -623,13 +626,15 @@ def db_get_reddit_command_data():
     return result
 
 
-def db_get_reddit_subreddit():
+# Return a [list of tuples] of subreddits corresponding to a command
+def db_get_reddit_subreddit(command):
 
     db, cursor = init_db_con()  # Init DB session
 
-    cursor.execute('''SELECT uwu_reddit_commands.command_name, uwu_reddit_subreddits.subreddit_name 
+    cursor.execute('''SELECT uwu_reddit_subreddits.subreddit_name
                       FROM uwu_reddit_commands INNER JOIN uwu_reddit_subreddits 
-                      ON uwu_reddit_commands.subreddit_group = uwu_reddit_subreddits.subreddit_group''')
+                      WHERE uwu_reddit_commands.subreddit_group = uwu_reddit_subreddits.subreddit_group
+                      AND uwu_reddit_commands.command_name = %s ''', (command,))
     result = cursor.fetchall()  # Result is a [list] of [tuple]
 
     close_db_con(db, cursor)  # Close DB session
