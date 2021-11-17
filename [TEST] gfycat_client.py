@@ -1,3 +1,5 @@
+## TEST USING OLD GFYCAT CLIENT --> DOES NOT WORK FOR REDGIF SADLY
+
 from gfycat.client import GfycatClient
 
 gfycat_client_id = '2_I1XC03'
@@ -5,7 +7,7 @@ gfycat_client_secret = 'U6J7oEmkgJ9XYb7UzZ5nrS5nsS-m4-xZLEPAVq3j_s5OcR2AyWa6vHeb
 
 client = GfycatClient(gfycat_client_id, gfycat_client_secret)
 
-resp = client.query_gfy('pleasingsadhoki')
+resp = client.query_gfy('fastessentialaxisdeer')
 
 mp4s = resp['gfyItem']['mp4Size']
 mp4f = resp['gfyItem']['mobileUrl']

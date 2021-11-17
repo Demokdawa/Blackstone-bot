@@ -208,7 +208,7 @@ class RedditScrap(commands.Cog):
                 if b is not None:
                     embed.add_field(name=a[0], value=b[0], inline=True)
                 else:
-                    embed.add_field(name=a[0], value='.', inline=True)
+                    embed.add_field(name=a[0], value='', inline=True)
 
         elif db_get_conf_server_all(ctx.guild.id)[0] == 1:  # Checking current nsfw_mode (semi-enabled)
             if ctx.channel.id in db_get_nsfw_channels(ctx.guild.id):  # If channel is an authorized nsfw channel
