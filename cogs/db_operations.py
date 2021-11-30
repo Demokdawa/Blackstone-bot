@@ -604,8 +604,10 @@ def db_rdt_poller_subdata_get():
 def db_rdt_rand_content_get(sub_tuple):
     db, cursor = init_db_con()  # Init DB session
 
-    cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit in %s ORDER BY RAND() 
-                      LIMIT 1''', (sub_tuple,))
+    subs = ", ".join(sub_tuple)
+    sql = "SELECT url, content_type FROM uwu_reddit_data WHERE subreddit in (%s) ORDER BY RAND() LIMIT 1"
+
+    cursor.execute(sql, (subs,))
     result = cursor.fetchone()  # Return is a [tuple]
 
     close_db_con(db, cursor)  # Close DB session
