@@ -179,7 +179,9 @@ class RedditScrap(commands.Cog):
     async def sendmeme(self, ctx):
         sub_tuple = (item for t in db_rdt_sub_translt_get(ctx.invoked_with) for item in t)  # List of subs concerned by command
         await ctx.message.add_reaction('\N{HOURGLASS}')
+        log.info('CHECKLOG - functiontest')
         content_url, content_type = db_rdt_rand_content_get(sub_tuple)
+        log.info('CHECKLOG - functiontest-suite')
         log.debug('Chosen content URL is : ' + content_url + ' of type ' + content_type)  # DEBUG
         if content_type in ['gifv', 'gif']:
             isheavy = True
