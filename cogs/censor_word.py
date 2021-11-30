@@ -45,7 +45,7 @@ def censor_message(message):
 
 def check_message_context(message):
 
-    # Check if the messae is not sent by a bot xD
+    # Check if the message is not sent by a bot xD
     if message.author.bot:
         return None
     else:
@@ -108,30 +108,32 @@ class CensorWord(commands.Cog):
 
         # Get ctx and check if message is a command
         ctx = await self.bot.get_context(message)
-        if ctx.valid:
-            pass
-        else:
-            # Check message and context for censoring
-            message_censored = check_message_context(message)
 
-            if message_censored is None:
-                pass  # Do nothing and let the message pass the filter
+        # Check if censor is activated on the server
+        if db_get_conf_server_all(ctx.guild.id)[12] == 1:
+
+            if ctx.valid:
+                pass
             else:
-                embed = discord.Embed()
-                embed.set_author(name="[CORRECT] " + str(message.author.display_name), icon_url=message.author.avatar_url)
-                embed.add_field(name="User", value="<@" + str(message.author.id) + ">", inline=True)
-                embed.add_field(name="Reason", value="Bad word usage", inline=True)
-                embed.add_field(name="Channel", value="<#" + str(message.channel.id) + ">", inline=False)
-                embed.add_field(name="Message", value=str(message.content), inline=False)
+                # Check message and context for censoring
+                message_censored = check_message_context(message)
 
-                # Get censor log configured channel for the guild from DB
-                channel = self.bot.get_channel(db_get_conf_server_all(message.guild.id)[3])
+                if message_censored is None:
+                    pass  # Do nothing and let the message pass the filter
+                else:
+                    embed = discord.Embed()
+                    embed.set_author(name="[CORRECT] " + str(message.author.display_name), icon_url=message.author.avatar_url)
+                    embed.add_field(name="User", value="<@" + str(message.author.id) + ">", inline=True)
+                    embed.add_field(name="Reason", value="Bad word usage", inline=True)
+                    embed.add_field(name="Channel", value="<#" + str(message.channel.id) + ">", inline=False)
+                    embed.add_field(name="Message", value=str(message.content), inline=False)
 
-                # print(dict(message.channel.permissions_for(ctx.me)))
+                    # Get censor log configured channel for the guild from DB
+                    channel = self.bot.get_channel(db_get_conf_server_all(message.guild.id)[3])
 
-                await channel.send(embed=embed)
-                await message.delete()
-                await message.channel.send(message_censored)
+                    await channel.send(embed=embed)
+                    await message.delete()
+                    await message.channel.send(message_censored)
 
 
 def setup(bot):

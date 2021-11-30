@@ -93,7 +93,7 @@ def db_get_conf_server_all(guild_id):
     db, cursor = init_db_con()  # Init DB session
 
     cursor.execute('''SELECT nsfw_mode, short_reddit_timer, long_reddit_timer, censor_log_channel, welcome_channel, 
-    welcome_role, approb_role, goulag_channel, warn_to_goulag, pmoji_user, pmoji_emoji, pmoji_message 
+    welcome_role, approb_role, goulag_channel, warn_to_goulag, pmoji_user, pmoji_emoji, pmoji_message, censure_mode 
     from servers_settings_global WHERE guild_id = %s''', (guild_id,))
     result = cursor.fetchone()  # Result is a [tuple]
 
