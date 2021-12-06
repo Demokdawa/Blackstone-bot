@@ -181,7 +181,9 @@ class RedditScrap(commands.Cog):
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
+        log.debug('Processing started for command' + ctx.invoked_with)  # DEBUG
         sub_tuple = (item for t in db_rdt_sub_translt_get(ctx.invoked_with) for item in t)  # List of subs concerned by command
+        log.debug('List of subs concerned by the command : ' + str(sub_tuple))  # DEBUG
         await ctx.message.add_reaction('\N{HOURGLASS}')
         content_url, content_type = db_rdt_rand_content_get(sub_tuple)
         log.debug('Chosen content URL is : ' + content_url + ' of type ' + content_type)  # DEBUG
