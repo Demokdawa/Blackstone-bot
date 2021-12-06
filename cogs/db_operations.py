@@ -604,15 +604,18 @@ def db_rdt_poller_subdata_get():
 def db_rdt_rand_content_get(sub_tuple):
     db, cursor = init_db_con()  # Init DB session
 
-    subs = ", ".join(f"'{i}'" for i in sub_tuple)
-    log.debug('TEST LOG Valeur du join : ' + subs)  # DEBUG
+    # subs = ", ".join(f"'{i}'" for i in sub_tuple)
+    in_list = ", ".join("%s" for _ in range(len(sub_tuple)))
+    log.debug('TEST LOG Valeur du join : ' + in_list)  # DEBUG
     # subs = ", ".join(sub_tuple)
     # cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN (%s) ORDER BY RAND() LIMIT 1''',
                    #(subs,))
 
-    sql = "SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN (%s) ORDER BY RAND() LIMIT 1"
+    # sql = "SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN (%s) ORDER BY RAND() LIMIT 1"
 
-    cursor.execute(sql, (subs,))
+    sql = f"SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN ({in_list}) ORDER BY RAND() LIMIT 1"
+
+    cursor.execute(sql, sub_tuple)
 
     result = cursor.fetchone()  # Return is a [tuple]
 
