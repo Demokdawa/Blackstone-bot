@@ -605,7 +605,7 @@ def db_rdt_rand_content_get(sub_tuple):
     db, cursor = init_db_con()  # Init DB session
 
     subs = ", ".join(sub_tuple)
-    cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN (%s) ORDER BY RAND() LIMIT 1''',
+    cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN %s ORDER BY RAND() LIMIT 1''',
                    (subs,))
 
     result = cursor.fetchone()  # Return is a [tuple]
