@@ -181,8 +181,8 @@ class RedditScrap(commands.Cog):
     @nsfw_check()
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
-        log.debug('Processing started for command : ' + str(ctx.invoked_with))  # DEBUG
-        log.debug('TEST LOG : ' + db_rdt_sub_translt_get(ctx.invoked_with))  # DEBUG
+        log.debug('Processing started for command : ' + ctx.invoked_with)  # DEBUG
+        log.debug('TEST LOG : ' + str(db_rdt_sub_translt_get(ctx.invoked_with)))  # DEBUG
         sub_tuple = (item for t in db_rdt_sub_translt_get(ctx.invoked_with) for item in t)  # List of subs concerned by command
         log.debug('List of subs concerned by the command : ' + str(sub_tuple))  # DEBUG
         await ctx.message.add_reaction('\N{HOURGLASS}')
