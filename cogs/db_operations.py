@@ -616,9 +616,9 @@ def db_rdt_rand_content_get(sub_tuple):
 
     result = cursor.fetchone()  # Return is a [tuple]
 
-    log.debug('TEST LOG Valeur du SQL: ' + str(result))  # DEBUG
-
     close_db_con(db, cursor)  # Close DB session
+
+    log.debug('TEST LOG Valeur du SQL: ' + str(result))  # DEBUG
 
     return result
 
