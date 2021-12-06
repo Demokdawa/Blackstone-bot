@@ -16,9 +16,13 @@ import shortuuid
 # Retrieve logger
 log = logging.getLogger("General_logs")
 
+# Used to check if a command is NSFW decorator
 c_dict = {items[0]: items[1] for items in db_rdt_cmd_data_get()}  # [dict] of commands (dict key is command)
+# Used to get the list of commands the the aliases system
 c_list = [items[0] for items in db_rdt_cmd_data_get()]  # [list] of all commands
+# Used to get the list of sfw commands for the helper menu
 c_list_sfw = [items[0] for items in db_rdt_cmd_data_get() if items[1] == 0]  # [list] of SFW commands
+# Used to get the list of nsfw commands for the helper menu
 c_list_nsfw = [items[0] for items in db_rdt_cmd_data_get() if items[1] == 1]  # [list] of NSFW commands
 
 log.info('[COGS] RedditScrap COG loaded')
