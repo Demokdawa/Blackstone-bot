@@ -604,24 +604,16 @@ def db_rdt_poller_subdata_get():
 def db_rdt_rand_content_get(sub_tuple):
     db, cursor = init_db_con()  # Init DB session
 
-    # subs = ", ".join(f"'{i}'" for i in sub_tuple)
-    in_list = ", ".join("%s" for _ in range(len(sub_tuple)))
-    log.debug('TEST LOG Valeur du join : ' + in_list)  # DEBUG
-    # subs = ", ".join(sub_tuple)
-    # cursor.execute('''SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN (%s) ORDER BY RAND() LIMIT 1''',
-                   #(subs,))
+    p_h_list = ", ".join("%s" for _ in range(len(sub_tuple)))  # Create the future placeholder string from the tuple
 
-    # sql = "SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN (%s) ORDER BY RAND() LIMIT 1"
+    # Insert placeholder list into query using f-string
+    sql = f"SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN ({p_h_list}) ORDER BY RAND() LIMIT 1"
 
-    sql = f"SELECT url, content_type FROM uwu_reddit_data WHERE subreddit IN ({in_list}) ORDER BY RAND() LIMIT 1"
-
-    cursor.execute(sql, sub_tuple)
+    cursor.execute(sql, sub_tuple)  # Execute query with each value of the tuple being assigned to a placeholder
 
     result = cursor.fetchone()  # Return is a [tuple]
 
     close_db_con(db, cursor)  # Close DB session
-
-    log.debug('TEST LOG Valeur du SQL: ' + str(result))  # DEBUG
 
     return result
 

@@ -182,7 +182,6 @@ class RedditScrap(commands.Cog):
     @commands.command(aliases=c_list[1:])
     async def sendmeme(self, ctx):
         log.debug('Processing started for command : ' + ctx.invoked_with)  # DEBUG
-        log.debug('TEST LOG : ' + str(db_rdt_sub_translt_get(ctx.invoked_with)))  # DEBUG
         sub_tuple = tuple([items[0] for items in db_rdt_sub_translt_get(ctx.invoked_with)]) # Tuple of subs concerned by command
         log.debug('List of subs concerned by the command : ' + str(sub_tuple))  # DEBUG
         await ctx.message.add_reaction('\N{HOURGLASS}')
