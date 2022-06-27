@@ -65,6 +65,8 @@ class ServerModeration(commands.Cog):
             list_of_user_roles = [e.id for e in member.roles]  # Get all roles of the user
             moji_member = None
 
+            log.debug('Id du payload' + payload.emoji.id)
+
             if action == 'add':
                 # Check if the message and the emoji are the right ones for pmoji and if pmoji is configured
                 if conf_server_all[9] is not None and int(conf_server_all[11]) == payload.message_id \
